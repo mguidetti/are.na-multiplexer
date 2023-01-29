@@ -1,9 +1,8 @@
 import arena from './arenaClient'
 
-export async function getBlocks () {
-
+export async function getBlocks ({channelName}) {
   const contents = await arena
-    .channel('arena-influences')
+    .channel(channelName)
     .contents({ page: 1, per: 3 })
 
   return contents
