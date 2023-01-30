@@ -13,16 +13,12 @@ import {
 import Header from './Header'
 import Window from './Window'
 import { MosaicContext } from './MosaicContext'
+import BlockQuickLook from './BlockQuickLook'
 
 export default function Desktop () {
-  // const initialNode = {
-  //   direction: 'row',
-  //   first: 1,
-  //   second: 2
-  // }
-
   const [currentNode, setCurrentNode] = useState(null)
   const [newTileChannelId, setNewTileChannelId] = useState(null)
+  const [quickLookBlockData, setQuickLookBlockData] = useState(null)
   const [totalWindowCount, setTotalWindowCount] = useState(getLeaves(currentNode).length)
 
   const onChange = currentNode => {
@@ -78,7 +74,7 @@ export default function Desktop () {
 
   return (
     <div id='app' className='flex w-full h-full flex-col'>
-      <MosaicContext.Provider value={{ addToTopRight, setNewTileChannelId }}>
+      <MosaicContext.Provider value={{ addToTopRight, setNewTileChannelId, setQuickLookBlockData}}>
         <header>
           <Header />
         </header>
@@ -91,6 +87,7 @@ export default function Desktop () {
             onChange={onChange}
             onRelease={onRelease}
           />
+          {quickLookBlockData && <BlockQuickLook blockData={quickLookBlockData} />}
         </main>
       </MosaicContext.Provider>
     </div>
