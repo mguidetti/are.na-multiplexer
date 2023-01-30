@@ -15,16 +15,15 @@ import Window from './Window'
 import { MosaicContext } from './MosaicContext'
 
 export default function Desktop () {
-  const initialNode = {
-    direction: 'row',
-    first: 1,
-    second: 2
-  }
+  // const initialNode = {
+  //   direction: 'row',
+  //   first: 1,
+  //   second: 2
+  // }
 
-  const [currentNode, setCurrentNode] = useState(initialNode)
-  const [totalWindowCount, setTotalWindowCount] = useState(
-    getLeaves(currentNode).length
-  )
+  const [currentNode, setCurrentNode] = useState(null)
+  const [newTileChannelId, setNewTileChannelId] = useState(null)
+  const [totalWindowCount, setTotalWindowCount] = useState(getLeaves(currentNode).length)
 
   const onChange = currentNode => {
     setCurrentNode(currentNode)
@@ -73,25 +72,21 @@ export default function Desktop () {
     setCurrentNode(newNode)
   }
 
+  const renderTile = (count, path) => {
+    return <Window path={path} totalWindowCount={totalWindowCount} channelId={newTileChannelId} />
+  }
+
   return (
     <div id='app' className='flex w-full h-full flex-col'>
-      <MosaicContext.Provider value={{addToTopRight}}>
+      <MosaicContext.Provider value={{ addToTopRight, setNewTileChannelId }}>
         <header>
           <Header />
         </header>
         <main>
           <Mosaic
             blueprintNamespace='bp4'
-            renderTile={(count, path) => (
-              <Window
-                count={count}
-                path={path}
-                totalWindowCount={totalWindowCount}
-              />
-            )}
-            zeroStateView={
-              <MosaicZeroState createNode={() => totalWindowCount + 1} />
-            }
+            renderTile={renderTile}
+            zeroStateView={<MosaicZeroState />}
             value={currentNode}
             onChange={onChange}
             onRelease={onRelease}

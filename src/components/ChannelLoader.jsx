@@ -1,5 +1,5 @@
-import { useContext, useState } from 'react'
 import classNames from 'classnames/bind'
+import { useContext, useState } from 'react'
 import arena from '../data/arenaClient'
 import { MosaicContext } from './MosaicContext'
 
@@ -8,7 +8,10 @@ function ChannelLoader () {
 
   return (
     <div className='relative'>
-      <button className='border p-2 rounded' onClick={() => setIsOpen(!isOpen)}>
+      <button
+        className={classNames('border py-2 px-4 rounded', { 'animate-pulse': isOpen })}
+        onClick={() => setIsOpen(!isOpen)}
+      >
         Add Channel
       </button>
 
@@ -20,40 +23,49 @@ function ChannelLoader () {
 function LoadChannelDialog ({ isOpen, setIsOpen }) {
   const [isLoading, setIsLoading] = useState(true)
   const [channels, setChannels] = useState([])
+  const [selectedChannel, setSelectedChannel] = useState('')
   const mosaic = useContext(MosaicContext)
 
   const searchChannels = async event => {
-    setChannels([])
-    setIsLoading(true)
+    reset()
 
-    const results = await arena
-      .search(event.target.value)
-      .channels({ page: 2, per: 3 })
+    const results = await arena.search(event.target.value).channels({ page: 1, per: 10 })
 
     setChannels(results)
     setIsLoading(false)
   }
 
+  const handleSelectChange = event => {
+    setSelectedChannel(event.target.value)
+  }
+
+  const handleLoad = event => {
+    mosaic.setNewTileChannelId(selectedChannel)
+    mosaic.addToTopRight()
+    close()
+  }
+
+  const reset = () => {
+    setChannels([])
+    setIsLoading(true)
+  }
+
+  const close = () => {
+    setIsOpen(false)
+    reset()
+  }
+
   const dialogClasses = classNames(
-    'absolute border rounded-md p-4 z-30 bg-white mx-auto top-10 left-0 w-72 shadow-xl',
+    'fixed border rounded-md p-4 z-30 bg-white mx-auto top-16 left-0 right-0 w-1/2 shadow-xl',
     { hidden: !isOpen }
   )
 
   return (
     <div className={dialogClasses}>
       <div className='flex flex-col gap-y-2'>
-        <input
-          type='text'
-          onChange={searchChannels}
-          className='border rounded p-2'
-          placeholder='Search channels'
-        />
+        <input type='text' onChange={searchChannels} className='border rounded p-2' placeholder='Search channels' />
 
-        <select
-          name='channels-list'
-          id='channels-list'
-          className='border rounded p-2'
-        >
+        <select name='channels-list' id='channels-list' className='border rounded p-2' onChange={handleSelectChange}>
           {isLoading && <option disabled>Loading...</option>}
           {channels &&
             channels.map(channel => (
@@ -65,10 +77,10 @@ function LoadChannelDialog ({ isOpen, setIsOpen }) {
       </div>
 
       <div className='flex gap-x-2 mt-4'>
-        <button className='border p-2 rounded' onClick={() => mosaic.addToTopRight()}>
+        <button className='border p-2 rounded' onClick={handleLoad}>
           Load into new window
         </button>
-        <button className='border p-2 rounded' onClick={() => setIsOpen(false)}>
+        <button className='border p-2 rounded' onClick={close}>
           Cancel
         </button>
       </div>

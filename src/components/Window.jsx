@@ -1,35 +1,41 @@
 import { MosaicWindow } from 'react-mosaic-component'
 import BlocksList from './BlocksList'
+import Spinner from './Spinner'
 import { useEffect, useState } from 'react'
-import { getBlocks } from '../data/contents'
+import arena from '../data/arenaClient'
 
-function Window ({ count, path, totalWindowCount }) {
+function Window ({ path, totalWindowCount, channelId }) {
   const [isLoading, setIsLoading] = useState(true)
-  const [blocks, setBlocks] = useState([])
+  const [channel, setChannel] = useState([])
+  const [error, setError] = useState(null)
 
   useEffect(() => {
-    const fetchBlocks = async () => {
-      const blocks = await getBlocks({ channelName: 'arena-influences' })
-
-      setBlocks(blocks)
-      setIsLoading(false)
+    const fetchChannel = async () => {
+      try {
+        const channel = await arena.channel(channelId).get()
+        setChannel(channel)
+      } catch (error) {
+        setError(error)
+      } finally {
+        setIsLoading(false)
+      }
     }
 
-    fetchBlocks()
+    fetchChannel()
   }, [])
 
   return (
     <MosaicWindow
-      title={`Window ${count}`}
+      title={channel.title}
       createNode={() => totalWindowCount + 1}
       path={path}
       onDragStart={() => console.log('MosaicWindow.onDragStart')}
       onDragEnd={type => console.log('MosaicWindow.onDragEnd', type)}
     >
-      <div className='p-2'>
-        <h1>{`Window ${count}`}</h1>
-        {isLoading && <div>Loading...</div>}
-        {blocks && <BlocksList blocks={blocks} />}
+      <div className='p-2 overflow-y-auto h-full'>
+        {isLoading && <Spinner />}
+        {error && <div className='text-red-500'>Error: {error.message}</div>}
+        {channel.contents && <BlocksList blocks={channel.contents} />}
       </div>
     </MosaicWindow>
   )
