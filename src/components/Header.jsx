@@ -1,6 +1,6 @@
 import ChannelLoader from './ChannelLoader'
 
-function Header () {
+function Header (props) {
   return (
     <div className='flex gap-x-4 p-2'>
       <div className='w-32'>Are.na Shelf</div>

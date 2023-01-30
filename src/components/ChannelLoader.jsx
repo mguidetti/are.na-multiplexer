@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react'
+import { useContext, useState } from 'react'
 import classNames from 'classnames/bind'
 import arena from '../data/arenaClient'
+import { MosaicContext } from './MosaicContext'
 
 function ChannelLoader () {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <div className='relative'>
-      <LoadChannelButton isOpen={isOpen} setIsOpen={setIsOpen} />
+      <button className='border p-2 rounded' onClick={() => setIsOpen(!isOpen)}>
+        Add Channel
+      </button>
+
       <LoadChannelDialog isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   )
@@ -16,6 +20,7 @@ function ChannelLoader () {
 function LoadChannelDialog ({ isOpen, setIsOpen }) {
   const [isLoading, setIsLoading] = useState(true)
   const [channels, setChannels] = useState([])
+  const mosaic = useContext(MosaicContext)
 
   const searchChannels = async event => {
     setChannels([])
@@ -60,20 +65,14 @@ function LoadChannelDialog ({ isOpen, setIsOpen }) {
       </div>
 
       <div className='flex gap-x-2 mt-4'>
-        <button className='border p-2 rounded'>Load into new window</button>
+        <button className='border p-2 rounded' onClick={() => mosaic.addToTopRight()}>
+          Load into new window
+        </button>
         <button className='border p-2 rounded' onClick={() => setIsOpen(false)}>
           Cancel
         </button>
       </div>
     </div>
-  )
-}
-
-function LoadChannelButton ({ isOpen, setIsOpen }) {
-  return (
-    <button className='border p-2 rounded' onClick={() => setIsOpen(!isOpen)}>
-      Add Channel
-    </button>
   )
 }
 
