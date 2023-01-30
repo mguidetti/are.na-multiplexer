@@ -33,6 +33,7 @@ function LoadChannelDialog ({ isOpen, setIsOpen }) {
 
     setChannels(results)
     setIsLoading(false)
+    setSelectedChannel(results[0].id)
   }
 
   const handleSelectChange = event => {
