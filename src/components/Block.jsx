@@ -21,9 +21,9 @@ function Block ({ blockData }) {
     <div
       ref={dragRef}
       onDoubleClick={handleDoubleClick}
-      className='border border-black bg-white aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer'
+      className='border border-white hover:border-black bg-white aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer'
     >
-      {blockData.image && <img src={blockData.image.thumb.url} className='aspect-square object-contain max-w-full' />}
+      {blockData.image && <img src={blockData.image.thumb.url} className='aspect-square object-contain w-full h-full p-0' />}
       {!blockData.image && <p className='text-center text-xs pt-2'>{blockData.title}</p>}
     </div>
   )
