@@ -69,7 +69,7 @@ export default function Desktop () {
   }
 
   const renderTile = (count, path) => {
-    return <Window path={path} totalWindowCount={totalWindowCount} channelId={newTileChannelId} />
+    return <Window path={path} channelId={newTileChannelId} />
   }
 
   return (

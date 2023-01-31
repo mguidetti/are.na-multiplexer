@@ -6,7 +6,7 @@ import arena from '../data/arenaClient'
 import Block from './Block'
 import Spinner from './Spinner'
 
-function Window ({ path, totalWindowCount, channelId }) {
+function Window ({ path, channelId }) {
   const [isLoading, setIsLoading] = useState(true)
   const [channel, setChannel] = useState([])
   const [error, setError] = useState(null)
@@ -42,7 +42,6 @@ function Window ({ path, totalWindowCount, channelId }) {
   return (
     <MosaicWindow
       title={channel.title}
-      createNode={() => totalWindowCount + 1}
       path={path}
       onDragStart={() => console.log('MosaicWindow.onDragStart')}
       onDragEnd={type => console.log('MosaicWindow.onDragEnd', type)}
