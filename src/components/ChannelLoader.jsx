@@ -1,30 +1,37 @@
 import classNames from 'classnames/bind'
-import { useContext, useState } from 'react'
+import { useContext, useState, useRef } from 'react'
 import arena from '../data/arenaClient'
 import { MosaicContext } from './MosaicContext'
+import { useHotkeys } from 'react-hotkeys-hook'
 
 function ChannelLoader () {
+  const mosaic = useContext(MosaicContext)
+
   const [isOpen, setIsOpen] = useState(false)
-
-  return (
-    <div className='relative'>
-      <button
-        className={classNames('border py-2 px-4 rounded', { 'animate-pulse': isOpen })}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        Add Channel
-      </button>
-
-      <LoadChannelDialog isOpen={isOpen} setIsOpen={setIsOpen} />
-    </div>
-  )
-}
-
-function LoadChannelDialog ({ isOpen, setIsOpen }) {
   const [isLoading, setIsLoading] = useState(true)
   const [channels, setChannels] = useState([])
   const [selectedChannel, setSelectedChannel] = useState('')
-  const mosaic = useContext(MosaicContext)
+
+  const searchInputRef = useRef(null)
+
+  useHotkeys('shift+l', () => open(), { enabled: !isOpen })
+  useHotkeys('esc', () => close(), { enabled: isOpen })
+
+  const open = () => {
+    setIsOpen(true)
+    searchInputRef.current.focus()
+  }
+
+  const reset = () => {
+    setChannels([])
+    setIsLoading(true)
+  }
+
+  const close = () => {
+    console.log('close!')
+    setIsOpen(false)
+    reset()
+  }
 
   const searchChannels = async event => {
     reset()
@@ -46,44 +53,46 @@ function LoadChannelDialog ({ isOpen, setIsOpen }) {
     close()
   }
 
-  const reset = () => {
-    setChannels([])
-    setIsLoading(true)
-  }
-
-  const close = () => {
-    setIsOpen(false)
-    reset()
-  }
-
   const dialogClasses = classNames(
     'fixed border rounded-md p-4 z-30 bg-white mx-auto top-16 left-0 right-0 w-1/2 shadow-xl',
     { hidden: !isOpen }
   )
 
   return (
-    <div className={dialogClasses}>
-      <div className='flex flex-col gap-y-2'>
-        <input type='text' onChange={searchChannels} className='border rounded p-2' placeholder='Search channels' />
+    <div className='relative'>
+      <button className={classNames('border py-2 px-4 rounded', { 'bg-blue-100': isOpen })} onClick={open}>
+        Load Channel
+      </button>
 
-        <select name='channels-list' id='channels-list' className='border rounded p-2' onChange={handleSelectChange}>
-          {isLoading && <option disabled>Loading...</option>}
-          {channels &&
-            channels.map(channel => (
-              <option key={channel.id} value={channel.id}>
-                {channel.title}
-              </option>
-            ))}
-        </select>
-      </div>
+      <div className={dialogClasses}>
+        <div className='flex flex-col gap-y-2'>
+          <input
+            type='text'
+            ref={searchInputRef}
+            onChange={searchChannels}
+            className='border rounded p-2'
+            placeholder='Search channels'
+          />
 
-      <div className='flex gap-x-2 mt-4'>
-        <button className='border p-2 rounded' onClick={handleLoad}>
-          Load into new window
-        </button>
-        <button className='border p-2 rounded' onClick={close}>
-          Cancel
-        </button>
+          <select name='channels-list' id='channels-list' className='border rounded p-2' onChange={handleSelectChange}>
+            {isLoading && <option disabled>Loading...</option>}
+            {channels &&
+              channels.map(channel => (
+                <option key={channel.id} value={channel.id}>
+                  {channel.title}
+                </option>
+              ))}
+          </select>
+        </div>
+
+        <div className='flex gap-x-2 mt-4'>
+          <button className='border p-2 rounded' onClick={handleLoad}>
+            Load into new window
+          </button>
+          <button className='border p-2 rounded' onClick={close}>
+            Cancel
+          </button>
+        </div>
       </div>
     </div>
   )
