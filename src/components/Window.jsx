@@ -48,7 +48,7 @@ function Window ({ path, totalWindowCount, channelId }) {
       onDragEnd={type => console.log('MosaicWindow.onDragEnd', type)}
     >
       <div className={classNames('p-2 overflow-y-auto h-full', {"bg-green-100": isOver})} ref={dropRef}>
-        {isLoading && <Spinner />}
+        {isLoading && <div className="w-full h-full flex items-center justify-center"><Spinner /></div>}
         {error && <div className='text-red-500'>Error: {error.message}</div>}
 
         <div className='grid gap-2 grid-cols-[repeat(auto-fill,minmax(150px,1fr))]'>
