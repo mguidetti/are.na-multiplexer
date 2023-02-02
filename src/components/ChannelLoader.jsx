@@ -8,7 +8,7 @@ function ChannelLoader () {
   const mosaic = useContext(MosaicContext)
 
   const [isOpen, setIsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [channels, setChannels] = useState([])
   const [selectedChannel, setSelectedChannel] = useState('')
 
@@ -19,28 +19,33 @@ function ChannelLoader () {
 
   const open = () => {
     setIsOpen(true)
-    searchInputRef.current.focus()
+
+    setTimeout(() => searchInputRef.current.focus(), 50)
   }
 
   const reset = () => {
     setChannels([])
-    setIsLoading(true)
   }
 
   const close = () => {
-    console.log('close!')
     setIsOpen(false)
     reset()
   }
 
   const searchChannels = async event => {
     reset()
+    setIsLoading(true)
 
     const results = await arena.search(event.target.value).channels({ page: 1, per: 10 })
 
-    setChannels(results)
     setIsLoading(false)
-    setSelectedChannel(results[0].id)
+
+    if (results.length) {
+      setChannels(results)
+      setSelectedChannel(results[0].id)
+    } else {
+      console.log('no results')
+    }
   }
 
   const handleSelectChange = event => {
@@ -73,9 +78,10 @@ function ChannelLoader () {
             className='border rounded p-2'
             placeholder='Search channels'
           />
-
           <select name='channels-list' id='channels-list' className='border rounded p-2' onChange={handleSelectChange}>
-            {isLoading && <option disabled>Loading...</option>}
+            {isLoading && (
+              <option selected disabled>Loading...</option>
+            )}
             {channels &&
               channels.map(channel => (
                 <option key={channel.id} value={channel.id}>
