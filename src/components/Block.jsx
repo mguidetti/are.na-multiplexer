@@ -14,7 +14,7 @@ function Block ({ data }) {
   })
 
   const handleDoubleClick = () => {
-    mosaic.setQuickLookdata(data)   
+    mosaic.setQuickLookBlockData(data)
   }
 
   return (
