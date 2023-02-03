@@ -40,7 +40,6 @@ main,
 
 .mosaic-tile {
   margin: var(--mosaic-spacing);
-  font-weight: bold;
 }
 
 .mosaic-window.channel-status-closed {
@@ -79,6 +78,7 @@ main,
 .mosaic-window .mosaic-window-title,
 .mosaic-preview .mosaic-window-title {
   font-size: 1rem;
+  font-weight: bold;
 }
 
 .mosaic-window .mosaic-window-body,
