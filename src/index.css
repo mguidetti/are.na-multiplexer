@@ -95,3 +95,8 @@ main,
 .mosaic-split:hover {
   background: rgb(var(--secondary-color) / 50%);
 }
+
+
+.scrollbar-thin {
+  overflow: auto;
+}
