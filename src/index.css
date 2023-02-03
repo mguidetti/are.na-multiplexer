@@ -61,9 +61,9 @@ main,
 
   color: rgb(var(--color));
   border-color: rgb(var(--color));
-  --scrollbar-thumb: rgb(var(--color), 50%);
-  --scrollbar-thumb-hover: rgb(var(--color), 100%);
-  --scrollbar-track: rgb(var(--color), 33%);
+  --scrollbar-thumb: rgb(var(--color) / 50%);
+  --scrollbar-thumb-hover: rgb(var(--color) / 100%);
+  --scrollbar-track: rgb(var(--color) / 33%);
 }
 
 .mosaic-window .mosaic-window-toolbar,
