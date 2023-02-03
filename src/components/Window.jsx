@@ -28,25 +28,32 @@ function Window ({ path, channelId }) {
     fetchChannel()
   }, [])
 
-  const [{ isOver, canDrop }, dropRef] = useDrop({
+  const [{ isActive }, dropRef] = useDrop({
     accept: 'block',
-    drop: item => handleDrop(item),
+    drop: (item, monitor) => handleDrop(item, monitor),
     collect: monitor => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop()
+      isActive: monitor.canDrop() && monitor.isOver()
     }),
     canDrop: (item, monitor) => handleCanDrop(item, monitor)
   })
 
-  const handleDrop = item => {
-    setBlocks(blocks => [...blocks, item])
+  const handleDrop = (item, monitor) => {
+    addBlock(item)
+
+    return item
   }
 
   const handleCanDrop = (item, monitor) => {
-    return !blocks.find(block => block.connection_id === item.connection_id)
+    return !isLoading && !blocks.find(block => block.connection_id === item.connection_id)
   }
 
-  const isActive = canDrop && isOver
+  const addBlock = block => {
+    setBlocks(blocks => [...blocks, block])
+  }
+
+  const removeBlock = id => {
+    setBlocks(blocks => blocks.filter(block => block.id !== id))
+  }
 
   return (
     <MosaicWindow
@@ -64,7 +71,7 @@ function Window ({ path, channelId }) {
         {error && <div className='text-red-500'>Error: {error.message}</div>}
 
         <div className='grid gap-2 grid-cols-[repeat(auto-fill,minmax(150px,1fr))]'>
-          {blocks.length && blocks.map(block => <Block key={block.id} data={block} />)}
+          {blocks.length && blocks.map(block => <Block key={block.id} data={block} removeBlock={removeBlock} />)}
         </div>
       </div>
     </MosaicWindow>

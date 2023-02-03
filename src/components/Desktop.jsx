@@ -19,7 +19,6 @@ export default function Desktop () {
   const [currentNode, setCurrentNode] = useState(null)
   const [newTileChannelId, setNewTileChannelId] = useState(null)
   const [quickLookBlockData, setQuickLookBlockData] = useState(null)
-  const [totalWindowCount, setTotalWindowCount] = useState(getLeaves(currentNode).length)
 
   const onChange = currentNode => {
     setCurrentNode(currentNode)
@@ -74,7 +73,7 @@ export default function Desktop () {
 
   return (
     <div id='app' className='flex w-full h-full flex-col'>
-      <MosaicContext.Provider value={{ addToTopRight, setNewTileChannelId, setQuickLookBlockData}}>
+      <MosaicContext.Provider value={{ addToTopRight, setNewTileChannelId, setQuickLookBlockData }}>
         <header>
           <Header />
         </header>
