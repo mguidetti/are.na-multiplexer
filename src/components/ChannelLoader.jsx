@@ -66,7 +66,7 @@ function ChannelLoader () {
   return (
     <div className='relative'>
       <button
-        className={classNames('border py-1 px-4 rounded-lg text-primary', { 'bg-secondary/50': isOpen })}
+        className={classNames('border py-1 px-4 rounded-lg text-primary hover:bg-secondary/50', { 'bg-secondary/50': isOpen })}
         onClick={open}
       >
         Load Channel
@@ -84,7 +84,7 @@ function ChannelLoader () {
           <select
             name='channels-list'
             id='channels-list'
-            className='border rounded p-2 bg-transparent'
+            className='border rounded p-2 bg-black appearance-none'
             onChange={handleSelectChange}
           >
             {isLoading && (
@@ -102,10 +102,10 @@ function ChannelLoader () {
         </div>
 
         <div className='flex gap-x-2 mt-4'>
-          <button className='border p-2 rounded' onClick={handleLoad}>
+          <button className='border p-2 rounded hover:bg-secondary/50' onClick={handleLoad}>
             Load into new window
           </button>
-          <button className='border p-2 rounded' onClick={close}>
+          <button className='border p-2 rounded hover:bg-secondary/50' onClick={close}>
             Cancel
           </button>
         </div>

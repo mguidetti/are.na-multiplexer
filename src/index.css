@@ -70,18 +70,28 @@ main,
 .mosaic-preview .mosaic-window-toolbar {
   border-bottom-width: 2px;
   border-color: inherit;
-  @apply bg-black;
+  background: black;
   color: inherit;
-  height: 33px;
+  height: 35px;
 }
 
 .mosaic-window .mosaic-window-title,
 .mosaic-preview .mosaic-window-title {
-  font-size: 1rem;
+  padding-left: 0.5rem;
   font-weight: bold;
 }
 
 .mosaic-window .mosaic-window-body,
 .mosaic-preview .mosaic-window-body {
   @apply bg-black;
+}
+
+.drop-target-container .drop-target {
+  border-width: 2;
+  background: rgb(var(--secondary-color) / 50%) !important;
+  border-color: rgb(var(--secondary-color)) !important;
+}
+
+.mosaic-split:hover {
+  background: rgb(var(--secondary-color) / 50%);
 }

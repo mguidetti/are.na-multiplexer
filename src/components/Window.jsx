@@ -81,7 +81,6 @@ function Window ({ path, channelId }) {
       title={channel.title}
       className={`channel-status-${channel.status}`}
       path={path}
-      // renderToolbar={renderToolbar}
       toolbarControls={<ToolbarControls />}
       onDragStart={() => console.log('MosaicWindow.onDragStart')}
       onDragEnd={type => console.log('MosaicWindow.onDragEnd', type)}
@@ -109,20 +108,20 @@ function Window ({ path, channelId }) {
 
   function ToolbarControls () {
     return (
-      <div className='flex justify-end gap-x-2'>
-        <button onClick={incrementGrid}>
+      <div className='flex justify-end'>
+        <button onClick={incrementGrid} className='hover:text-secondary px-1'>
           <svg fill='none' viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' className='w-5 h-5'>
             <path d='M12 4.5v15m7.5-7.5h-15' />
           </svg>
         </button>
 
-        <button onClick={decrementGrid}>
+        <button onClick={decrementGrid} className='hover:text-secondar px-1'>
           <svg fill='none' viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' className='w-5 h-5'>
             <path d='M19.5 12h-15' />
           </svg>
         </button>
 
-        <button onClick={expand}>
+        <button onClick={expand} className='hover:text-secondary px-1'>
           <svg fill='none' viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' className='w-5 h-5'>
             <path
               strokeLinecap='round'
@@ -132,7 +131,7 @@ function Window ({ path, channelId }) {
           </svg>
         </button>
 
-        <button onClick={remove}>
+        <button onClick={remove} className='hover:text-secondary px-1'>
           <svg fill='none' viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' className='w-5 h-5'>
             <path d='M6 18L18 6M6 6l12 12' />
           </svg>
