@@ -33,6 +33,8 @@ function Block ({ data, removeBlock }) {
         return <AttachmentBlock data={data} />
       case 'Image':
         return <ImageBlock data={data} />
+      case 'Media':
+        return <ImageBlock data={data} />
       case 'Link':
         return <ImageBlock data={data} />
       case 'Text':
@@ -56,6 +58,14 @@ function Block ({ data, removeBlock }) {
   )
 }
 
+function AttachmentBlock ({ data }) {
+  return (
+    <div className='h-full w-full bg-primary/10 flex items-center justify-center'>
+      <p className='text-center text-xs'>{data.title}</p>
+    </div>
+  )
+}
+
 function ImageBlock ({ data }) {
   return (
     <React.Fragment>
@@ -68,14 +78,6 @@ function TextBlock ({ data }) {
   return (
     <div className='border border-primary/25 p-2 h-full w-full overflow-hidden'>
       <p className='text-xs'>{data.content}</p>
-    </div>
-  )
-}
-
-function AttachmentBlock ({ data }) {
-  return (
-    <div className='h-full w-full bg-primary/10 flex items-center justify-center'>
-      <p className='text-center text-xs'>{data.title}</p>
     </div>
   )
 }
