@@ -1,12 +1,14 @@
 import classNames from 'classnames/bind'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
-import { MosaicWindow } from 'react-mosaic-component'
+import { MosaicContext, MosaicWindow } from 'react-mosaic-component'
 import arena from '../data/arenaClient'
 import Block from './Block'
 import Spinner from './Spinner'
 
 function Window ({ path, channelId }) {
+  const mosaic = useContext(MosaicContext)
+
   const [isLoading, setIsLoading] = useState(true)
   const [channel, setChannel] = useState([])
   const [blocks, setBlocks] = useState([])
@@ -67,7 +69,11 @@ function Window ({ path, channelId }) {
   }
 
   const remove = () => {
-    mosaic.remove(path)
+    mosaic.mosaicActions.remove(path)
+  }
+
+  const expand = () => {
+    mosaic.mosaicActions.expand(path)
   }
 
   return (
@@ -75,7 +81,8 @@ function Window ({ path, channelId }) {
       title={channel.title}
       className={`channel-status-${channel.status}`}
       path={path}
-      toolbarControls={<Controls />}
+      // renderToolbar={renderToolbar}
+      toolbarControls={<ToolbarControls />}
       onDragStart={() => console.log('MosaicWindow.onDragStart')}
       onDragEnd={type => console.log('MosaicWindow.onDragEnd', type)}
     >
@@ -93,17 +100,14 @@ function Window ({ path, channelId }) {
         )}
         {error && <div className='text-red-500'>Error: {error.message}</div>}
 
-        <div
-          className='grid gap-2'
-          style={{ 'grid-template-columns': `repeat(auto-fill,minmax(${gridCellSize}px,1fr))` }}
-        >
+        <div className='grid gap-2' style={{ gridTemplateColumns: `repeat(auto-fill,minmax(${gridCellSize}px,1fr))` }}>
           {blocks.length && blocks.map(block => <Block key={block.id} data={block} removeBlock={removeBlock} />)}
         </div>
       </div>
     </MosaicWindow>
   )
 
-  function Controls () {
+  function ToolbarControls () {
     return (
       <div className='flex justify-end gap-x-2'>
         <button onClick={incrementGrid}>
@@ -118,7 +122,7 @@ function Window ({ path, channelId }) {
           </svg>
         </button>
 
-        <button>
+        <button onClick={expand}>
           <svg fill='none' viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' className='w-5 h-5'>
             <path
               strokeLinecap='round'

@@ -12,7 +12,7 @@ import {
 } from 'react-mosaic-component'
 import Header from './Header'
 import Window from './Window'
-import { MosaicContext } from './MosaicContext'
+import { DesktopContext } from './DesktopContext'
 import BlockQuickLook from './BlockQuickLook'
 
 export default function Desktop () {
@@ -73,7 +73,7 @@ export default function Desktop () {
 
   return (
     <div id='app' className='flex w-full h-full flex-col'>
-      <MosaicContext.Provider value={{ addToTopRight, setNewTileChannelId, setQuickLookBlockData }}>
+      <DesktopContext.Provider value={{ addToTopRight, setNewTileChannelId, setQuickLookBlockData }}>
         <header>
           <Header />
         </header>
@@ -88,7 +88,7 @@ export default function Desktop () {
           />
           {quickLookBlockData && <BlockQuickLook blockData={quickLookBlockData} />}
         </main>
-      </MosaicContext.Provider>
+      </DesktopContext.Provider>
     </div>
   )
 }

@@ -1,16 +1,16 @@
-import { MosaicContext } from './MosaicContext'
+import { DesktopContext } from './DesktopContext'
 import { useContext, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import Spinner from './Spinner'
 
 function BlockQuickLook ({ blockData }) {
-  const mosaic = useContext(MosaicContext)
+  const desktop = useContext(DesktopContext)
   const [imageLoaded, setImageLoaded] = useState(null)
 
   useHotkeys('esc', () => close(), { enabled: blockData !== null })
 
   const close = () => {
-    mosaic.setQuickLookBlockData(null)
+    desktop.setQuickLookBlockData(null)
     setImageLoaded(false)
   }
 

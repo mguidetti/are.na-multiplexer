@@ -1,11 +1,11 @@
 import classNames from 'classnames/bind'
 import { useContext, useState, useRef } from 'react'
 import arena from '../data/arenaClient'
-import { MosaicContext } from './MosaicContext'
+import { DesktopContext } from './DesktopContext'
 import { useHotkeys } from 'react-hotkeys-hook'
 
 function ChannelLoader () {
-  const mosaic = useContext(MosaicContext)
+  const desktop = useContext(DesktopContext)
 
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -53,8 +53,8 @@ function ChannelLoader () {
   }
 
   const handleLoad = () => {
-    mosaic.setNewTileChannelId(selectedChannel)
-    mosaic.addToTopRight()
+    desktop.setNewTileChannelId(selectedChannel)
+    desktop.addToTopRight()
     close()
   }
 

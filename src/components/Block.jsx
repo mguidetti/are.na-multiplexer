@@ -1,10 +1,10 @@
 import classNames from 'classnames'
 import React, { useContext } from 'react'
 import { useDrag } from 'react-dnd'
-import { MosaicContext } from './MosaicContext'
+import { DesktopContext } from './DesktopContext'
 
 function Block ({ data, removeBlock }) {
-  const mosaic = useContext(MosaicContext)
+  const desktop = useContext(DesktopContext)
 
   const [{ isDragging }, drag] = useDrag({
     type: 'block',
@@ -24,7 +24,7 @@ function Block ({ data, removeBlock }) {
   })
 
   const handleDoubleClick = () => {
-    mosaic.setQuickLookBlockData(data)
+    desktop.setQuickLookBlockData(data)
   }
 
   const renderBlock = () => {
