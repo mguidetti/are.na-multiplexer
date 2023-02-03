@@ -19,8 +19,8 @@ function BlockQuickLook ({ blockData }) {
   }
 
   return (
-    <div className='fixed top-0 left-0 h-screen w-screen z-50 p-6 cursor-pointer' onClick={close}>
-      <div className='h-full w-full flex justify-center items-center z-50 bg-black bg-opacity-80 backdrop-blur-sm border-black border-2 rounded-md shadow-md'>
+    <div className='fixed top-0 left-0 h-screen w-screen z-50 p-14 cursor-pointer' onClick={close}>
+      <div className='h-full w-full flex justify-center items-center z-50 bg-black bg-opacity-80 backdrop-blur-md border-2 border-secondary rounded-sm'>
         <div className='p-8 text-white'>
           {!imageLoaded && <Spinner />}
 
@@ -34,7 +34,7 @@ function BlockQuickLook ({ blockData }) {
           )}
         </div>
       </div>
-    </div> 
+    </div>
   )
 }
 

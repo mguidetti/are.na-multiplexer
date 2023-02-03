@@ -66,30 +66,32 @@ function Window ({ path, channelId }) {
     setGridCellSize(gridCellSize / gridCellSizeMultiplier)
   }
 
+  const remove = () => {
+    mosaic.remove(path)
+  }
+
   return (
     <MosaicWindow
       title={channel.title}
       className={`channel-status-${channel.status}`}
       path={path}
+      toolbarControls={<Controls />}
       onDragStart={() => console.log('MosaicWindow.onDragStart')}
       onDragEnd={type => console.log('MosaicWindow.onDragEnd', type)}
     >
-      <div className={classNames('p-2 overflow-y-auto h-full', { 'bg-green-100': isActive })} ref={dropRef}>
+      <div
+        className={classNames(
+          'p-2 overflow-y-auto scrollbar-thin scrollbar-thumb-inherit scrollbar-track-inherit hover:scrollbar-thumb-inherit h-full',
+          { 'bg-secondary/25': isActive }
+        )}
+        ref={dropRef}
+      >
         {isLoading && (
           <div className='w-full h-full flex items-center justify-center'>
             <Spinner />
           </div>
         )}
         {error && <div className='text-red-500'>Error: {error.message}</div>}
-
-        <div class='text-white flex justify-end gap-x-2'>
-          <button onClick={incrementGrid} className='p-1 border rounded'>
-            Zoom +
-          </button>
-          <button onClick={decrementGrid} className='p-1 border rounded'>
-            Zoom -
-          </button>
-        </div>
 
         <div
           className='grid gap-2'
@@ -100,6 +102,40 @@ function Window ({ path, channelId }) {
       </div>
     </MosaicWindow>
   )
+
+  function Controls () {
+    return (
+      <div className='flex justify-end gap-x-2'>
+        <button onClick={incrementGrid}>
+          <svg fill='none' viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' className='w-5 h-5'>
+            <path d='M12 4.5v15m7.5-7.5h-15' />
+          </svg>
+        </button>
+
+        <button onClick={decrementGrid}>
+          <svg fill='none' viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' className='w-5 h-5'>
+            <path d='M19.5 12h-15' />
+          </svg>
+        </button>
+
+        <button>
+          <svg fill='none' viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' className='w-5 h-5'>
+            <path
+              strokeLinecap='round'
+              strokeLinejoin='round'
+              d='M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15'
+            />
+          </svg>
+        </button>
+
+        <button onClick={remove}>
+          <svg fill='none' viewBox='0 0 24 24' strokeWidth='2' stroke='currentColor' className='w-5 h-5'>
+            <path d='M6 18L18 6M6 6l12 12' />
+          </svg>
+        </button>
+      </div>
+    )
+  }
 }
 
 export default Window

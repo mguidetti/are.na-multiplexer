@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --mosaic-spacing: 6px;
+
+  --primary-color: 211 211 211;
+  --secondary-color: 198 120 221;
+  --private-channel-color: 226 73 55;
+  --public-channel-color: 43 164 37;
+}
+
 html,
 body,
 main,
@@ -11,22 +20,15 @@ main,
   margin: 0;
 }
 
+#root {
+  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 16px;
 
-html {
-  font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
-  font-size: 18px;
+  color: rgb(var(--primary-color));
 }
 
 .mosaic {
-  --mosaic-spacing: 6px;
-  
-  --private-channel-color: rgb(226, 73, 55);
-  --closed-channel-color: rgb(211, 211, 211);
-  --public-channel-color: rgb(43, 164, 37);
-}
-
-.mosaic {
-  background: black;
+  background-color: black;
 }
 
 .mosaic-root {
@@ -38,20 +40,48 @@ html {
 
 .mosaic-tile {
   margin: var(--mosaic-spacing);
+  font-weight: bold;
 }
 
-.mosaic-window {
-  border: 2px solid var(--closed-channel-color);
+.mosaic-window.channel-status-closed {
+  --color: var(--primary-color);
+}
+
+.mosaic-window.channel-status-private {
+  --color: var(--private-channel-color);
+}
+
+.mosaic-window.channel-status-public {
+  --color: var(--public-channel-color);
+}
+
+.mosaic-window,
+.mosaic-preview {
+  border-width: 2px;
   border-radius: 2px;
+
+  color: rgb(var(--color));
+  border-color: rgb(var(--color));
+  --scrollbar-thumb: rgb(var(--color), 50%);
+  --scrollbar-thumb-hover: rgb(var(--color), 100%);
+  --scrollbar-track: rgb(var(--color), 33%);
 }
 
-.mosaic-window .mosaic-window-toolbar, .mosaic-preview .mosaic-window-toolbar {
-  border-bottom: 2px solid var(--closed-channel-color);
-  @apply bg-black bg-opacity-75;
-  color: var(--closed-channel-color);
-  font-size: 16px;
+.mosaic-window .mosaic-window-toolbar,
+.mosaic-preview .mosaic-window-toolbar {
+  border-bottom-width: 2px;
+  border-color: inherit;
+  @apply bg-black;
+  color: inherit;
+  height: 33px;
 }
 
-.mosaic-window .mosaic-window-body, .mosaic-preview .mosaic-window-body {
-  @apply bg-black bg-opacity-75;
+.mosaic-window .mosaic-window-title,
+.mosaic-preview .mosaic-window-title {
+  font-size: 1rem;
+}
+
+.mosaic-window .mosaic-window-body,
+.mosaic-preview .mosaic-window-body {
+  @apply bg-black;
 }

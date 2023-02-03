@@ -52,20 +52,23 @@ function ChannelLoader () {
     setSelectedChannel(event.target.value)
   }
 
-  const handleLoad = event => {
+  const handleLoad = () => {
     mosaic.setNewTileChannelId(selectedChannel)
     mosaic.addToTopRight()
     close()
   }
 
   const dialogClasses = classNames(
-    'fixed border rounded-md p-4 z-30 bg-white mx-auto top-16 left-0 right-0 w-1/2 shadow-xl',
+    'fixed border-2 bg-black bg-opacity-80 backdrop-blur-md rounded-md p-4 z-30 bg-black mx-auto top-12 left-0 right-0 w-1/2 shadow-xl',
     { hidden: !isOpen }
   )
 
   return (
     <div className='relative'>
-      <button className={classNames('border py-2 px-4 rounded', { 'bg-blue-100': isOpen })} onClick={open}>
+      <button
+        className={classNames('border py-1 px-4 rounded-lg text-primary', { 'bg-secondary/50': isOpen })}
+        onClick={open}
+      >
         Load Channel
       </button>
 
@@ -75,12 +78,19 @@ function ChannelLoader () {
             type='text'
             ref={searchInputRef}
             onChange={searchChannels}
-            className='border rounded p-2'
+            className='border border-inherit rounded p-2 bg-transparent'
             placeholder='Search channels'
           />
-          <select name='channels-list' id='channels-list' className='border rounded p-2' onChange={handleSelectChange}>
+          <select
+            name='channels-list'
+            id='channels-list'
+            className='border rounded p-2 bg-transparent'
+            onChange={handleSelectChange}
+          >
             {isLoading && (
-              <option selected disabled>Loading...</option>
+              <option selected disabled>
+                Loading...
+              </option>
             )}
             {channels &&
               channels.map(channel => (
