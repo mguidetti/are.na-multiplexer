@@ -11,6 +11,9 @@ function Window ({ path, channelId }) {
   const [channel, setChannel] = useState([])
   const [blocks, setBlocks] = useState([])
   const [error, setError] = useState(null)
+  const [gridCellSize, setGridCellSize] = useState(150)
+
+  const gridCellSizeMultiplier = 1.25
 
   useEffect(() => {
     const fetchChannel = async () => {
@@ -55,6 +58,14 @@ function Window ({ path, channelId }) {
     setBlocks(blocks => blocks.filter(block => block.id !== id))
   }
 
+  const incrementGrid = () => {
+    setGridCellSize(gridCellSize * gridCellSizeMultiplier)
+  }
+
+  const decrementGrid = () => {
+    setGridCellSize(gridCellSize / gridCellSizeMultiplier)
+  }
+
   return (
     <MosaicWindow
       title={channel.title}
@@ -71,7 +82,19 @@ function Window ({ path, channelId }) {
         )}
         {error && <div className='text-red-500'>Error: {error.message}</div>}
 
-        <div className='grid gap-2 grid-cols-[repeat(auto-fill,minmax(150px,1fr))]'>
+        <div class='text-white flex justify-end gap-x-2'>
+          <button onClick={incrementGrid} className='p-1 border rounded'>
+            Zoom +
+          </button>
+          <button onClick={decrementGrid} className='p-1 border rounded'>
+            Zoom -
+          </button>
+        </div>
+
+        <div
+          className='grid gap-2'
+          style={{ 'grid-template-columns': `repeat(auto-fill,minmax(${gridCellSize}px,1fr))` }}
+        >
           {blocks.length && blocks.map(block => <Block key={block.id} data={block} removeBlock={removeBlock} />)}
         </div>
       </div>
