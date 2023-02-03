@@ -32,7 +32,7 @@ function Block ({ data, removeBlock }) {
       ref={drag}
       onDoubleClick={handleDoubleClick}
       className={classNames(
-        'border border-white hover:border-black bg-white aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer',
+        'border-2 text-white border-transparent hover:border-black aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer',
         { 'opacity-10': isDragging }
       )}
     >

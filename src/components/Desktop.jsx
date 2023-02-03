@@ -79,7 +79,7 @@ export default function Desktop () {
         </header>
         <main>
           <Mosaic
-            blueprintNamespace='bp4'
+            className='arena-shelf'
             renderTile={renderTile}
             zeroStateView={<MosaicZeroState />}
             value={currentNode}

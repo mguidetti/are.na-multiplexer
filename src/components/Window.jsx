@@ -58,6 +58,7 @@ function Window ({ path, channelId }) {
   return (
     <MosaicWindow
       title={channel.title}
+      className={`channel-status-${channel.status}`}
       path={path}
       onDragStart={() => console.log('MosaicWindow.onDragStart')}
       onDragEnd={type => console.log('MosaicWindow.onDragEnd', type)}
