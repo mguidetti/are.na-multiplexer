@@ -6,26 +6,25 @@ import { useArena } from '../hooks/useArena'
 import Block from './Block'
 import Spinner from './Spinner'
 
-function Window ({ path, channelId }) {
+function Window ({ path, channelData }) {
   const mosaic = useContext(MosaicContext)
   const arena = useArena()
 
   const [isLoading, setIsLoading] = useState(true)
-  const [channel, setChannel] = useState([])
+  const [channel, setChannel] = useState(channelData)
   const [blocks, setBlocks] = useState([])
   const [error, setError] = useState(null)
   const [gridCellSize, setGridCellSize] = useState(150)
 
   const gridCellSizeMultiplier = 1.25
 
-  const fetchChannel = useCallback(async () => {
+  const fetchBlocks = useCallback(async () => {
     if (!arena) return
 
-    const channel = await arena.channel(channelId).get()
+    const blocks = await arena.channel(channel.id).contents({ page: 1, per: 10 })
 
     try {
-      setChannel(channel)
-      setBlocks(channel.contents)
+      setBlocks(blocks)
     } catch (error) {
       setError(error)
     } finally {
@@ -34,7 +33,7 @@ function Window ({ path, channelId }) {
   }, [arena])
 
   useEffect(() => {
-    fetchChannel()
+    fetchBlocks()
   }, [arena])
 
   const [{ isActive }, dropRef] = useDrop({

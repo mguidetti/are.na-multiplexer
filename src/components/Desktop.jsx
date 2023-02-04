@@ -17,7 +17,7 @@ import ZeroState from './ZeroState'
 
 export default function Desktop () {
   const [currentNode, setCurrentNode] = useState(null)
-  const [newTileChannelId, setNewTileChannelId] = useState(null)
+  const [newTileChannel, setNewTileChannel] = useState(null)
   const [quickLookBlockData, setQuickLookBlockData] = useState(null)
 
   const onChange = currentNode => {
@@ -68,12 +68,12 @@ export default function Desktop () {
   }
 
   const renderTile = (_count, path) => {
-    return <Window path={path} channelId={newTileChannelId} />
+    return <Window path={path} channelData={newTileChannel} />
   }
 
   return (
     <div id='app' className='flex w-full h-full flex-col'>
-      <DesktopContext.Provider value={{ addToTopRight, setNewTileChannelId, setQuickLookBlockData }}>
+      <DesktopContext.Provider value={{ addToTopRight, setNewTileChannel, setQuickLookBlockData }}>
         <header>
           <Header />
         </header>

@@ -31,7 +31,7 @@ function ChannelLoader () {
   })
 
   const handleSelectChange = channel => {
-    desktop.setNewTileChannelId(channel.id)
+    desktop.setNewTileChannel(channel)
     desktop.addToTopRight()
     close()
   }
@@ -65,8 +65,7 @@ function ChannelLoader () {
           unstyled
           classNames={{
             container: () => 'bg-background bg-opacity-80 backdrop-blur-md border-2 rounded-md px-2',
-            menu: () =>
-              'bg-background bg-opacity-80 backdrop-blur-md border-2 border-t-0 rounded-b-md thin-scrollbar',
+            menu: () => 'bg-background bg-opacity-80 backdrop-blur-md border-2 border-t-0 rounded-b-md thin-scrollbar',
             option: state => (state.isFocused ? 'py-1 px-2 bg-secondary/75 text-white' : 'py-1 px-2')
           }}
         />
