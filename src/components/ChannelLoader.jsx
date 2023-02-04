@@ -60,7 +60,7 @@ function ChannelLoader () {
   }
 
   const dialogClasses = classNames(
-    'fixed border-2 bg-black bg-opacity-80 backdrop-blur-md rounded-md p-4 z-30 bg-black mx-auto top-12 left-0 right-0 w-1/2 shadow-xl',
+    'fixed border-2 bg-background bg-opacity-80 backdrop-blur-md rounded-md p-4 z-30 bg-background mx-auto top-12 left-0 right-0 w-1/2 shadow-xl',
     { hidden: !isOpen }
   )
 
@@ -87,7 +87,7 @@ function ChannelLoader () {
           <select
             name='channels-list'
             id='channels-list'
-            className='border rounded p-2 bg-black appearance-none'
+            className='border rounded p-2 bg-background appearance-none'
             onChange={handleSelectChange}
           >
             {isLoading && (

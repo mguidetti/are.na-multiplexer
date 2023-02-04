@@ -9,6 +9,7 @@
   --secondary-color: 198 120 221;
   --private-channel-color: 226 73 55;
   --public-channel-color: 43 164 37;
+  --background-color: 0 0 0;
 }
 
 html,
@@ -28,7 +29,7 @@ main,
 }
 
 .mosaic {
-  background-color: black;
+  background-color: rgb(var(--background-color));
 }
 
 .mosaic-root {
@@ -66,11 +67,10 @@ main,
   --scrollbar-track: rgb(var(--color) / 33%);
 }
 
-.mosaic-window .mosaic-window-toolbar,
-.mosaic-preview .mosaic-window-toolbar {
+.mosaic-window .mosaic-window-toolbar, .mosaic-preview .mosaic-window-toolbar {
   border-bottom-width: 2px;
   border-color: inherit;
-  background: black;
+  background-color: rgb(var(--background-color));
   color: inherit;
   height: 35px;
 }
@@ -83,7 +83,7 @@ main,
 
 .mosaic-window .mosaic-window-body,
 .mosaic-preview .mosaic-window-body {
-  @apply bg-black;
+  background-color: rgb(var(--background-color));
 }
 
 .drop-target-container .drop-target {
@@ -95,7 +95,6 @@ main,
 .mosaic-split:hover {
   background: rgb(var(--secondary-color) / 50%);
 }
-
 
 .scrollbar-thin {
   overflow: auto;
