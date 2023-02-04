@@ -1,7 +1,13 @@
 import Head from 'next/head'
 import Desktop from '../components/Desktop'
+import Welcome from '../components/Welcome'
+import { useSession } from 'next-auth/react'
+
 
 export default function Home() {
+  const session = useSession() || {}
+  const { data } = session
+
   return (
     <>
       <Head>
@@ -10,7 +16,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <div id="root">
-        <Desktop />
+        { data ? <Desktop /> : <Welcome />} 
       </div>
     </>
   )

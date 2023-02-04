@@ -1,5 +1,5 @@
 import ChannelLoader from './ChannelLoader'
-import { useSession } from 'next-auth/react'
+import { useSession, signOut } from 'next-auth/react'
 
 function Header () {
   const session = useSession() || {}
@@ -17,11 +17,11 @@ function Header () {
       <div className='flex-1 flex justify-center'>
         {data && <ChannelLoader />}
       </div>
-      <div className='w-64 text-right'>
+      <div className='w-64 text-right flex gap-x-4 justify-end items-center'>
         {data && (
           <>
-            Logged in as {data?.user?.name}
-            <button onClick={() => signOut()}>Sign out</button>
+            {data?.user?.name}
+            <button onClick={() => signOut()} className="py-1 px-4 border border-primary rounded-lg hover:bg-secondary/50">Sign out</button>
           </>
         )}
       </div>
