@@ -81,7 +81,7 @@ function Window ({ path, channelData }) {
 
   return (
     <MosaicWindow
-      title={channel.title}
+      title={`${channel.user.full_name} / ${channel.title}`}
       className={`channel-status-${channel.status}`}
       path={path}
       toolbarControls={<ToolbarControls />}
