@@ -9,13 +9,13 @@ const options = {
       authorization: {
         url: 'https://dev.are.na/oauth/authorize',
         params: {
-          scope: 'write'
+          scope: null
         }
       },
       token: 'https://dev.are.na/oauth/token',
       userinfo: 'https://api.are.na/v2/me',
-      clientId: process.env.ARENA_CLIENT_ID,
-      clientSecret: process.env.NEXTAUTH_SECRET,
+      clientId: process.env.ARENA_APP_ID,
+      clientSecret: process.env.ARENA_APP_SECRET,
 
       profile: profile => {
         const data = {
