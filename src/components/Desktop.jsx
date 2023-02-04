@@ -28,6 +28,13 @@ export default function Desktop () {
     console.log('Mosaic.onRelease():', currentNode)
   }
 
+  const loadChannel = (channel) => {
+    // TODO: Need to check if channel is already loaded in window on desktop first.
+
+    setNewTileChannel(channel)
+    addToTopRight()
+  }
+
   const addToTopRight = () => {
     const totalWindowCount = getLeaves(currentNode).length
     var newNode
@@ -73,7 +80,7 @@ export default function Desktop () {
 
   return (
     <div id='app' className='flex w-full h-full flex-col'>
-      <DesktopContext.Provider value={{ addToTopRight, setNewTileChannel, setQuickLookBlockData }}>
+      <DesktopContext.Provider value={{ loadChannel, setQuickLookBlockData }}>
         <header>
           <Header />
         </header>

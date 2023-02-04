@@ -19,8 +19,7 @@ function ChannelLoader () {
   })
 
   const handleSelectChange = channel => {
-    desktop.setNewTileChannel(channel)
-    desktop.addToTopRight()
+    desktop.loadChannel(channel)
   }
 
   return (

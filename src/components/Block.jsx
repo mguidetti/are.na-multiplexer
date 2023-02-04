@@ -24,13 +24,19 @@ function Block ({ data, removeBlock }) {
   })
 
   const handleDoubleClick = () => {
-    desktop.setQuickLookBlockData(data)
+    if (data.class === 'Channel') {
+      desktop.loadChannel(data)
+    } else {
+      desktop.setQuickLookBlockData(data)
+    }
   }
 
   const renderBlock = () => {
     switch (data.class) {
       case 'Attachment':
         return <AttachmentBlock data={data} />
+      case 'Channel':
+        return <ChannelBlock data={data} />
       case 'Image':
         return <ImageBlock data={data} />
       case 'Media':
@@ -61,6 +67,14 @@ function Block ({ data, removeBlock }) {
 function AttachmentBlock ({ data }) {
   return (
     <div className='h-full w-full bg-primary/10 flex items-center justify-center'>
+      <p className='text-center text-xs'>{data.title}</p>
+    </div>
+  )
+}
+
+function ChannelBlock ({ data }) {
+  return (
+    <div className='h-full w-full flex items-center justify-center border-2 channel-block'>
       <p className='text-center text-xs'>{data.title}</p>
     </div>
   )

@@ -44,15 +44,15 @@ main,
   margin: var(--mosaic-spacing);
 }
 
-.mosaic-window.channel-status-closed {
+.channel-status-closed {
   --color: var(--primary-color);
 }
 
-.mosaic-window.channel-status-private {
+.channel-status-private {
   --color: var(--private-channel-color);
 }
 
-.mosaic-window.channel-status-public {
+.channel-status-public {
   --color: var(--public-channel-color);
 }
 
@@ -66,6 +66,11 @@ main,
   --scrollbar-thumb: rgb(var(--color) / 50%);
   --scrollbar-thumb-hover: rgb(var(--color) / 100%);
   --scrollbar-track: rgb(var(--color) / 33%);
+}
+
+.channel-block {
+  color: rgb(var(--color));
+  border-color: rgb(var(--color));
 }
 
 .mosaic-window .mosaic-window-toolbar, .mosaic-preview .mosaic-window-toolbar {

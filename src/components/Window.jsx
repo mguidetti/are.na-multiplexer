@@ -21,7 +21,7 @@ function Window ({ path, channelData }) {
   const fetchBlocks = useCallback(async () => {
     if (!arena) return
 
-    const blocks = await arena.channel(channel.id).contents({ page: 1, per: 10 })
+    const blocks = await arena.channel(channel.id).contents({ page: 1, per: 25 })
 
     try {
       setBlocks(blocks)
