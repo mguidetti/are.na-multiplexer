@@ -28,7 +28,7 @@ const options = {
     }
   ],
   jwt: {
-    secret: process.env.NEXTAUTH_SECRET
+    secret: process.env.ARENA_APP_SECRET
   },
   callbacks: {
     async jwt ({ token, account, profile }) {
