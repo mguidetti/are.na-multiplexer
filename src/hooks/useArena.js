@@ -1,4 +1,5 @@
-import { ArenaClient } from 'arena-ts'
+// import { ArenaClient } from 'arena-ts'
+import Arena from 'are.na'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
@@ -9,8 +10,8 @@ export const useArena = () => {
 
   useEffect(() => {
     const accessToken = data?.user.accessToken
-    const options = data ? { token: accessToken } : undefined
-    const arena = new ArenaClient(options)
+    const options = data ? { accessToken: accessToken } : undefined
+    const arena = new Arena(options)
 
     setClient(arena)
   }, [loading])
