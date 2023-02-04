@@ -1,9 +1,9 @@
 import classNames from 'classnames'
-import React, { useContext } from 'react'
+import { useContext } from 'react'
 import { useDrag } from 'react-dnd'
 import { DesktopContext } from './DesktopContext'
 
-function Block ({ data, removeBlock }) {
+function Block ({ data, disconnectBlock }) {
   const desktop = useContext(DesktopContext)
 
   const [{ isDragging }, drag] = useDrag({
@@ -14,7 +14,7 @@ function Block ({ data, removeBlock }) {
         const result = monitor.getDropResult()
 
         if (result && result.dropEffect === 'move') {
-          removeBlock(data.id)
+          disconnectBlock(data)
         }
       }
     },
@@ -74,7 +74,9 @@ function AttachmentBlock ({ data }) {
 
 function ChannelBlock ({ data }) {
   return (
-    <div className={`h-full w-full flex items-center justify-center border-2 channel-status-${data.status} channel-block`}>
+    <div
+      className={`h-full w-full flex items-center justify-center border-2 channel-status-${data.status} channel-block`}
+    >
       <p className='text-center text-xs text-inherit'>{data.title}</p>
     </div>
   )
@@ -82,9 +84,9 @@ function ChannelBlock ({ data }) {
 
 function ImageBlock ({ data }) {
   return (
-    <React.Fragment>
+    <>
       <img src={data.image.thumb.url} className='aspect-square object-contain w-full h-full p-0' />
-    </React.Fragment>
+    </>
   )
 }
 

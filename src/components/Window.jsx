@@ -18,6 +18,10 @@ function Window ({ path, channelData }) {
 
   const gridCellSizeMultiplier = 1.25
 
+  useEffect(() => {
+    fetchBlocks()
+  }, [arena])
+
   const fetchBlocks = useCallback(async () => {
     if (!arena) return
 
@@ -32,9 +36,35 @@ function Window ({ path, channelData }) {
     }
   }, [arena])
 
-  useEffect(() => {
-    fetchBlocks()
-  }, [arena])
+  const addBlock = useCallback(
+    async block => {
+      setBlocks(blocks => [...blocks, block])
+
+      const channelObj = arena.channel(channel.id)
+      const result = await channelObj.connect.block(block.id)
+
+      console.log(result)
+
+      // TODO: should update the block that was added with new info (connection_id, etc)
+    },
+    [arena]
+  )
+
+  const disconnectBlock = useCallback(
+    async block => {
+      removeBlock(block)
+
+      const channelObj = arena.channel(channel.id)
+      const result = await channelObj.disconnect.block(block.id)
+
+      console.log(result)
+    },
+    [arena]
+  )
+
+  const removeBlock = block => {
+    setBlocks(blocks => blocks.filter(b => b.id !== block.id))
+  }
 
   const [{ isActive }, dropRef] = useDrop({
     accept: 'block',
@@ -52,15 +82,7 @@ function Window ({ path, channelData }) {
   }
 
   const handleCanDrop = (item, monitor) => {
-    return !isLoading && !blocks.find(block => block.connection_id === item.connection_id)
-  }
-
-  const addBlock = block => {
-    setBlocks(blocks => [...blocks, block])
-  }
-
-  const removeBlock = id => {
-    setBlocks(blocks => blocks.filter(block => block.id !== id))
+    return !isLoading && !blocks.find(block => block.id === item.id)
   }
 
   const incrementGrid = () => {
@@ -103,7 +125,8 @@ function Window ({ path, channelData }) {
         {error && <div className='text-red-500'>Error: {error.message}</div>}
 
         <div className='grid gap-2' style={{ gridTemplateColumns: `repeat(auto-fill,minmax(${gridCellSize}px,1fr))` }}>
-          {blocks.length && blocks.map(block => <Block key={block.id} data={block} removeBlock={removeBlock} />)}
+          {blocks.length &&
+            blocks.map(block => <Block key={block.id} data={block} disconnectBlock={disconnectBlock} />)}
         </div>
       </div>
     </MosaicWindow>
