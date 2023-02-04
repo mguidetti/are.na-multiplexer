@@ -74,8 +74,8 @@ function AttachmentBlock ({ data }) {
 
 function ChannelBlock ({ data }) {
   return (
-    <div className='h-full w-full flex items-center justify-center border-2 channel-block'>
-      <p className='text-center text-xs'>{data.title}</p>
+    <div className={`h-full w-full flex items-center justify-center border-2 channel-status-${data.status} channel-block`}>
+      <p className='text-center text-xs text-inherit'>{data.title}</p>
     </div>
   )
 }
