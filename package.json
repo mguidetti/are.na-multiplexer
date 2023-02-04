@@ -12,7 +12,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "are.na": "^0.1.5",
+    "arena-ts": "^0.1.4",
     "next": "13.1.6",
     "next-auth": "^4.19.2",
     "react": "18.2.0",

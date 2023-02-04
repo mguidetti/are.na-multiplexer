@@ -13,9 +13,9 @@ function ChannelLoader () {
   useHotkeys('shift+l', () => select.current.focus())
 
   const loadChannels = useCallback(async query => {
-    const results = await arena.search(query).channels({ page: 1, per: 10 })
+    const results = await arena.search.channels(query, { page: 1, per: 10 })
 
-    return results
+    return results.channels
   })
 
   const handleSelectChange = channel => {
