@@ -1,11 +1,12 @@
 import classNames from 'classnames/bind'
 import { useContext, useState, useRef } from 'react'
-import arena from '../data/arenaClient'
 import { DesktopContext } from './DesktopContext'
 import { useHotkeys } from 'react-hotkeys-hook'
+import { useArena } from '../hooks/useArena'
 
 function ChannelLoader () {
   const desktop = useContext(DesktopContext)
+  const arena = useArena()
 
   const [isOpen, setIsOpen] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -66,7 +67,9 @@ function ChannelLoader () {
   return (
     <div className='relative'>
       <button
-        className={classNames('border py-1 px-4 rounded-lg text-primary hover:bg-secondary/50', { 'bg-secondary/50': isOpen })}
+        className={classNames('border py-1 px-4 rounded-lg text-primary hover:bg-secondary/50', {
+          'bg-secondary/50': isOpen
+        })}
         onClick={open}
       >
         Load Channel

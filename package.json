@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "are.na": "^0.1.5",
+    "arena-ts": "^0.1.4",
     "next": "13.1.6",
+    "next-auth": "^4.19.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hotkeys-hook": "^4.3.4",
@@ -19,7 +21,7 @@
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
-    "tailwindcss": "^3.2.4",
-    "tailwind-scrollbar": "^2.1.0"
+    "tailwind-scrollbar": "^2.1.0",
+    "tailwindcss": "^3.2.4"
   }
 }
