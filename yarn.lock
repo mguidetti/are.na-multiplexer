@@ -177,11 +177,6 @@ are.na@^0.1.5:
     axios "^0.18.1"
     qs "^6.5.1"
 
-arena-ts@^0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/arena-ts/-/arena-ts-0.1.4.tgz#d19d1e3eff8d345b6f1decad2c794551a148993e"
-  integrity sha512-kRkPv3iaS12YZbWWkh/tEiNaQvY7L2A8yZts54cLGysplAC81ZQ6QMvJ1X88Bj9Qpz3cjh/L37OammZQxSFfow==
-
 arg@^5.0.2:
   version "5.0.2"
   resolved "https://registry.yarnpkg.com/arg/-/arg-5.0.2.tgz#c81433cc427c92c4dcf4865142dbca6f15acd59c"

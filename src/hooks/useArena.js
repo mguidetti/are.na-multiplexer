@@ -1,4 +1,3 @@
-// import { ArenaClient } from 'arena-ts'
 import Arena from 'are.na'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'

@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind'
-import { useContext, useState, useRef } from 'react'
+import { useCallback, useContext, useState, useRef } from 'react'
 import { DesktopContext } from './DesktopContext'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { useArena } from '../hooks/useArena'
@@ -33,21 +33,25 @@ function ChannelLoader () {
     reset()
   }
 
-  const searchChannels = async event => {
-    reset()
-    setIsLoading(true)
+  const searchChannels = useCallback(
+    async event => {
+      reset()
+      setIsLoading(true)
 
-    const results = await arena.search(event.target.value).channels({ page: 1, per: 10 })
+      const query = event.target.value
+      const results = await arena.search(query).channels({ page: 1, per: 10 })
 
-    setIsLoading(false)
+      setIsLoading(false)
 
-    if (results.length) {
-      setChannels(results)
-      setSelectedChannel(results[0].id)
-    } else {
-      console.log('no results')
-    }
-  }
+      if (results.length) {
+        setChannels(results)
+        setSelectedChannel(results[0].id)
+      } else {
+        console.log('no results')
+      }
+    },
+    [arena]
+  )
 
   const handleSelectChange = event => {
     setSelectedChannel(event.target.value)

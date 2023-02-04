@@ -1,8 +1,8 @@
 import classNames from 'classnames/bind'
-import { useContext, useEffect, useState } from 'react'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import { MosaicContext, MosaicWindow } from 'react-mosaic-component'
-import { useArena } from '@/hooks/useArena'
+import { useArena } from '../hooks/useArena'
 import Block from './Block'
 import Spinner from './Spinner'
 
@@ -18,21 +18,24 @@ function Window ({ path, channelId }) {
 
   const gridCellSizeMultiplier = 1.25
 
-  useEffect(() => {
-    const fetchChannel = async () => {
-      try {
-        const channel = await arena.channel(channelId).get()
-        setChannel(channel)
-        setBlocks(channel.contents)
-      } catch (error) {
-        setError(error)
-      } finally {
-        setIsLoading(false)
-      }
-    }
+  const fetchChannel = useCallback(async () => {
+    if (!arena) return
 
+    const channel = await arena.channel(channelId).get()
+
+    try {
+      setChannel(channel)
+      setBlocks(channel.contents)
+    } catch (error) {
+      setError(error)
+    } finally {
+      setIsLoading(false)
+    }
+  }, [arena])
+
+  useEffect(() => {
     fetchChannel()
-  }, [])
+  }, [arena])
 
   const [{ isActive }, dropRef] = useDrop({
     accept: 'block',
