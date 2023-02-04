@@ -2,12 +2,13 @@ import classNames from 'classnames/bind'
 import { useContext, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import { MosaicContext, MosaicWindow } from 'react-mosaic-component'
-import arena from '../data/arenaClient'
+import { useArena } from '@/hooks/useArena'
 import Block from './Block'
 import Spinner from './Spinner'
 
 function Window ({ path, channelId }) {
   const mosaic = useContext(MosaicContext)
+  const arena = useArena()
 
   const [isLoading, setIsLoading] = useState(true)
   const [channel, setChannel] = useState([])
