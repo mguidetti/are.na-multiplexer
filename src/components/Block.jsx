@@ -75,9 +75,9 @@ function AttachmentBlock ({ data }) {
 function ChannelBlock ({ data }) {
   return (
     <div
-      className={`h-full w-full flex items-center justify-center border-2 channel-status-${data.status} channel-block`}
+      className={`h-full w-full flex items-center justify-center border-2 channel-status-${data.status} channel-block p-2`}
     >
-      <p className='text-center text-xs text-inherit'>{data.title}</p>
+      <p className='text-center text-xs-relative text-inherit'>{data.title}</p>
     </div>
   )
 }
@@ -93,15 +93,15 @@ function ImageBlock ({ data }) {
 function TextBlock ({ data }) {
   return (
     <div className='border border-primary/25 p-2 h-full w-full overflow-hidden'>
-      <p className='text-xs'>{data.content}</p>
+      <p className='text-xs-relative'>{data.content}</p>
     </div>
   )
 }
 
 function DefaultBlock ({ data }) {
   return (
-    <div className='h-full w-full flex items-center justify-center'>
-      <p className='text-center text-xs'>{data.title}</p>
+    <div className='h-full w-full flex items-center justify-center p-2'>
+      <p className='text-center text-xs-relative'>{data.title}</p>
     </div>
   )
 }

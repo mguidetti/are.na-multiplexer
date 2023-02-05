@@ -8,6 +8,11 @@ module.exports = {
         background: 'rgb(var(--background-color) / <alpha-value>)',
         'private-channel': 'rgb(var(--private-channel-color) / <alpha-value>)',
         'public-channel': 'rgb(var(--public-channel-color) / <alpha-value>)'
+      },
+      fontSize: {
+        "xs-relative": "0.75em",
+        "sm-relative": "0.875em",
+        "base-relative": "1em",
       }
     }
   },

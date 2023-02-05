@@ -21,10 +21,12 @@ function Window ({ path, channelData }) {
   const [channel, setChannel] = useState(channelData)
   const [blocks, setBlocks] = useState([])
   const [error, setError] = useState(null)
-  const [gridCellSize, setGridCellSize] = useState(150)
+  const [scale, setscale] = useState(1)
   const [view, setView] = useState('grid')
 
-  const gridCellSizeMultiplier = 1.25
+  const scaleMultiplier = 1.25
+  const minScale = 0.75
+  const maxScale = 3
 
   useEffect(() => {
     fetchBlocks()
@@ -93,12 +95,19 @@ function Window ({ path, channelData }) {
     return !isLoading && !blocks.find(block => block.id === item.id)
   }
 
-  const incrementGrid = () => {
-    setGridCellSize(gridCellSize * gridCellSizeMultiplier)
+
+  const incrementScale = () => {
+    const value = scale * scaleMultiplier
+    const clampedValue = Math.min(Math.max(value, minScale), maxScale)
+
+    setscale(clampedValue)
   }
 
-  const decrementGrid = () => {
-    setGridCellSize(gridCellSize / gridCellSizeMultiplier)
+  const decrementScale = () => {
+    const value = scale / scaleMultiplier
+    const clampedValue = Math.min(Math.max(value, minScale), maxScale)
+
+    setscale(clampedValue)
   }
 
   const remove = () => {
@@ -123,8 +132,9 @@ function Window ({ path, channelData }) {
       onDragEnd={type => console.log('MosaicWindow.onDragEnd', type)}
     >
       <div
+        style={{ '--scale': scale }}
         className={classNames(
-          'overflow-y-auto scrollbar-thin scrollbar-thumb-inherit scrollbar-track-inherit hover:scrollbar-thumb-inherit h-full',
+          'overflow-y-auto scrollbar-thin scrollbar-thumb-inherit scrollbar-track-inherit hover:scrollbar-thumb-inherit h-full text-[calc(1rem*var(--scale))]',
           { 'bg-secondary/25': isActive }
         )}
         ref={dropRef}
@@ -155,10 +165,7 @@ function Window ({ path, channelData }) {
 
   function BlocksGrid () {
     return (
-      <div
-        className='p-2 grid gap-2'
-        style={{ gridTemplateColumns: `repeat(auto-fill,minmax(${gridCellSize}px,1fr))` }}
-      >
+      <div className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]'>
         {blocks.map(block => (
           <Block key={block.id} data={block} disconnectBlock={disconnectBlock} />
         ))}
@@ -170,11 +177,11 @@ function Window ({ path, channelData }) {
     return (
       <ul className='p-2 divide-y divide divide-primary/70 text-primary'>
         {blocks.map(block => (
-          <li className='py-1 text-md grid grid-cols-[min-content_1fr] gap-x-4 items-center'>
-            <div className='w-8 h-8'>
+          <li className='py-1 text-md-relative grid grid-cols-[min-content_1fr] gap-x-4 items-center'>
+            <div className='w-[calc(2em*var(--scale))] '>
               {block.image && <img src={block.image.thumb.url} className='aspect-square object-contain' />}
             </div>
-            <div>{block.title}</div>
+            <div className='truncate'>{block.generated_title}</div>
           </li>
         ))}
       </ul>
@@ -188,20 +195,24 @@ function Window ({ path, channelData }) {
   function ToolbarControls () {
     return (
       <div className='flex justify-end items-center'>
-        <a href={`https://www.are.na/${channel.owner_slug}/${channel.slug}`} className='hover:text-secondary px-2' target="_blank">
-          <ArenaMarkIcon className="w-6" />
+        <a
+          href={`https://www.are.na/${channel.owner_slug}/${channel.slug}`}
+          className='hover:text-secondary px-2'
+          target='_blank'
+        >
+          <ArenaMarkIcon className='w-6' />
         </a>
 
         <button onClick={toggleView} className='hover:text-secondary px-1'>
-          {view === 'list' && (<Squares2x2Icon className='w-5 h-5' />)}
-          {view === 'grid' && (<ListBulletIcon className='w-5 h-5' />)}
+          {view === 'list' && <Squares2x2Icon className='w-5 h-5' />}
+          {view === 'grid' && <ListBulletIcon className='w-5 h-5' />}
         </button>
 
-        <button onClick={incrementGrid} className='hover:text-secondary px-1'>
+        <button onClick={incrementScale} className='hover:text-secondary px-1'>
           <PlusIcon className='w-5 h-5' strokeWidth='2' />
         </button>
 
-        <button onClick={decrementGrid} className='hover:text-secondary px-1'>
+        <button onClick={decrementScale} className='hover:text-secondary px-1'>
           <MinusIcon className='w-5 h-5' strokeWidth='2' />
         </button>
 
