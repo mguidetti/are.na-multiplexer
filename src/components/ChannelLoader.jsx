@@ -11,7 +11,7 @@ function ChannelLoader () {
   const select = useRef(null)
   const [query, setQuery] = useState('')
 
-  useHotkeys('shift+l', () => select.current.focus())
+  useHotkeys('/', () => select.current?.focus(), { ignoreModifiers: true, preventDefault: true })
 
   const loadChannels = useCallback(async query => {
     const results = await arena.search.channels(query, { page: 1, per: 10 })
@@ -39,9 +39,10 @@ function ChannelLoader () {
         unstyled
         value={query}
         classNames={{
-          control: ({ menuIsOpen }) =>
+          control: ({ isFocused, menuIsOpen }) =>
             classNames('bg-background border-2 rounded-md border-primary/70 px-2 font-bold', {
-              '!border-secondary !rounded-b-none !border-b-transparent !text-secondary bg-secondary/10': menuIsOpen
+              'bg-secondary/10 !text-secondary !border-secondary': isFocused,
+              '!rounded-b-none !border-b-transparent ': menuIsOpen
             }),
           menu: () => '-mt-1 bg-background border-2 border-t-0 border-secondary rounded-b-md',
           menuList: () => 'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/30 rounded-b-md',
