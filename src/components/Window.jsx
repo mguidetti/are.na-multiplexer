@@ -178,7 +178,7 @@ function Window ({ path, channelData }) {
       <ul className='p-2 divide-y divide divide-primary/70 text-primary'>
         {blocks.map(block => (
           <li className='py-1 text-md-relative grid grid-cols-[min-content_1fr] gap-x-4 items-center'>
-            <div className='w-[calc(2em*var(--scale))] '>
+            <div className='w-[calc(1.5em*var(--scale))] '>
               {block.image && <img src={block.image.thumb.url} className='aspect-square object-contain' />}
             </div>
             <div className='truncate'>{block.generated_title}</div>
