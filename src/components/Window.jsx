@@ -11,6 +11,7 @@ import MinusIcon from '@/icons/minus.svg'
 import ArrowsPointingOutIcon from '@/icons/arrows-pointing-out.svg'
 import ListBulletIcon from '@/icons/list-bullet.svg'
 import Squares2x2Icon from '@/icons/squares-2x2.svg'
+import ArenaMarkIcon from '@/icons/arena-mark.svg'
 
 function Window ({ path, channelData }) {
   const mosaic = useContext(MosaicContext)
@@ -186,7 +187,11 @@ function Window ({ path, channelData }) {
 
   function ToolbarControls () {
     return (
-      <div className='flex justify-end'>
+      <div className='flex justify-end items-center'>
+        <a href={`https://www.are.na/${channel.owner_slug}/${channel.slug}`} className='hover:text-secondary px-2' target="_blank">
+          <ArenaMarkIcon className="w-6" />
+        </a>
+
         <button onClick={toggleView} className='hover:text-secondary px-1'>
           {view === 'list' && (<Squares2x2Icon className='w-5 h-5' />)}
           {view === 'grid' && (<ListBulletIcon className='w-5 h-5' />)}
