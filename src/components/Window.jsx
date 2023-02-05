@@ -1,17 +1,18 @@
+import ArenaMarkIcon from '@/icons/arena-mark.svg'
+import ArrowsPointingOutIcon from '@/icons/arrows-pointing-out.svg'
+import ListBulletIcon from '@/icons/list-bullet.svg'
+import MinusIcon from '@/icons/minus.svg'
+import PlusIcon from '@/icons/plus.svg'
+import Squares2x2Icon from '@/icons/squares-2x2.svg'
+import XMarkIcon from '@/icons/x-mark.svg'
 import classNames from 'classnames/bind'
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import { MosaicContext, MosaicWindow } from 'react-mosaic-component'
 import { useArena } from '../hooks/useArena'
-import Block from './Block'
+import GridBlock from './GridBlock'
+import ListBlock from './ListBlock'
 import Spinner from './Spinner'
-import XMarkIcon from '@/icons/x-mark.svg'
-import PlusIcon from '@/icons/plus.svg'
-import MinusIcon from '@/icons/minus.svg'
-import ArrowsPointingOutIcon from '@/icons/arrows-pointing-out.svg'
-import ListBulletIcon from '@/icons/list-bullet.svg'
-import Squares2x2Icon from '@/icons/squares-2x2.svg'
-import ArenaMarkIcon from '@/icons/arena-mark.svg'
 
 function Window ({ path, channelData }) {
   const mosaic = useContext(MosaicContext)
@@ -95,7 +96,6 @@ function Window ({ path, channelData }) {
     return !isLoading && !blocks.find(block => block.id === item.id)
   }
 
-
   const incrementScale = () => {
     const value = scale * scaleMultiplier
     const clampedValue = Math.min(Math.max(value, minScale), maxScale)
@@ -167,7 +167,7 @@ function Window ({ path, channelData }) {
     return (
       <div className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]'>
         {blocks.map(block => (
-          <Block key={block.id} data={block} disconnectBlock={disconnectBlock} />
+          <GridBlock key={block.id} data={block} disconnectBlock={disconnectBlock} />
         ))}
       </div>
     )
@@ -177,11 +177,8 @@ function Window ({ path, channelData }) {
     return (
       <ul className='p-2 divide-y divide divide-primary/70 text-primary'>
         {blocks.map(block => (
-          <li className='py-1 text-md-relative grid grid-cols-[min-content_1fr] gap-x-4 items-center hover:bg-secondary/30'>
-            <div className='w-[calc(1.5em*var(--scale))]'>
-              {block.image && <img src={block.image.thumb.url} className='aspect-square object-contain' />}
-            </div>
-            <div className='truncate'>{block.generated_title}</div>
+          <li key={block.id}>
+            <ListBlock data={block} disconnectBlock={disconnectBlock} />
           </li>
         ))}
       </ul>
