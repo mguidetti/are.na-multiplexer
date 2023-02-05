@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind'
-import { useCallback, useContext, useRef } from 'react'
+import { useCallback, useContext, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import AsyncSelect from 'react-select/async'
 import { useArena } from '../hooks/useArena'
@@ -9,6 +9,7 @@ function ChannelLoader () {
   const desktop = useContext(DesktopContext)
   const arena = useArena()
   const select = useRef(null)
+  const [query, setQuery] = useState('')
 
   useHotkeys('shift+l', () => select.current.focus())
 
@@ -20,6 +21,7 @@ function ChannelLoader () {
 
   const handleSelectChange = channel => {
     desktop.loadChannel(channel)
+    setQuery('')
   }
 
   return (
@@ -35,6 +37,7 @@ function ChannelLoader () {
         loadOptions={loadChannels}
         onChange={handleSelectChange}
         unstyled
+        value={query}
         classNames={{
           control: ({ menuIsOpen }) =>
             classNames('bg-background border-2 rounded-md border-primary/70 px-2 font-bold', {
@@ -46,7 +49,7 @@ function ChannelLoader () {
             classNames('py-1 px-2 text-primary font-bold truncate', {
               'bg-secondary/50': isFocused,
               '!text-public-channel': data.status === 'public',
-              '!text-private-channel': data.status === 'private',
+              '!text-private-channel': data.status === 'private'
             })
         }}
       />
