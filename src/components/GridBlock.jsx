@@ -64,12 +64,9 @@ function GridBlock ({ data, disconnectBlock }) {
 
   return (
     <Block data={data} disconnectBlock={disconnectBlock}>
-      <div
-        className={
-          'border text-primary border-transparent hover:border-secondary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer'
-        }
-      >
+      <div className='relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer group'>
         {renderBlock()}
+        <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-50'></div>
       </div>
     </Block>
   )
