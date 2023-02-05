@@ -23,7 +23,7 @@ function ChannelLoader () {
   }
 
   return (
-    <div className='p-2 w-[400px] z-30'>
+    <div className='p-2 w-[500px] z-30'>
       <AsyncSelect
         ref={select}
         cacheOptions
@@ -36,13 +36,18 @@ function ChannelLoader () {
         onChange={handleSelectChange}
         unstyled
         classNames={{
-          container: state =>
-            classNames('bg-background border-2 border-primary/70 rounded-md px-2', {
-              'border-secondary': state.isFocused
+          control: ({ menuIsOpen }) =>
+            classNames('bg-background border-2 rounded-md border-primary/70 px-2 font-bold', {
+              '!border-secondary !rounded-b-none !border-b-transparent !text-secondary bg-secondary/10': menuIsOpen
             }),
-          menu: () => 'left-0 bg-background border-2 border-primary/70 border-t-background rounded-b-md',
-          menuList: () => 'scrollbar-thin scrollbar-thumb-primary/70 scrollbar-track-primary/25',
-          option: state => classNames('py-1 px-2', { 'bg-secondary/50 text-white': state.isFocused })
+          menu: () => 'bg-background border-2 border-t-0 border-secondary rounded-b-md',
+          menuList: () => 'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/33 rounded-b-md',
+          option: ({ data, isFocused }) =>
+            classNames('py-1 px-2 text-primary font-bold truncate', {
+              'bg-secondary/50': isFocused,
+              '!text-public-channel': data.status === 'public',
+              '!text-private-channel': data.status === 'private',
+            })
         }}
       />
     </div>
