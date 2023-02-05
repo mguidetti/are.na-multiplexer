@@ -4,9 +4,8 @@
 
 :root {
   --mosaic-spacing: 6px;
-
   --primary-color: 211 211 211;
-  --secondary-color: 198 120 221;
+  --secondary-color: 255 186 40;
   --private-channel-color: 226 73 55;
   --public-channel-color: 43 164 37;
   --background-color: 0 0 0;
