@@ -8,15 +8,15 @@ function Header () {
   const { data } = session
 
   return (
-    <div className='grid grid-cols-3 gap-x-4 items-start bg-background text-primary/70'>
-      <div className='flex items-center gap-x-2 p-3'>
+    <div className='grid grid-cols-3 gap-x-4 px-4 items-center bg-primary/10 text-primary/70'>
+      <div className='flex items-center gap-x-2'>
         <ArenaMark className='w-8' />
         <span>A.MUX</span>
       </div>
       <div className='flex-1 flex justify-center'>
         <ChannelLoader />
       </div>
-      <div className='text-right flex gap-x-2 justify-end items-center p-3'>
+      <div className='text-right flex gap-x-2 justify-end items-center'>
         {data?.user?.name}
         <button onClick={() => signOut()} className='p-1 hover:text-secondary' title='Sign out'>
           <SignOutIcon className='w-5' />
