@@ -43,7 +43,7 @@ function ChannelLoader () {
             classNames('bg-background border-2 rounded-md border-primary/70 px-2 font-bold', {
               '!border-secondary !rounded-b-none !border-b-transparent !text-secondary bg-secondary/10': menuIsOpen
             }),
-          menu: () => 'bg-background border-2 border-t-0 border-secondary rounded-b-md',
+          menu: () => '-mt-1 bg-background border-2 border-t-0 border-secondary rounded-b-md',
           menuList: () => 'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/30 rounded-b-md',
           option: ({ data, isFocused }) =>
             classNames('py-1 px-2 text-primary font-bold truncate', {
