@@ -44,7 +44,7 @@ function ChannelLoader () {
               '!border-secondary !rounded-b-none !border-b-transparent !text-secondary bg-secondary/10': menuIsOpen
             }),
           menu: () => 'bg-background border-2 border-t-0 border-secondary rounded-b-md',
-          menuList: () => 'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/33 rounded-b-md',
+          menuList: () => 'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/30 rounded-b-md',
           option: ({ data, isFocused }) =>
             classNames('py-1 px-2 text-primary font-bold truncate', {
               'bg-secondary/50': isFocused,
