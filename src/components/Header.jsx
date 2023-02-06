@@ -1,7 +1,7 @@
 import ChannelLoader from './ChannelLoader'
 import ChannelCreator from './ChannelCreator'
 import { useSession, signOut } from 'next-auth/react'
-import ArenaMark from '@/icons/arena-mark.svg'
+import AmuxIcon from '@/icons/amux.svg'
 import SignOutIcon from '@/icons/sign-out.svg'
 import GithubIcon from '@/icons/github.svg'
 import React from 'react'
@@ -13,7 +13,7 @@ function Header () {
   return (
     <div className='grid grid-cols-[1fr_1fr_1fr] gap-x-4 px-4 items-center bg-zinc-900 text-primary/70 py-2'>
       <div className='flex items-center gap-x-3'>
-        <ArenaMark className='w-10' />
+        <AmuxIcon className='w-10 opacity-80' fill="currentColor" />
         <span className='font-mono text-xs'>
           Are.na Multiplexer<br/>
           <a href='https://github.com/mguidetti/are.na-shelf' target='_blank' className='hover:text-secondary'>
