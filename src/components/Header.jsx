@@ -3,6 +3,7 @@ import ChannelCreator from './ChannelCreator'
 import { useSession, signOut } from 'next-auth/react'
 import ArenaMark from '@/icons/arena-mark.svg'
 import SignOutIcon from '@/icons/sign-out.svg'
+import GithubIcon from '@/icons/github.svg'
 
 function Header () {
   const session = useSession() || {}
@@ -10,12 +11,13 @@ function Header () {
 
   return (
     <div className='grid grid-cols-[1fr_1fr_1fr] gap-x-4 px-4 items-center bg-zinc-900 text-primary/70 py-2'>
-      <div className='flex items-center gap-x-2'>
-        <ArenaMark className='w-12' />
-        <span className='font-mono'>
-          Are.na Multi Plexer 
-          <a href='https://github.com/mguidetti/are.na-shelf' target='_blank' className='underline decoration-2 hover:text-secondary'>
+      <div className='flex items-center gap-x-3'>
+        <ArenaMark className='w-10' />
+        <span className='font-mono text-xs'>
+          Are.na Multiplexer<br/>
+          <a href='https://github.com/mguidetti/are.na-shelf' target='_blank' className='hover:text-secondary'>
             v{process.env.npm_package_version}
+            <GithubIcon className="inline h-4 text-inherit ml-1" /> 
           </a>
         </span>
       </div>
