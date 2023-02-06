@@ -6,7 +6,7 @@ import PlusIcon from '@/icons/plus.svg'
 import Squares2x2Icon from '@/icons/squares-2x2.svg'
 import XMarkIcon from '@/icons/x-mark.svg'
 import classNames from 'classnames/bind'
-import { useCallback, useContext, useEffect, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import { MosaicContext, MosaicWindow } from 'react-mosaic-component'
 import { useArena } from '../hooks/useArena'
@@ -21,25 +21,32 @@ function Window ({ path, channelData }) {
   const [isLoading, setIsLoading] = useState(true)
   const [channel, setChannel] = useState(channelData)
   const [blocks, setBlocks] = useState([])
+  const [page, setPage] = useState(1)
   const [error, setError] = useState(null)
   const [scale, setscale] = useState(1)
   const [view, setView] = useState('grid')
 
+  const blockPageSize = 50
+  const totalPages = channel.length / blockPageSize
   const scaleMultiplier = 1.25
   const minScale = 0.75
   const maxScale = 3
 
   useEffect(() => {
-    fetchBlocks()
-  }, [arena])
+    if (page <= totalPages) {
+      fetchBlocks()
+    }
+  }, [arena, page])
 
   const fetchBlocks = useCallback(async () => {
     if (!arena) return
 
-    const results = await arena.channel(channel.id).contents({ page: 1, per: 25 })
+    setIsLoading(true)
+
+    const results = await arena.channel(channel.id).contents({ page: page, per: blockPageSize })
 
     try {
-      setBlocks(results.contents)
+      setBlocks([...blocks, ...results.contents])
     } catch (error) {
       setError(error)
     } finally {
@@ -139,55 +146,18 @@ function Window ({ path, channelData }) {
         )}
         ref={dropRef}
       >
+        {error && <div className='text-red-500'>Error: {error.message}</div>}
+
         {isLoading && (
           <div className='w-full h-full flex items-center justify-center'>
             <Spinner />
           </div>
         )}
-        {error && <div className='text-red-500'>Error: {error.message}</div>}
 
-        <Blocks />
+        <Blocks blocks={blocks} disconnectBlock={disconnectBlock} view={view} />
       </div>
     </MosaicWindow>
   )
-
-  function Blocks () {
-    if (blocks.length) {
-      if (view == 'grid') {
-        return <BlocksGrid />
-      } else {
-        return <BlocksList />
-      }
-    } else {
-      return <BlankSlate />
-    }
-  }
-
-  function BlocksGrid () {
-    return (
-      <div className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]'>
-        {blocks.map(block => (
-          <GridBlock key={block.id} data={block} disconnectBlock={disconnectBlock} />
-        ))}
-      </div>
-    )
-  }
-
-  function BlocksList () {
-    return (
-      <ul className='p-2 divide-y divide divide-primary/70 text-primary'>
-        {blocks.map(block => (
-          <li key={block.id}>
-            <ListBlock data={block} disconnectBlock={disconnectBlock} />
-          </li>
-        ))}
-      </ul>
-    )
-  }
-
-  function BlankSlate () {
-    return <div className='w-full h-full flex items-center justify-center'>No blocks</div>
-  }
 
   function ToolbarControls () {
     return (
@@ -223,6 +193,44 @@ function Window ({ path, channelData }) {
       </div>
     )
   }
+}
+
+const Blocks = React.memo(({ blocks, disconnectBlock, view }) => {
+  if (blocks.length) {
+    if (view == 'grid') {
+      return <BlocksGrid blocks={blocks} disconnectBlock={disconnectBlock} />
+    } else {
+      return <BlocksList blocks={blocks} disconnectBlock={disconnectBlock} />
+    }
+  } else {
+    return <BlankSlate />
+  }
+})
+
+function BlocksGrid ({ blocks, disconnectBlock }) {
+  return (
+    <div className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]'>
+      {blocks.map(block => (
+        <GridBlock key={block.id} data={block} disconnectBlock={disconnectBlock} />
+      ))}
+    </div>
+  )
+}
+
+function BlocksList ({ blocks, disconnectBlock }) {
+  return (
+    <ul className='p-2 divide-y divide divide-primary/70 text-primary'>
+      {blocks.map(block => (
+        <li key={block.id}>
+          <ListBlock data={block} disconnectBlock={disconnectBlock} />
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+function BlankSlate () {
+  return <div className='w-full h-full flex items-center justify-center'>No blocks</div>
 }
 
 export default Window
