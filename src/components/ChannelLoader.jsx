@@ -25,12 +25,12 @@ function ChannelLoader () {
   }
 
   return (
-    <div className='p-2 w-[500px] z-30'>
+    <div className='min-w-[400px] z-30'>
       <AsyncSelect
         ref={select}
         cacheOptions
         blurInputOnSelect={true}
-        placeholder={'Load channel'}
+        placeholder={'Load Channel'}
         components={{ DropdownIndicator: () => null, IndicatorSeparator: () => null }}
         getOptionLabel={e => ` ${e.user.full_name} / ${e.title}`}
         getOptionValue={e => e.id}
@@ -40,11 +40,11 @@ function ChannelLoader () {
         value={query}
         classNames={{
           control: ({ isFocused, menuIsOpen }) =>
-            classNames('bg-background border-2 rounded-md border-primary/70 px-2 font-bold', {
+            classNames('bg-background border-2 rounded-l-md border-primary/70 px-2 font-bold', {
               'bg-secondary/10 !text-secondary !border-secondary': isFocused,
               '!rounded-b-none !border-b-transparent ': menuIsOpen
             }),
-          menu: () => '-mt-1 bg-background border-2 border-t-0 border-secondary rounded-b-md',
+          menu: () => '-mt-1 bg-zinc-900 border-2 border-t-0 border-secondary rounded-b-md drop-shadow-panel',
           menuList: () => 'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/30 rounded-b-md',
           option: ({ data, isFocused }) =>
             classNames('py-1 px-2 text-primary font-bold truncate', {
