@@ -48,6 +48,7 @@ function ChannelLoader () {
               'bg-secondary/10 !text-secondary !border-secondary': isFocused,
               '!rounded-b-none !border-b-transparent ': menuIsOpen
             }),
+          placeholder: ({isFocused}) => classNames({"hidden": isFocused}),
           menu: () => '-mt-1 bg-zinc-900 border-2 border-t-0 border-secondary rounded-b-md drop-shadow-panel',
           menuList: () => 'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/30 rounded-b-md',
           option: ({ data, isFocused }) =>
