@@ -1,5 +1,5 @@
 import dropRight from 'lodash/dropRight'
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import {
   Corner,
   getLeaves,
@@ -28,14 +28,14 @@ export default function Desktop () {
     console.log('Mosaic.onRelease():', currentNode)
   }
 
-  const loadChannel = (channel) => {
+  const loadChannel = channel => {
     // TODO: Need to check if channel is already loaded in window on desktop first.
 
     setNewTileChannel(channel)
     addToTopRight()
   }
 
-  const addToTopRight = () => {
+  const addToTopRight = useCallback(() => {
     const totalWindowCount = getLeaves(currentNode).length
     var newNode
 
@@ -72,15 +72,23 @@ export default function Desktop () {
     }
 
     setCurrentNode(newNode)
-  }
+  }, [currentNode])
 
   const renderTile = (_count, path) => {
     return <Window path={path} channelData={newTileChannel} />
   }
 
+  const contextValues = useMemo(
+    () => ({
+      loadChannel,
+      setQuickLookBlockData
+    }),
+    [newTileChannel, quickLookBlockData]
+  )
+
   return (
     <div id='app' className='flex w-full h-full flex-col'>
-      <DesktopContext.Provider value={{ loadChannel, setQuickLookBlockData }}>
+      <DesktopContext.Provider value={contextValues}>
         <header>
           <Header />
         </header>
