@@ -4,6 +4,7 @@ import { useSession, signOut } from 'next-auth/react'
 import ArenaMark from '@/icons/arena-mark.svg'
 import SignOutIcon from '@/icons/sign-out.svg'
 import GithubIcon from '@/icons/github.svg'
+import React from 'react'
 
 function Header () {
   const session = useSession() || {}
@@ -35,4 +36,4 @@ function Header () {
   )
 }
 
-export default Header
+export default React.memo(Header)
