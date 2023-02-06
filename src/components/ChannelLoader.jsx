@@ -40,7 +40,7 @@ function ChannelLoader () {
         value={query}
         classNames={{
           control: ({ isFocused, menuIsOpen }) =>
-            classNames('bg-background border-2 rounded-l-md border-primary/70 px-2 font-bold', {
+            classNames('bg-background border-2 rounded-md border-primary/70 px-2 font-bold', {
               'bg-secondary/10 !text-secondary !border-secondary': isFocused,
               '!rounded-b-none !border-b-transparent ': menuIsOpen
             }),

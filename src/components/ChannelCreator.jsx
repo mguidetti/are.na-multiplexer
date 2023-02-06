@@ -32,24 +32,27 @@ function ChannelCreator () {
       setFormData({ ...formData, [event.target.name]: event.target.value })
     }
 
-    const createChannel = useCallback(async event => {
-      event.preventDefault()
+    const createChannel = useCallback(
+      async event => {
+        event.preventDefault()
 
-      setIsCreating(true)
+        setIsCreating(true)
 
-      const results = await arena.channel(formData.name).create(formData.privacy)
+        const results = await arena.channel(formData.name).create(formData.privacy)
 
-      if (results) {
-        desktop.loadChannel(results)
-      }
+        if (results) {
+          desktop.loadChannel(results)
+        }
 
-      setIsCreating(false)
-      setFormData({})
-      close()
-    }, [arena])
+        setIsCreating(false)
+        setFormData({})
+        close()
+      },
+      [arena]
+    )
 
     return (
-      <div className='absolute top-12 left-0 z-50 border-2 border-secondary bg-zinc-900 p-8 rounded-md drop-shadow-panel'>
+      <div className='absolute top-10 left-0 z-50 border-2 border-secondary bg-zinc-900 p-8 rounded-md drop-shadow-panel'>
         <button className='p-1 hover:text-secondary absolute top-0 right-0' onClick={close}>
           <XMarkIcon className='h-6 w-6 ' strokeWidth='2' />
         </button>
@@ -87,8 +90,12 @@ function ChannelCreator () {
 
   return (
     <div className='relative'>
-      <button className='border-2 -ml-[2px] rounded-r-md border-primary/70 px-2 py-1 font-bold bg-background min-h-[38px] hover:bg-secondary/10 hover:border-secondary group' onClick={open}>
-        <PlusIcon className='w-5 h-5 text-primary/70 group-hover:text-secondary' strokeWidth="2" />
+      <button
+        className='border-2 rounded-md border-primary/70 px-2 py-1 font-bold bg-background min-h-[38px] hover:bg-secondary/10 hover:border-secondary group whitespace-nowrap flex gap-x-2 items-center'
+        onClick={open}
+      >
+        <PlusIcon className='w-5 h-5 text-primary/70 group-hover:text-secondary' strokeWidth='2' />
+        Create Channel
       </button>
 
       {isDialogOpen && <Dialog />}

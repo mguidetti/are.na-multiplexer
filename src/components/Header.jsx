@@ -19,9 +19,8 @@ function Header () {
           </a>
         </span>
       </div>
-      <div className='flex-1 flex justify-center items-center'>
+      <div className='flex-1 flex justify-center items-center gap-x-2'>
         <ChannelLoader />
-        
         <ChannelCreator />
       </div>
       <div className='text-right flex gap-x-2 justify-end items-center'>
