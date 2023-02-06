@@ -4,6 +4,7 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import AsyncSelect from 'react-select/async'
 import { useArena } from '../hooks/useArena'
 import { DesktopContext } from './DesktopContext'
+import debounce from 'debounce'
 
 function ChannelLoader () {
   const desktop = useContext(DesktopContext)
@@ -13,11 +14,14 @@ function ChannelLoader () {
 
   useHotkeys('/', () => select.current?.focus(), { ignoreModifiers: true, preventDefault: true })
 
-  const loadChannels = useCallback(async query => {
-    const results = await arena.search.channels(query, { page: 1, per: 10 })
+  const loadChannels = useCallback(
+    debounce(async query => {
+      const results = await arena.search.channels(query, { page: 1, per: 10 })
 
-    return results.channels
-  })
+      return results.channels
+    }, 200),
+    [arena]
+  )
 
   const handleSelectChange = channel => {
     desktop.loadChannel(channel)
