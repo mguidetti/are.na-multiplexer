@@ -10,7 +10,7 @@ function GridBlock ({ data, disconnectBlock }) {
       <div
         className={`h-full w-full flex items-center justify-center border-2 channel-status-${data.status} channel-block p-2`}
       >
-        <p className='text-center text-xs-relative text-inherit'>{data.title}</p>
+        <p className='text-center text-sm-relative text-inherit'>{data.title}</p>
       </div>
     )
   }
