@@ -16,7 +16,7 @@ function Welcome () {
 
         <MobileView>
           <p>
-            This app is not designed for use on mobile.
+            This app is not designed for mobile devices.
             <br />
             Please visit on a desktop computer.
           </p>
