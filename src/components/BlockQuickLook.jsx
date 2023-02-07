@@ -26,6 +26,7 @@ function ImageBlock ({ data }) {
       {!imageLoaded && <Spinner />}
       <img
         src={data.image?.display?.url}
+        alt=""
         className='aspect-square object-contain w-full h-full'
         onLoad={handleImageLoaded}
         hidden={!imageLoaded}

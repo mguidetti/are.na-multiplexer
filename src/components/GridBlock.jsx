@@ -25,7 +25,7 @@ function ChannelBlock ({ data }) {
 function ImageBlock ({ data }) {
   return (
     <>
-      <img src={data.image?.thumb?.url} className='aspect-square object-contain w-full h-full p-0' />
+      <img src={data.image?.thumb?.url} alt="" className='aspect-square object-contain w-full h-full p-0' />
     </>
   )
 }
