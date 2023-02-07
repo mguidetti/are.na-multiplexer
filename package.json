@@ -22,7 +22,8 @@
     "react-dom": "18.2.0",
     "react-hotkeys-hook": "^4.3.4",
     "react-mosaic-component": "^5.3.0",
-    "react-select": "^5.7.0"
+    "react-select": "^5.7.0",
+    "react-virtuoso": "^4.0.9"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.5.1",

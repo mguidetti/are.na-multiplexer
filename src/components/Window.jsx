@@ -13,6 +13,7 @@ import { useArena } from '../hooks/useArena'
 import GridBlock from './GridBlock'
 import ListBlock from './ListBlock'
 import Spinner from './Spinner'
+import { Virtuoso, VirtuosoGrid } from 'react-virtuoso'
 
 function Window ({ path, channelData }) {
   const mosaic = useContext(MosaicContext)
@@ -33,10 +34,10 @@ function Window ({ path, channelData }) {
   const maxScale = 3
 
   useEffect(() => {
-    if (page <= totalPages) {
-      fetchBlocks()
-    }
-  }, [arena, page])
+    // if (page <= totalPages) {
+    fetchBlocks()
+    // }
+  }, [arena])
 
   const fetchBlocks = useCallback(async () => {
     if (!arena) return
@@ -140,10 +141,7 @@ function Window ({ path, channelData }) {
     >
       <div
         style={{ '--scale': scale }}
-        className={classNames(
-          'overflow-y-auto scrollbar-thin scrollbar-thumb-inherit scrollbar-track-inherit hover:scrollbar-thumb-inherit h-full text-[calc(1rem*var(--scale))]',
-          { 'bg-secondary/25': isActive }
-        )}
+        className={classNames('h-full text-[calc(1rem*var(--scale))]', { 'bg-secondary/25': isActive })}
         ref={dropRef}
       >
         {error && <div className='text-red-500'>Error: {error.message}</div>}
@@ -208,26 +206,60 @@ const Blocks = React.memo(({ blocks, disconnectBlock, view }) => {
 })
 
 function BlocksGrid ({ blocks, disconnectBlock }) {
+  const ListContainer = React.forwardRef((props, ref) => {
+    return <div {...props} ref={ref} className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]' />
+  })
+
+  const ItemContainer = React.forwardRef((props, ref) => {
+    return <div {...props} ref={ref} className='w-full' />
+  })
+
   return (
-    <div className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]'>
-      {blocks.map(block => (
-        <GridBlock key={block.id} data={block} disconnectBlock={disconnectBlock} />
-      ))}
-    </div>
+    <VirtuosoGrid
+      data={blocks}
+      components={{
+        Scroller: VirtuosoScroller,
+        List: ListContainer,
+        Item: ItemContainer
+      }}
+      itemContent={(index, block) => (
+        <GridBlock key={block.id} data={block} disconnectBlock={disconnectBlock} className='w-1/3' />
+      )}
+    />
   )
 }
 
 function BlocksList ({ blocks, disconnectBlock }) {
+  const ListContainer = React.forwardRef((props, ref) => {
+    return <ul {...props} ref={ref} className='divide-y divide divide-primary/70 text-primary' />
+  })
+
   return (
-    <ul className='p-2 divide-y divide divide-primary/70 text-primary'>
-      {blocks.map(block => (
+    <Virtuoso
+      data={blocks}
+      components={{
+        List: ListContainer,
+        Scroller: VirtuosoScroller
+      }}
+      itemContent={(index, block) => (
         <li key={block.id}>
           <ListBlock data={block} disconnectBlock={disconnectBlock} />
         </li>
-      ))}
-    </ul>
+      )}
+    />
   )
 }
+
+const VirtuosoScroller = React.forwardRef(({ style, ...props }, ref) => {
+  return (
+    <div
+      style={{ ...style }}
+      className='scrollbar-thin scrollbar-thumb-inherit scrollbar-track-inherit hover:scrollbar-thumb-inherit'
+      ref={ref}
+      {...props}
+    />
+  )
+})
 
 function BlankSlate () {
   return <div className='w-full h-full flex items-center justify-center'>No blocks</div>
