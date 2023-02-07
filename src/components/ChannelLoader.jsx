@@ -4,7 +4,7 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import AsyncSelect from 'react-select/async'
 import { useArena } from '../hooks/useArena'
 import { DesktopContext } from './DesktopContext'
-import debounce from 'debounce'
+import debounce from 'debounce-promise'
 
 function ChannelLoader () {
   const desktop = useContext(DesktopContext)
