@@ -42,19 +42,19 @@ function Window ({ path, totalWindowCount, channelData }) {
     const results = await arena.channel(channel.id).contents({ page, per: blockPageSize })
 
     try {
-      setBlocks([...blocks, ...results.contents])
+      setBlocks(blocks => [...blocks, ...results.contents])
     } catch (error) {
       setError(error)
     } finally {
       setIsLoading(false)
     }
-  }, [arena, page])
+  }, [arena, channel.id, page])
 
   const loadMore = useCallback(() => {
     if (page <= totalPages) {
       setPage(page + 1)
     }
-  }, [page])
+  }, [page, totalPages])
 
   const addBlock = useCallback(
     async block => {
@@ -67,7 +67,7 @@ function Window ({ path, totalWindowCount, channelData }) {
 
       // TODO: should update the block that was added with new info (connection_id, etc)
     },
-    [arena]
+    [arena, channel.id]
   )
 
   const disconnectBlock = useCallback(
@@ -79,7 +79,7 @@ function Window ({ path, totalWindowCount, channelData }) {
 
       console.log(result)
     },
-    [arena]
+    [arena, channel.id]
   )
 
   const removeBlock = block => {
