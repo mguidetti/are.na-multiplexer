@@ -150,13 +150,21 @@ function Window ({ path, channelData }) {
       >
         {error && <div className='text-red-500'>Error: {error.message}</div>}
 
-        {isLoading && (
+        {!blocks.length && isLoading && (
           <div className='w-full h-full flex items-center justify-center'>
             <Spinner />
           </div>
         )}
 
-        <Blocks blocks={blocks} disconnectBlock={disconnectBlock} view={view} loadMore={loadMore} />
+        {!blocks.length && !isLoading && <BlankSlate />}
+
+        <Blocks
+          blocks={blocks}
+          disconnectBlock={disconnectBlock}
+          view={view}
+          loadMore={loadMore}
+          isLoading={isLoading}
+        />
       </div>
     </MosaicWindow>
   )
@@ -197,19 +205,15 @@ function Window ({ path, channelData }) {
   }
 }
 
-const Blocks = React.memo(({ blocks, disconnectBlock, view, loadMore }) => {
-  if (blocks.length) {
-    if (view == 'grid') {
-      return <BlocksGrid blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} />
-    } else {
-      return <BlocksList blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} />
-    }
+const Blocks = React.memo(({ blocks, disconnectBlock, view, loadMore, isLoading }) => {
+  if (view == 'grid') {
+    return <BlocksGrid blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} isLoading={isLoading} />
   } else {
-    return <BlankSlate />
+    return <BlocksList blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} isLoading={isLoading} />
   }
 })
 
-function BlocksGrid ({ blocks, disconnectBlock, loadMore }) {
+function BlocksGrid ({ blocks, disconnectBlock, loadMore, isLoading }) {
   const ListContainer = React.forwardRef((props, ref) => {
     return <div {...props} ref={ref} className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]' />
   })
@@ -218,15 +222,26 @@ function BlocksGrid ({ blocks, disconnectBlock, loadMore }) {
     return <div {...props} ref={ref} className='w-full' />
   })
 
+  const Footer = () => {
+    if (isLoading) {
+      return (
+        <div className='w-full flex justify-center py-8'>
+          <Spinner />
+        </div>
+      )
+    }
+  }
+
   return (
     <VirtuosoGrid
       data={blocks}
       endReached={loadMore}
       overscan={800}
       components={{
-        Scroller: VirtuosoScroller,
         List: ListContainer,
-        Item: ItemContainer
+        Item: ItemContainer,
+        Scroller: VirtuosoScroller,
+        Footer: Footer
       }}
       itemContent={(index, block) => (
         <GridBlock key={block.id} data={block} disconnectBlock={disconnectBlock} className='w-1/3' />
@@ -235,10 +250,20 @@ function BlocksGrid ({ blocks, disconnectBlock, loadMore }) {
   )
 }
 
-function BlocksList ({ blocks, disconnectBlock, loadMore }) {
+function BlocksList ({ blocks, disconnectBlock, loadMore, isLoading }) {
   const ListContainer = React.forwardRef((props, ref) => {
     return <ul {...props} ref={ref} className='divide-y divide divide-primary/70 text-primary' />
   })
+
+  const Footer = () => {
+    if (isLoading) {
+      return (
+        <div className='w-full flex justify-center py-8'>
+          <Spinner />
+        </div>
+      )
+    }
+  }
 
   return (
     <Virtuoso
@@ -247,7 +272,8 @@ function BlocksList ({ blocks, disconnectBlock, loadMore }) {
       overscan={400}
       components={{
         List: ListContainer,
-        Scroller: VirtuosoScroller
+        Scroller: VirtuosoScroller,
+        Footer: Footer
       }}
       itemContent={(index, block) => (
         <li key={block.id}>
