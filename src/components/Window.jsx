@@ -130,8 +130,6 @@ function Window ({ path, totalWindowCount, channelData }) {
 
         {!blocks.length && !isLoading && <BlankSlate />}
 
-        {path}
-
         <Blocks
           blocks={blocks}
           disconnectBlock={disconnectBlock}
