@@ -14,7 +14,6 @@
   "dependencies": {
     "arena-ts": "^0.1.4",
     "dayjs": "^1.11.7",
-    "debounce": "^1.2.1",
     "debounce-promise": "^3.1.2",
     "next": "13.1.6",
     "next-auth": "^4.19.2",
