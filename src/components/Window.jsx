@@ -8,13 +8,14 @@ import XMarkIcon from '@/icons/x-mark.svg'
 import classNames from 'classnames/bind'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useDrop } from 'react-dnd'
-import { MosaicContext, MosaicWindow } from 'react-mosaic-component'
+import { MosaicContext, MosaicWindow, MosaicWindowContext } from 'react-mosaic-component'
 import { useArena } from '../hooks/useArena'
 import Spinner from './Spinner'
 import Blocks from './Blocks'
 
-function Window ({ path, channelData }) {
+function Window ({ path, totalWindowCount, channelData }) {
   const mosaic = useContext(MosaicContext)
+  const mosaicWindow = useContext(MosaicWindowContext)
   const arena = useArena()
 
   const [isLoading, setIsLoading] = useState(true)
@@ -121,11 +122,11 @@ function Window ({ path, channelData }) {
   }
 
   const remove = () => {
-    mosaic.mosaicActions.remove(path)
+    mosaic.mosaicActions.remove(mosaicWindow.mosaicWindowActions.getPath())
   }
 
   const expand = () => {
-    mosaic.mosaicActions.expand(path)
+    mosaic.mosaicActions.expand(path, 80)
   }
 
   const toggleView = () => {
@@ -138,6 +139,7 @@ function Window ({ path, channelData }) {
       className={`channel-status-${channel.status}`}
       path={path}
       toolbarControls={<ToolbarControls />}
+      createNode={() => totalWindowCount + 1}
       onDragStart={() => console.log('MosaicWindow.onDragStart')}
       onDragEnd={type => console.log('MosaicWindow.onDragEnd', type)}
     >
@@ -155,6 +157,8 @@ function Window ({ path, channelData }) {
         )}
 
         {!blocks.length && !isLoading && <BlankSlate />}
+
+        {path}
 
         <Blocks
           blocks={blocks}
