@@ -28,16 +28,14 @@ function Window ({ path, channelData }) {
   const [view, setView] = useState('grid')
 
   const blockPageSize = 50
-  const totalPages = channel.length / blockPageSize
+  const totalPages = useMemo(() => channel.length / blockPageSize, [channel])
   const scaleMultiplier = 1.25
   const minScale = 0.75
   const maxScale = 3
 
   useEffect(() => {
-    // if (page <= totalPages) {
     fetchBlocks()
-    // }
-  }, [arena])
+  }, [arena, page])
 
   const fetchBlocks = useCallback(async () => {
     if (!arena) return
@@ -53,7 +51,13 @@ function Window ({ path, channelData }) {
     } finally {
       setIsLoading(false)
     }
-  }, [arena])
+  }, [arena, page])
+
+  const loadMore = useCallback(() => {
+    if (page <= totalPages) {
+      setPage(page + 1)
+    }
+  }, [page])
 
   const addBlock = useCallback(
     async block => {
@@ -152,7 +156,7 @@ function Window ({ path, channelData }) {
           </div>
         )}
 
-        <Blocks blocks={blocks} disconnectBlock={disconnectBlock} view={view} />
+        <Blocks blocks={blocks} disconnectBlock={disconnectBlock} view={view} loadMore={loadMore} />
       </div>
     </MosaicWindow>
   )
@@ -193,19 +197,19 @@ function Window ({ path, channelData }) {
   }
 }
 
-const Blocks = React.memo(({ blocks, disconnectBlock, view }) => {
+const Blocks = React.memo(({ blocks, disconnectBlock, view, loadMore }) => {
   if (blocks.length) {
     if (view == 'grid') {
-      return <BlocksGrid blocks={blocks} disconnectBlock={disconnectBlock} />
+      return <BlocksGrid blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} />
     } else {
-      return <BlocksList blocks={blocks} disconnectBlock={disconnectBlock} />
+      return <BlocksList blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} />
     }
   } else {
     return <BlankSlate />
   }
 })
 
-function BlocksGrid ({ blocks, disconnectBlock }) {
+function BlocksGrid ({ blocks, disconnectBlock, loadMore }) {
   const ListContainer = React.forwardRef((props, ref) => {
     return <div {...props} ref={ref} className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]' />
   })
@@ -217,6 +221,8 @@ function BlocksGrid ({ blocks, disconnectBlock }) {
   return (
     <VirtuosoGrid
       data={blocks}
+      endReached={loadMore}
+      overscan={800}
       components={{
         Scroller: VirtuosoScroller,
         List: ListContainer,
@@ -229,7 +235,7 @@ function BlocksGrid ({ blocks, disconnectBlock }) {
   )
 }
 
-function BlocksList ({ blocks, disconnectBlock }) {
+function BlocksList ({ blocks, disconnectBlock, loadMore }) {
   const ListContainer = React.forwardRef((props, ref) => {
     return <ul {...props} ref={ref} className='divide-y divide divide-primary/70 text-primary' />
   })
@@ -237,6 +243,8 @@ function BlocksList ({ blocks, disconnectBlock }) {
   return (
     <Virtuoso
       data={blocks}
+      endReached={loadMore}
+      overscan={400}
       components={{
         List: ListContainer,
         Scroller: VirtuosoScroller
