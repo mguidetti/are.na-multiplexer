@@ -5,7 +5,7 @@ import { useCallback, useContext, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { DesktopContext } from './DesktopContext'
 
-function Dialog ({close}) {
+function Dialog ({ close }) {
   const desktop = useContext(DesktopContext)
   const arena = useArena()
 

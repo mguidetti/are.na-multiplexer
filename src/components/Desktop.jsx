@@ -37,7 +37,7 @@ export default function Desktop () {
 
   const addToTopRight = useCallback(() => {
     const totalWindowCount = getLeaves(currentNode).length
-    var newNode
+    let newNode
 
     if (currentNode) {
       const path = getPathToCorner(currentNode, Corner.TOP_RIGHT)

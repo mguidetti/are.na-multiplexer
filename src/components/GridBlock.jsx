@@ -25,7 +25,7 @@ function ChannelBlock ({ data }) {
 function ImageBlock ({ data }) {
   return (
     <>
-      <img src={data.image?.thumb?.url} alt="" className='aspect-square object-contain w-full h-full p-0' />
+      <img src={data.image?.thumb?.url} alt='' className='aspect-square object-contain w-full h-full p-0' />
     </>
   )
 }
@@ -60,7 +60,7 @@ function GridBlock ({ data, disconnectBlock }) {
     <Block data={data} disconnectBlock={disconnectBlock}>
       <div className='relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer group'>
         {renderBlock()}
-        <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-50'></div>
+        <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-50' />
       </div>
     </Block>
   )

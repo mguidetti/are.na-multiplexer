@@ -10,12 +10,12 @@ module.exports = {
         'public-channel': 'rgb(var(--public-channel-color) / <alpha-value>)'
       },
       fontSize: {
-        "xs-relative": "0.75em",
-        "sm-relative": "0.875em",
-        "base-relative": "1em",
+        'xs-relative': '0.75em',
+        'sm-relative': '0.875em',
+        'base-relative': '1em'
       },
       dropShadow: {
-        'panel': '0 10px 10px rgba(0, 0, 0, 0.9)',
+        panel: '0 10px 10px rgba(0, 0, 0, 0.9)'
       }
     }
   },

@@ -33,8 +33,8 @@ function ChannelLoader () {
       <AsyncSelect
         ref={select}
         cacheOptions
-        blurInputOnSelect={true}
-        placeholder={'Load Channel'}
+        blurInputOnSelect
+        placeholder='Load Channel'
         components={{ DropdownIndicator: () => null, IndicatorSeparator: () => null }}
         getOptionLabel={e => ` ${e.user.full_name} / ${e.title}`}
         getOptionValue={e => e.id}
@@ -48,17 +48,17 @@ function ChannelLoader () {
               'bg-secondary/10 !text-secondary !border-secondary': isFocused,
               '!rounded-b-none !border-b-transparent ': menuIsOpen
             }),
-          placeholder: ({isFocused}) => classNames({"hidden": isFocused}),
+          placeholder: ({ isFocused }) => classNames({ hidden: isFocused }),
           menu: () => '-mt-1 bg-zinc-900 border-2 border-t-0 border-secondary rounded-b-md drop-shadow-panel',
           menuList: () => 'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/30 rounded-b-md',
-          loadingMessage: () => "p-2",
+          loadingMessage: () => 'p-2',
           option: ({ data, isFocused }) =>
             classNames('py-1 px-2 text-primary font-bold truncate', {
               'bg-secondary/50': isFocused,
               '!text-public-channel': data.status === 'public',
               '!text-private-channel': data.status === 'private'
             }),
-          noOptionsMessage: () => "p-2",
+          noOptionsMessage: () => 'p-2'
         }}
       />
     </div>

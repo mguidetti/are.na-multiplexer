@@ -26,7 +26,7 @@ function ImageBlock ({ data }) {
       {!imageLoaded && <Spinner />}
       <img
         src={data.image?.display?.url}
-        alt=""
+        alt=''
         className='aspect-square object-contain w-full h-full'
         onLoad={handleImageLoaded}
         hidden={!imageLoaded}
@@ -117,7 +117,7 @@ function BlockQuickLook ({ blockData }) {
           <ArenaMarkIcon className='w-8 hover:text-secondary' />
         </a>
       </div>
-      <div onClick={close} className='absolute inset-0 cursor-pointer'></div>
+      <div onClick={close} className='absolute inset-0 cursor-pointer' />
     </div>
   )
 }

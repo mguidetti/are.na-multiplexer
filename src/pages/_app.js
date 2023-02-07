@@ -7,8 +7,8 @@ import HTML5toTouch from 'react-dnd-multi-backend/dist/cjs/HTML5toTouch'
 export default function App ({ Component, pageProps: { session, ...pageProps } }) {
   return (
     <SessionProvider session={session}>
-      {/* 
-        DndProvider included to fix https://github.com/nomcopter/react-mosaic/issues/162    
+      {/*
+        DndProvider included to fix https://github.com/nomcopter/react-mosaic/issues/162
         Fix from https://github.com/nomcopter/react-mosaic/issues/162#issuecomment-1194558777 *
       */}
       <DndProvider options={HTML5toTouch}>

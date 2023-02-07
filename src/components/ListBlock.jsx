@@ -16,7 +16,7 @@ function BlockBody ({ data }) {
   return (
     <>
       <div className='w-[calc(1.5em*var(--scale))] flex items-center justify-center'>
-        {data.image && <img src={data.image.thumb.url} alt="" className='aspect-square object-contain' />}
+        {data.image && <img src={data.image.thumb.url} alt='' className='aspect-square object-contain' />}
       </div>
       <div className='truncate'>{data.title || data.generated_titel}</div>
     </>
