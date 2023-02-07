@@ -2,7 +2,15 @@ import Block from './Block'
 
 function GridBlock ({ data, disconnectBlock }) {
   function AttachmentBlock ({ data }) {
-    return <ImageBlock data={data} />
+    if (data.image) {
+      return <ImageBlock data={data} />
+    } else {
+      return (
+        <div className='bg-zinc-800 p-2 h-full w-full overflow-hidden flex items-center justify-center'>
+          <p className='text-md-relative font-bold'>{data.generated_title}</p>
+        </div>
+      )
+    }
   }
 
   function ChannelBlock ({ data }) {
