@@ -218,9 +218,9 @@ function BlocksGrid ({ blocks, disconnectBlock, loadMore, isLoading }) {
     return <div {...props} ref={ref} className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]' />
   })
 
-  const ItemContainer = React.forwardRef((props, ref) => {
-    return <div {...props} ref={ref} className='w-full' />
-  })
+  const ItemContainer = props => {
+    return <div {...props} className='w-full' />
+  }
 
   const Footer = () => {
     if (isLoading) {
