@@ -14,8 +14,6 @@ import Spinner from './Spinner'
 import Blocks from './Blocks'
 
 function Window ({ path, totalWindowCount, channelData }) {
-  const mosaic = useContext(MosaicContext)
-  const mosaicWindow = useContext(MosaicWindowContext)
   const arena = useArena()
 
   const [isLoading, setIsLoading] = useState(true)
@@ -107,32 +105,6 @@ function Window ({ path, totalWindowCount, channelData }) {
     return !isLoading && !blocks.find(block => block.id === item.id)
   }
 
-  const incrementScale = () => {
-    const value = scale * scaleMultiplier
-    const clampedValue = Math.min(Math.max(value, minScale), maxScale)
-
-    setscale(clampedValue)
-  }
-
-  const decrementScale = () => {
-    const value = scale / scaleMultiplier
-    const clampedValue = Math.min(Math.max(value, minScale), maxScale)
-
-    setscale(clampedValue)
-  }
-
-  const remove = () => {
-    mosaic.mosaicActions.remove(mosaicWindow.mosaicWindowActions.getPath())
-  }
-
-  const expand = () => {
-    mosaic.mosaicActions.expand(path, 80)
-  }
-
-  const toggleView = () => {
-    setView(view === 'grid' ? 'list' : 'grid')
-  }
-
   return (
     <MosaicWindow
       title={`${channel.user.full_name} / ${channel.title}`}
@@ -172,6 +144,35 @@ function Window ({ path, totalWindowCount, channelData }) {
   )
 
   function ToolbarControls () {
+    const mosaic = useContext(MosaicContext)
+    const mosaicWindow = useContext(MosaicWindowContext)
+
+    const remove = () => {
+      mosaic.mosaicActions.remove(mosaicWindow.mosaicWindowActions.getPath())
+    }
+
+    const expand = () => {
+      mosaic.mosaicActions.expand(mosaicWindow.mosaicWindowActions.getPath(), 80)
+    }
+
+    const incrementScale = () => {
+      const value = scale * scaleMultiplier
+      const clampedValue = Math.min(Math.max(value, minScale), maxScale)
+
+      setscale(clampedValue)
+    }
+
+    const decrementScale = () => {
+      const value = scale / scaleMultiplier
+      const clampedValue = Math.min(Math.max(value, minScale), maxScale)
+
+      setscale(clampedValue)
+    }
+
+    const toggleView = () => {
+      setView(view === 'grid' ? 'list' : 'grid')
+    }
+
     return (
       <div className='flex justify-end items-center'>
         <a
