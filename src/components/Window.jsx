@@ -174,6 +174,7 @@ function Window ({ path, channelData }) {
           href={`https://www.are.na/${channel.owner_slug}/${channel.slug}`}
           className='hover:text-secondary px-2'
           target='_blank'
+          rel="noreferrer"
         >
           <ArenaMarkIcon className='w-6' />
         </a>

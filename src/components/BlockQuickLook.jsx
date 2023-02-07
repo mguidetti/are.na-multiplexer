@@ -37,7 +37,7 @@ function ImageBlock ({ data }) {
 function LinkBlock ({ data }) {
   return (
     <>
-      <a href={data.source.url} target='_blank'>
+      <a href={data.source.url} target='_blank' rel='noreferrer'>
         <ImageBlock data={data} />
       </a>
     </>
@@ -47,7 +47,7 @@ function LinkBlock ({ data }) {
 function MediaBlock ({ data }) {
   return (
     <>
-      <a href={data.source.url} target='_blank'>
+      <a href={data.source.url} target='_blank' rel='noreferrer'>
         <ImageBlock data={data} />
       </a>
     </>
@@ -87,7 +87,7 @@ function BlockQuickLook ({ blockData }) {
   }
 
   return (
-    <div className='fixed top-0 left-0 h-screen w-screen z-50 p-8 bg-background/30'>
+    <div className='fixed top-0 left-0 h-screen w-screen z-s50 p-8 bg-background/30'>
       <div className='relative h-full w-full overflow-hidden flex justify-center items-center z-50 bg-background bg-opacity-70  border-2 border-secondary rounded-sm p-8 drop-shadow-panel'>
         {renderBlock()}
 
@@ -97,7 +97,7 @@ function BlockQuickLook ({ blockData }) {
             Connected {dayjs(blockData.connected_at).format('MMM D, YYYY HH:MM:ss ZZ')} by {blockData.user.full_name}
           </p>
           {blockData.source && (
-            <a href={blockData.source.url} target='_blank' className='underline'>
+            <a href={blockData.source.url} className='underline' target='_blank' rel='noreferrer'>
               {blockData.source.url}
             </a>
           )}
@@ -107,7 +107,12 @@ function BlockQuickLook ({ blockData }) {
         <button onClick={close} className='fixed top-0 right-0'>
           <XMarkIcon className='w-8 hover:text-secondary' strokeWidth='1.5' />
         </button>
-        <a href={`https://are.na/block/${blockData.id}`} target='_blank' className='fixed bottom-0 left-0 p-2'>
+        <a
+          href={`https://are.na/block/${blockData.id}`}
+          className='fixed bottom-0 left-0 p-2'
+          target='_blank'
+          rel='noreferrer'
+        >
           <ArenaMarkIcon className='w-8 hover:text-secondary' />
         </a>
       </div>
