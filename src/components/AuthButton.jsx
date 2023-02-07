@@ -17,10 +17,10 @@ export default function AuthButton () {
         <>
           <button
             onClick={() => signIn('arena')}
-            className='border rounded-lg border-primary text-primary py-2 px-4 flex items-center gap-x-2 hover:bg-secondary/50'
+            className='border-2 rounded-lg border-primary text-primary py-2 px-4 flex items-center gap-x-2 bg-primary/10 hover:bg-secondary/20 hover:text-secondary hover:border-secondary'
           >
             <ArenaMark className='w-8' />
-            Sign in
+            Sign in with Are.na
           </button>
         </>
       )}
