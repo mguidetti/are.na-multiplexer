@@ -1,9 +1,9 @@
 {
-  "name": "arena-shelf",
+  "name": "arena-multiplexer",
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "repository": "https://github.com/mguidetti/arena-shelf",
+  "repository": "https://github.com/mguidetti/arena-multiplexer",
   "author": "Michael Guidetti <michael@michaelguidetti.info>",
   "scripts": {
     "dev": "next dev & local-ssl-proxy --source 3001 --target 3000",

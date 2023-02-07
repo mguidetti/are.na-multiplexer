@@ -16,7 +16,7 @@ function Header () {
         <AmuxIcon className='w-8 opacity-80' fill='currentColor' />
         <span className='font-mono text-xs'>
           Are.na Multiplexer<br />
-          <a href='https://github.com/mguidetti/are.na-shelf' className='hover:text-secondary' target='_blank' rel='noreferrer'>
+          <a href='https://github.com/mguidetti/are.na-multiplexer' className='hover:text-secondary' target='_blank' rel='noreferrer'>
             v{process.env.npm_package_version}
             <GithubIcon className='inline h-4 text-inherit ml-1' />
           </a>

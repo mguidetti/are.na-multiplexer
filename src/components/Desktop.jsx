@@ -94,7 +94,7 @@ export default function Desktop () {
         </header>
         <main>
           <Mosaic
-            className='arena-shelf'
+            className='arena-multiplexer'
             renderTile={renderTile}
             zeroStateView={<ZeroState />}
             value={currentNode}

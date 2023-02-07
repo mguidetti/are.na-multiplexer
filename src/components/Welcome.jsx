@@ -25,7 +25,7 @@ function Welcome () {
 
       <p className='mt-8 font-mono text-sm'>
         <a
-          href='https://github.com/mguidetti/are.na-shelf'
+          href='https://github.com/mguidetti/are.na-multiplexer'
           className='hover:text-secondary gap-x-2 inline-flex items-center mt-1'
           target='_blank'
           rel='noreferrer'
