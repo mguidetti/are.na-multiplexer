@@ -5,7 +5,7 @@ import Spinner from './Spinner'
 import { Virtuoso, VirtuosoGrid } from 'react-virtuoso'
 
 function BlocksGrid ({ blocks, disconnectBlock, loadMore, isLoading }) {
-  const ListContainer = React.forwardRef((props, ref) => {
+  const ListContainer = React.forwardRef(function ListContainer(props, ref) {
     return <div {...props} ref={ref} className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]' />
   })
 
@@ -42,7 +42,7 @@ function BlocksGrid ({ blocks, disconnectBlock, loadMore, isLoading }) {
 }
 
 function BlocksList ({ blocks, disconnectBlock, loadMore, isLoading }) {
-  const ListContainer = React.forwardRef((props, ref) => {
+  const ListContainer = React.forwardRef(function ListContainer(props, ref) {
     return <ul {...props} ref={ref} className='divide-y divide divide-primary/70 text-primary' />
   })
 
@@ -75,7 +75,7 @@ function BlocksList ({ blocks, disconnectBlock, loadMore, isLoading }) {
   )
 }
 
-const VirtuosoScroller = React.forwardRef(({ style, ...props }, ref) => {
+const VirtuosoScroller = React.forwardRef(function VirtuosoScroller ({ style, ...props }, ref) {
   return (
     <div
       style={{ ...style }}
