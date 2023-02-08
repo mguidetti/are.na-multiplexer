@@ -24,7 +24,7 @@ export default function Desktop () {
       const newLayout = addWindow(layout, channel.id)
       setLayout(newLayout)
     },
-    [layout]
+    [layout, channels]
   )
 
   const removeChannel = useCallback(
