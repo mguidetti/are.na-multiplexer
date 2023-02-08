@@ -18,7 +18,7 @@ function BlockBody ({ data }) {
       <div className='w-[calc(1.5em*var(--scale))] flex items-center justify-center'>
         {data.image && <img src={data.image.thumb.url} alt='' className='aspect-square object-contain' />}
       </div>
-      <div className='truncate'>{data.title || data.generated_titel}</div>
+      <div className='truncate'>{data.title || data.generated_title}</div>
     </>
   )
 }
