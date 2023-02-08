@@ -14,7 +14,10 @@ export default function Desktop () {
 
   const addChannel = useCallback(
     channel => {
-      // TODO: Need to check if channel already loaded first.
+      if (channel.id in channels) {
+        console.warn('Duplicate channel added', channel.id)
+        return
+      }
 
       setChannels(channels => ({ ...channels, [channel.id]: channel }))
 
