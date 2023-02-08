@@ -1,5 +1,5 @@
 import dropRight from 'lodash/dropRight'
-import { Corner, getNodeAtPath, getOtherDirection, getPathToCorner, updateTree, createRemoveUpdate } from 'react-mosaic-component'
+import { Corner, getNodeAtPath, getOtherDirection, getPathToCorner, updateTree } from 'react-mosaic-component'
 
 export const addWindow = (layout, id) => {
   if (layout) {
