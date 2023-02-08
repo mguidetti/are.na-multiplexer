@@ -35,7 +35,7 @@ function Dialog ({ close }) {
       const results = await arena.channel(formData.name).create(formData.privacy.value)
 
       if (results) {
-        desktop.loadChannel(results)
+        desktop.addChannel(results)
         setFormData({})
         close()
       }
