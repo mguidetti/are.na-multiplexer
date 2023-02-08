@@ -1,12 +1,12 @@
 import { useArena } from '@/hooks/useArena'
+import { useOutsideClick } from '@/hooks/useOutsideClick'
 import PlusIcon from '@/icons/plus.svg'
-import XMarkIcon from '@/icons/x-mark.svg'
+import classNames from 'classnames'
 import { useContext, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
-import { DesktopContext } from './DesktopContext'
-import classNames from 'classnames'
-import Spinner from './Spinner'
 import Select from 'react-select'
+import { DesktopContext } from './DesktopContext'
+import Spinner from './Spinner'
 
 function Dialog ({ close }) {
   const desktop = useContext(DesktopContext)
@@ -53,11 +53,13 @@ function Dialog ({ close }) {
     { value: 'private', label: 'Private' }
   ]
 
+  const outsideClickRef = useOutsideClick(close)
+
   return (
-    <div className='absolute top-10 left-0 z-50 border-2 border-secondary bg-zinc-900 p-6 pt-4 rounded-md drop-shadow-panel'>
-      <button className='p-2 hover:text-secondary absolute top-0 right-0' onClick={close}>
-        <XMarkIcon className='h-6 w-6 ' strokeWidth='2' />
-      </button>
+    <div
+      className='absolute top-10 left-0 z-50 border-2 border-secondary bg-zinc-900 p-6 pt-4 rounded-md drop-shadow-panel'
+      ref={outsideClickRef}
+    >
       {isCreating && (
         <div className='absolute top-0 left-0 w-full h-full flex items-center justify-center z-10'>
           <Spinner />
