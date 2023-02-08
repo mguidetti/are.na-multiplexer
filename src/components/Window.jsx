@@ -25,7 +25,7 @@ function Window ({ path, totalWindowCount, channelData }) {
   const [view, setView] = useState('grid')
 
   const blockPageSize = 50
-  const totalPages = useMemo(() => channel.length / blockPageSize, [channel])
+  const totalPages = useMemo(() => Math.ceil(channel.length / blockPageSize), [channel])
   const scaleMultiplier = 1.25
   const minScale = 0.75
   const maxScale = 3
