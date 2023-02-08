@@ -21,7 +21,9 @@ const options = {
         const data = {
           id: profile.id,
           email: profile.email,
-          username: profile.username
+          username: profile.username,
+          avatar: profile.avatar,
+          initials: profile.initials
         }
         return data
       }
@@ -37,15 +39,21 @@ const options = {
         token.accessToken = account.access_token
         token.id = profile.id
         token.username = profile.username
+        token.avatar = profile.avatar
+        token.initials = profile.initials
       }
+
       return token
     },
     session: async ({ session, user, token }) => {
       const data = {
         id: token.id,
         accessToken: token.accessToken,
-        name: token.username
+        name: token.username,
+        avatar: token.avatar,
+        intitals: token.initials
       }
+
       return Promise.resolve({
         ...session,
         user: data
