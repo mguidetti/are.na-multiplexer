@@ -66,7 +66,7 @@ export default function Desktop () {
             className='arena-multiplexer'
             zeroStateView={<ZeroState />}
           />
-          {quickLookBlockData && <BlockQuickLook blockData={quickLookBlockData} />}
+          <BlockQuickLook blockData={quickLookBlockData} />
         </main>
       </DesktopContext.Provider>
     </div>
