@@ -53,7 +53,7 @@ export default function Desktop () {
   )
 
   return (
-    <div id='app' className='flex w-full h-full flex-col'>
+    <div id='app' className='flex w-full h-full flex-col overflow-hidden'>
       <DesktopContext.Provider value={contextValues}>
         <header>
           <Header />
