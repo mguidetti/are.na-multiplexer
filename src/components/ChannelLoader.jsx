@@ -24,7 +24,7 @@ function ChannelLoader () {
   )
 
   const handleSelectChange = channel => {
-    desktop.loadChannel(channel)
+    desktop.addChannel(channel)
     setQuery('')
   }
 

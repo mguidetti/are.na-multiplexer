@@ -12,12 +12,12 @@ import { MosaicContext, MosaicWindow, MosaicWindowContext } from 'react-mosaic-c
 import { useArena } from '../hooks/useArena'
 import Spinner from './Spinner'
 import Blocks from './Blocks'
+import { DesktopContext } from './DesktopContext'
 
-function Window ({ path, totalWindowCount, channelData }) {
+function Window ({ path, channel }) {
   const arena = useArena()
 
   const [isLoading, setIsLoading] = useState(true)
-  const [channel, setChannel] = useState(channelData)
   const [blocks, setBlocks] = useState([])
   const [page, setPage] = useState(1)
   const [error, setError] = useState(null)
@@ -111,7 +111,6 @@ function Window ({ path, totalWindowCount, channelData }) {
       className={`channel-status-${channel.status}`}
       path={path}
       toolbarControls={<ToolbarControls />}
-      createNode={() => totalWindowCount + 1}
       onDragStart={() => console.log('MosaicWindow.onDragStart')}
       onDragEnd={type => console.log('MosaicWindow.onDragEnd', type)}
     >
@@ -144,9 +143,11 @@ function Window ({ path, totalWindowCount, channelData }) {
   function ToolbarControls () {
     const mosaic = useContext(MosaicContext)
     const mosaicWindow = useContext(MosaicWindowContext)
+    const desktop = useContext(DesktopContext)
 
     const remove = () => {
       mosaic.mosaicActions.remove(mosaicWindow.mosaicWindowActions.getPath())
+      desktop.removeChannel(channel.id)
     }
 
     const expand = () => {
