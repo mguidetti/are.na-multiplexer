@@ -69,7 +69,7 @@ function Dialog ({ close }) {
       {error && <p className='text-red'>{error.message}</p>}
 
       <form
-        className={classNames('flex-col flex space-y-3 font-bold', { invisible: isCreating })}
+        className={classNames('flex-col flex space-y-3', { invisible: isCreating })}
         onSubmit={createChannel}
       >
         <h2>New Channel</h2>
@@ -88,11 +88,11 @@ function Dialog ({ close }) {
           value={formData.privacy}
           onChange={handleSelectChange}
           classNames={{
-            control: () => classNames('bg-background border-2 rounded-md border-primary/70 px-2 font-bold', {}),
+            control: () => classNames('bg-background border-2 rounded-md border-primary/70 px-2', {}),
             menu: () => '-mt-1 bg-zinc-900 border-2 border-t-0 border-secondary rounded-b-md drop-shadow-panel',
             menuList: () => 'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/30 rounded-b-md',
             option: ({ value, isFocused }) =>
-              classNames('py-1 px-2 text-primary font-bold truncate', {
+              classNames('py-1 px-2 text-primary truncate', {
                 'bg-secondary/50': isFocused,
                 '!text-public-channel': value === 'open',
                 '!text-private-channel': value === 'private'
@@ -130,7 +130,7 @@ function ChannelCreator () {
         )}
         onClick={open}
       >
-        <PlusIcon className='w-5 h-5 text-inherit' strokeWidth='3' strokeLinecap='square' />
+        <PlusIcon className='w-5 h-5 text-inherit' strokeWidth='2' strokeLinecap='square' />
       </button>
 
       {isDialogOpen && <Dialog close={close} />}
