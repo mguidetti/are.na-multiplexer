@@ -25,7 +25,7 @@ function Block ({ data, disconnectBlock, children }) {
 
   const handleDoubleClick = () => {
     if (data.class === 'Channel') {
-      desktop.loadChannel(data)
+      desktop.addChannel(data)
     } else {
       desktop.setQuickLookBlockData(data)
     }
