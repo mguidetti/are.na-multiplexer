@@ -7,7 +7,7 @@ import React from 'react'
 
 function Header () {
   return (
-    <div className='grid grid-cols-[1fr_1fr_1fr] gap-x-4 px-4 items-center bg-zinc-900 text-primary/70 py-2'>
+    <div className='grid grid-cols-[minmax(auto,150px)_1fr_minmax(10px,150px)] gap-x-4 px-4 items-center bg-zinc-900 text-primary/70 py-2'>
       <div>
         <a
           href='https://github.com/mguidetti/are.na-multiplexer'
@@ -16,7 +16,7 @@ function Header () {
           rel='noreferrer'
         >
           <AmuxIcon className='w-8 opacity-80' fill='currentColor' />
-          <span>
+          <span className='hidden md:inline'>
             Are.na
             <br />
             Multiplexer

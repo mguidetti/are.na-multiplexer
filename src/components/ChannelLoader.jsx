@@ -29,7 +29,7 @@ function ChannelLoader () {
   }
 
   return (
-    <div className='min-w-[400px] z-30'>
+    <div className='max-w-[24rem] w-full z-30'>
       <AsyncSelect
         ref={select}
         cacheOptions
@@ -47,7 +47,7 @@ function ChannelLoader () {
           control: ({ isFocused, menuIsOpen }) =>
             classNames('bg-background border-2 rounded-md border-primary/70 px-2 font-bold', {
               'bg-secondary/10 !text-secondary !border-secondary': isFocused,
-              '!rounded-b-none !border-b-transparent ': menuIsOpen
+              '!rounded-b-none !border-b-transparent': menuIsOpen
             }),
           placeholder: ({ isFocused }) => classNames('font-normal', { hidden: isFocused }),
           menu: () => '-mt-1 bg-zinc-900 border-2 border-t-0 border-secondary rounded-b-md drop-shadow-panel',
@@ -59,7 +59,8 @@ function ChannelLoader () {
               '!text-public-channel': data.status === 'public',
               '!text-private-channel': data.status === 'private'
             }),
-          noOptionsMessage: () => 'p-2'
+          noOptionsMessage: () => 'p-2 whitespace-nowrap',
+          valueContainer: () => 'whitespace-nowrap'
         }}
       />
     </div>

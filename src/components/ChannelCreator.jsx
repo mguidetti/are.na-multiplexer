@@ -57,7 +57,7 @@ function Dialog ({ close }) {
 
   return (
     <div
-      className='absolute top-10 left-0 z-50 border-2 border-secondary bg-zinc-900 p-6 pt-4 rounded-md drop-shadow-panel'
+      className='absolute top-12 left-0 z-50 border-2 border-secondary bg-zinc-900 p-6 pt-4 rounded-md drop-shadow-panel'
       ref={outsideClickRef}
     >
       {isCreating && (
