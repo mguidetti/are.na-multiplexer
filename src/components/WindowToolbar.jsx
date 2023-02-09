@@ -48,28 +48,29 @@ function WindowToolbar ({ scale, setScale, scaleDefaults, setView, view, channel
         className='hover:text-secondary px-2'
         target='_blank'
         rel='noreferrer'
+        title='View at Are.na'
       >
         <ArenaMarkIcon className='w-6' />
       </a>
 
-      <button onClick={toggleView} className='hover:text-secondary px-1'>
+      <button onClick={toggleView} title='Change view' className='hover:text-secondary px-1'>
         {view === 'list' && <Squares2x2Icon className='w-5 h-5' />}
         {view === 'grid' && <ListBulletIcon className='w-5 h-5' />}
       </button>
 
-      <button onClick={incrementScale} className='hover:text-secondary px-1'>
+      <button onClick={incrementScale} title='Increase scale' className='hover:text-secondary px-1'>
         <PlusIcon className='w-5 h-5' strokeWidth='2' />
       </button>
 
-      <button onClick={decrementScale} className='hover:text-secondary px-1'>
+      <button onClick={decrementScale} title='Decrease scale' className='hover:text-secondary px-1'>
         <MinusIcon className='w-5 h-5' strokeWidth='2' />
       </button>
 
-      <button onClick={expand} className='hover:text-secondary px-1'>
+      <button onClick={expand} title='Expand' className='hover:text-secondary px-1'>
         <ArrowsPointingOutIcon className='w-5 h-5' />
       </button>
 
-      <button onClick={remove} className='hover:text-secondary px-1'>
+      <button onClick={remove} title='Remove' className='hover:text-secondary px-1'>
         <XMarkIcon className='w-5 h-5' strokeWidth='2' />
       </button>
     </div>
