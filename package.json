@@ -13,6 +13,7 @@
     "format": "standard --fix"
   },
   "dependencies": {
+    "@vercel/analytics": "^0.1.8",
     "arena-ts": "^0.1.4",
     "dayjs": "^1.11.7",
     "debounce-promise": "^3.1.2",
