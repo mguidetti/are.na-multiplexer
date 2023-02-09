@@ -3,7 +3,7 @@ import { useDrag } from 'react-dnd'
 import { DesktopContext } from '../context/DesktopContext'
 import classNames from 'classnames'
 
-function Block ({ data, disconnectBlock, children }) {
+function BlockContainer ({ data, disconnectBlock, children }) {
   const desktop = useContext(DesktopContext)
 
   const [{ isDragging }, drag] = useDrag({
@@ -38,4 +38,4 @@ function Block ({ data, disconnectBlock, children }) {
   )
 }
 
-export default Block
+export default BlockContainer

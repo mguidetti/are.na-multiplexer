@@ -1,13 +1,14 @@
+import { WindowContext } from '@/context/WindowContext'
 import classNames from 'classnames/bind'
+import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import { MosaicWindow } from 'react-mosaic-component'
 import { useArena } from '../hooks/useArena'
+import BlocksGrid from './BlocksGrid'
+import BlocksList from './BlocksList'
 import Spinner from './Spinner'
-import Blocks from './Blocks'
 import WindowToolbar from './WindowToolbar'
-import { useSession } from 'next-auth/react'
-import { WindowContext } from '@/context/WindowContext'
 
 function Window ({ path, channel }) {
   const arena = useArena()
@@ -33,11 +34,7 @@ function Window ({ path, channel }) {
     } else {
       return channel.user_id === data.user.id
     }
-  }, [channel])
-
-  useEffect(() => {
-    fetchBlocks()
-  }, [arena, page])
+  }, [channel, data.user])
 
   const fetchBlocks = useCallback(async () => {
     if (!arena) return
@@ -53,7 +50,11 @@ function Window ({ path, channel }) {
     } finally {
       setLoadingStatus('waiting')
     }
-  }, [arena, channel.id, page])
+  }, [arena, channel, page])
+
+  useEffect(() => {
+    fetchBlocks()
+  }, [fetchBlocks])
 
   const loadMore = useCallback(() => {
     const nextPage = page + 1
@@ -139,6 +140,14 @@ function Window ({ path, channel }) {
     return true
   }
 
+  const renderBlocks = () => {
+    if (view === 'grid') {
+      return <BlocksGrid blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} />
+    } else {
+      return <BlocksList blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} />
+    }
+  }
+
   return (
     <MosaicWindow
       title={`${channel.user.full_name} / ${channel.title}`}
@@ -170,9 +179,7 @@ function Window ({ path, channel }) {
 
         {!blocks.length && loadingStatus !== 'active' && <BlankSlate />}
 
-        <WindowContext.Provider value={{ loadingStatus }}>
-          <Blocks blocks={blocks} disconnectBlock={disconnectBlock} view={view} loadMore={loadMore} />
-        </WindowContext.Provider>
+        <WindowContext.Provider value={{ loadingStatus }}>{renderBlocks()}</WindowContext.Provider>
       </div>
     </MosaicWindow>
   )

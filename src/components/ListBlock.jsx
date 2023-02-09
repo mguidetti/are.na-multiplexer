@@ -1,4 +1,4 @@
-import Block from './Block'
+import BlockContainer from './BlockContainer'
 import SquareIcon from '@/icons/square.svg'
 
 function ChannelBody ({ data }) {
@@ -25,13 +25,13 @@ function BlockBody ({ data }) {
 
 function ListBlock ({ data, disconnectBlock }) {
   return (
-    <Block data={data} disconnectBlock={disconnectBlock}>
+    <BlockContainer data={data} disconnectBlock={disconnectBlock}>
       <div
         className={`grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-secondary/30 cursor-pointer channel-status-${data.status}`}
       >
         {data.class === 'Channel' ? <ChannelBody data={data} /> : <BlockBody data={data} />}
       </div>
-    </Block>
+    </BlockContainer>
   )
 }
 
