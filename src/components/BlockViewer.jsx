@@ -23,11 +23,22 @@ function ImageBlock ({ data }) {
 
   return (
     <>
-      {!imageLoaded && <Spinner />}
+      {!imageLoaded && (
+        <div className='absolute z-10 flex justify-center items-center inset-0'>
+          <Spinner />
+        </div>
+      )}
+
+      <img
+        src={data.image?.thumb?.url}
+        alt=''
+        className='object-scale-down w-full h-full blur-sm brightness-50 flex-1'
+        hidden={imageLoaded}
+      />
       <img
         src={data.image?.display?.url}
         alt=''
-        className='aspect-square object-contain w-full h-full'
+        className='object-scale-down w-full h-full flex-1'
         onLoad={handleImageLoaded}
         hidden={!imageLoaded}
       />
@@ -92,7 +103,7 @@ function BlockViewer ({ blockData }) {
   }
 
   return (
-    <div className='fixed top-0 left-0 h-screen w-screen z-50 p-8 bg-background/30'>
+    <div className='fixed inset-0 h-screen w-screen z-50 p-8 bg-background/30'>
       <div className='relative h-full w-full overflow-hidden flex justify-center items-center z-50 bg-background bg-opacity-70  border-2 border-secondary rounded-sm p-8 drop-shadow-panel'>
         {renderBlock()}
 
