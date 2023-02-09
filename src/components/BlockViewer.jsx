@@ -126,12 +126,12 @@ function BlockViewer ({ blockData }) {
           )}
         </div>
 
-        <button onClick={close} className='fixed top-0 right-0'>
+        <button onClick={close} className='absolute top-0 right-0'>
           <XMarkIcon className='w-8 hover:text-secondary' strokeWidth='1.5' />
         </button>
         <a
           href={`https://are.na/block/${blockData.id}`}
-          className='fixed bottom-0 left-0 p-2'
+          className='absolute bottom-0 left-0 p-2'
           target='_blank'
           rel='noreferrer'
         >
