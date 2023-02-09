@@ -28,12 +28,17 @@ function Window ({ path, channel }) {
     min: 0.75,
     max: 3
   }
+
   const canWrite = useMemo(() => {
     if (channel.open) {
       return true
     } else {
       return channel.user_id === data.user.id
     }
+  }, [channel, data.user])
+
+  const canDelete = useMemo(() => {
+    return channel.user_id === data.user.id
   }, [channel, data.user])
 
   const fetchBlocks = useCallback(async () => {
@@ -70,11 +75,17 @@ function Window ({ path, channel }) {
     async block => {
       addBlock(block)
       const channelObj = arena.channel(channel.id)
-      const result = await channelObj.connect.block(block.id)
+
+      let result
+
+      if (block.class === 'Channel') {
+        result = await channelObj.connect.channel(block.id)
+      } else {
+        result = await channelObj.connect.block(block.id)
+      }
 
       // TODO: should update the block that was added with new info (connection_id, etc)
-
-      console.log(result)
+      return result
     },
     [arena, channel.id]
   )
@@ -82,11 +93,11 @@ function Window ({ path, channel }) {
   const disconnectBlock = useCallback(
     async block => {
       // We check for authorization here to prevent an error when "moving" a block from a
-      // channel that the user doesn't have write access to. It might be better to do this in
+      // channel that the user doesn't have delete access to. It might be better to do this in
       // the Block components useDrag.end callback, but we need to know the drop target's channel
       // there somehow
 
-      if (!canWrite) return
+      if (!canDelete) return
 
       removeBlock(block)
 
@@ -95,7 +106,7 @@ function Window ({ path, channel }) {
 
       console.log(result)
     },
-    [arena, channel.id, canWrite]
+    [arena, channel.id, canDelete]
   )
 
   const addBlock = block => {
