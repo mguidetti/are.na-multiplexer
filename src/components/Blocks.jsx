@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import GridBlock from './GridBlock'
 import ListBlock from './ListBlock'
 import Spinner from './Spinner'
 import { Virtuoso, VirtuosoGrid } from 'react-virtuoso'
+import { WindowContext } from '@/context/WindowContext'
 
-function BlocksGrid ({ blocks, disconnectBlock, loadMore, isLoading }) {
+function BlocksGrid ({ blocks, disconnectBlock, loadMore }) {
   const ListContainer = React.forwardRef(function ListContainer (props, ref) {
     return (
       <div className='py-2'>
@@ -15,16 +16,6 @@ function BlocksGrid ({ blocks, disconnectBlock, loadMore, isLoading }) {
 
   const ItemContainer = props => {
     return <div {...props} className='w-full' />
-  }
-
-  const Footer = () => {
-    if (isLoading) {
-      return (
-        <div className='w-full flex justify-center py-8'>
-          <Spinner />
-        </div>
-      )
-    }
   }
 
   return (
@@ -45,20 +36,10 @@ function BlocksGrid ({ blocks, disconnectBlock, loadMore, isLoading }) {
   )
 }
 
-function BlocksList ({ blocks, disconnectBlock, loadMore, isLoading }) {
+function BlocksList ({ blocks, disconnectBlock, loadMore }) {
   const ListContainer = React.forwardRef(function ListContainer (props, ref) {
     return <ul {...props} ref={ref} className='divide-y divide divide-primary/70 text-primary' />
   })
-
-  const Footer = () => {
-    if (isLoading) {
-      return (
-        <div className='w-full flex justify-center py-8'>
-          <Spinner />
-        </div>
-      )
-    }
-  }
 
   return (
     <Virtuoso
@@ -90,11 +71,21 @@ const VirtuosoScroller = React.forwardRef(function VirtuosoScroller ({ style, ..
   )
 })
 
-function Blocks ({ blocks, disconnectBlock, loadMore, isLoading, view }) {
+const Footer = () => {
+  const windowContext = useContext(WindowContext)
+
+  return (
+    <div className='w-full flex justify-center h-24 items-center'>
+      {windowContext.loadingStatus === 'active' && <Spinner />}
+    </div>
+  )
+}
+
+function Blocks ({ blocks, disconnectBlock, loadMore, view }) {
   if (view === 'grid') {
-    return <BlocksGrid blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} isLoading={isLoading} />
+    return <BlocksGrid blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} />
   } else {
-    return <BlocksList blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} isLoading={isLoading} />
+    return <BlocksList blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} />
   }
 }
 

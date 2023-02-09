@@ -7,13 +7,13 @@ import Spinner from './Spinner'
 import Blocks from './Blocks'
 import WindowToolbar from './WindowToolbar'
 import { useSession } from 'next-auth/react'
+import { WindowContext } from '@/context/WindowContext'
 
 function Window ({ path, channel }) {
   const arena = useArena()
 
   const { data } = useSession()
-
-  const [isLoading, setIsLoading] = useState(true)
+  const [loadingStatus, setLoadingStatus] = useState('inactive')
   const [blocks, setBlocks] = useState([])
   const [page, setPage] = useState(1)
   const [error, setError] = useState(null)
@@ -42,7 +42,7 @@ function Window ({ path, channel }) {
   const fetchBlocks = useCallback(async () => {
     if (!arena) return
 
-    setIsLoading(true)
+    setLoadingStatus('active')
 
     const results = await arena.channel(channel.id).contents({ page, per: blockPageSize })
 
@@ -51,13 +51,17 @@ function Window ({ path, channel }) {
     } catch (error) {
       setError(error)
     } finally {
-      setIsLoading(false)
+      setLoadingStatus('waiting')
     }
   }, [arena, channel.id, page])
 
   const loadMore = useCallback(() => {
-    if (page <= totalPages) {
-      setPage(page + 1)
+    const nextPage = page + 1
+
+    if (nextPage >= totalPages) {
+      setLoadingStatus('complete')
+    } else {
+      setPage(nextPage)
     }
   }, [page, totalPages])
 
@@ -117,7 +121,7 @@ function Window ({ path, channel }) {
   }
 
   const determineCanDrop = (item, monitor) => {
-    if (isLoading) {
+    if (loadingStatus === 'active') {
       console.log('Cannot drop', 'Blocks are loading')
       return false
     }
@@ -158,21 +162,17 @@ function Window ({ path, channel }) {
       >
         {error && <div className='text-red-500'>Error: {error.message}</div>}
 
-        {!blocks.length && isLoading && (
+        {!blocks.length && loadingStatus === 'active' && (
           <div className='w-full h-full flex items-center justify-center'>
             <Spinner />
           </div>
         )}
 
-        {!blocks.length && !isLoading && <BlankSlate />}
+        {!blocks.length && loadingStatus !== 'active' && <BlankSlate />}
 
-        <Blocks
-          blocks={blocks}
-          disconnectBlock={disconnectBlock}
-          view={view}
-          loadMore={loadMore}
-          isLoading={isLoading}
-        />
+        <WindowContext.Provider value={{ loadingStatus }}>
+          <Blocks blocks={blocks} disconnectBlock={disconnectBlock} view={view} loadMore={loadMore} />
+        </WindowContext.Provider>
       </div>
     </MosaicWindow>
   )
