@@ -39,7 +39,7 @@ function ImageBlock ({ data }) {
         hidden={imageLoaded}
       />
       <img
-        src={data.image?.display?.url}
+        src={data.image?.large?.url}
         alt=''
         className='object-scale-down w-full h-full flex-1'
         onLoad={handleImageLoaded}
