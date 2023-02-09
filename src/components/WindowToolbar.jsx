@@ -7,7 +7,7 @@ import Squares2x2Icon from '@/icons/squares-2x2.svg'
 import XMarkIcon from '@/icons/x-mark.svg'
 import { useContext } from 'react'
 import { MosaicContext, MosaicWindowContext } from 'react-mosaic-component'
-import { DesktopContext } from './DesktopContext'
+import { DesktopContext } from '../context/DesktopContext'
 
 function WindowToolbar ({ scale, setScale, scaleDefaults, setView, view, channel }) {
   const mosaic = useContext(MosaicContext)

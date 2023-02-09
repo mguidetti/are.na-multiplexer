@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { useContext, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import Select from 'react-select'
-import { DesktopContext } from './DesktopContext'
+import { DesktopContext } from '../context/DesktopContext'
 import Spinner from './Spinner'
 
 function Dialog ({ close }) {

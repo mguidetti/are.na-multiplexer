@@ -1,4 +1,4 @@
-import { DesktopContext } from './DesktopContext'
+import { DesktopContext } from '../context/DesktopContext'
 import { useContext, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import Spinner from './Spinner'

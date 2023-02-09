@@ -3,7 +3,7 @@ import { useCallback, useContext, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import AsyncSelect from 'react-select/async'
 import { useArena } from '../hooks/useArena'
-import { DesktopContext } from './DesktopContext'
+import { DesktopContext } from '../context/DesktopContext'
 import debounce from 'debounce-promise'
 
 function ChannelLoader () {

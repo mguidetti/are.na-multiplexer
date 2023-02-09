@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import { useDrag } from 'react-dnd'
-import { DesktopContext } from './DesktopContext'
+import { DesktopContext } from '../context/DesktopContext'
 import classNames from 'classnames'
 
 function Block ({ data, disconnectBlock, children }) {
