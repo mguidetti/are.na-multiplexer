@@ -6,7 +6,11 @@ import { Virtuoso, VirtuosoGrid } from 'react-virtuoso'
 
 function BlocksGrid ({ blocks, disconnectBlock, loadMore, isLoading }) {
   const ListContainer = React.forwardRef(function ListContainer (props, ref) {
-    return <div {...props} ref={ref} className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]' />
+    return (
+      <div className='py-2'>
+        <div {...props} ref={ref} className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]' />
+      </div>
+    )
   })
 
   const ItemContainer = props => {
