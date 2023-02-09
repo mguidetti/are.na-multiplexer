@@ -30,7 +30,7 @@ function BlocksGrid ({ blocks, disconnectBlock, loadMore }) {
         Footer
       }}
       itemContent={(index, block) => (
-        <GridBlock key={block.id} data={block} disconnectBlock={disconnectBlock} className='w-1/3' />
+        <GridBlock key={block.id} data={block} disconnectBlock={disconnectBlock} />
       )}
     />
   )
