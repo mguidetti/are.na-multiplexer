@@ -1,6 +1,7 @@
 import ChannelLoader from './ChannelLoader'
 import ChannelCreator from './ChannelCreator'
 import UserMenu from './UserMenu'
+import Info from './Info'
 import AmuxIcon from '@/icons/amux.svg'
 import React from 'react'
 
@@ -26,7 +27,8 @@ function Header () {
         <ChannelLoader />
         <ChannelCreator />
       </div>
-      <div className='text-right flex gap-x-2 justify-end items-center'>
+      <div className='text-right flex gap-x-4 justify-end items-center'>
+        <Info />
         <UserMenu />
       </div>
     </div>
