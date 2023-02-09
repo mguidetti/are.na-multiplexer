@@ -35,6 +35,7 @@ function ChannelLoader () {
         cacheOptions
         blurInputOnSelect
         placeholder='Load Channel'
+        loadingMessage={() => 'Searching...'}
         components={{ DropdownIndicator: () => null, IndicatorSeparator: () => null }}
         getOptionLabel={e => ` ${e.user.full_name} / ${e.title}`}
         getOptionValue={e => e.id}
