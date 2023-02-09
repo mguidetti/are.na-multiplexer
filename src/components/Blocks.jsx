@@ -71,7 +71,7 @@ function BlocksList ({ blocks, disconnectBlock, loadMore, isLoading }) {
         Footer
       }}
       itemContent={(index, block) => (
-        <li key={block.id} className='px-2'>
+        <li key={block.id}>
           <ListBlock data={block} disconnectBlock={disconnectBlock} />
         </li>
       )}
