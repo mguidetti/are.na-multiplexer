@@ -6,9 +6,12 @@ import { useArena } from '../hooks/useArena'
 import Spinner from './Spinner'
 import Blocks from './Blocks'
 import WindowToolbar from './WindowToolbar'
+import { useSession } from 'next-auth/react'
 
 function Window ({ path, channel }) {
   const arena = useArena()
+
+  const { data } = useSession()
 
   const [isLoading, setIsLoading] = useState(true)
   const [blocks, setBlocks] = useState([])
@@ -24,6 +27,13 @@ function Window ({ path, channel }) {
     min: 0.75,
     max: 3
   }
+  const canWrite = useMemo(() => {
+    if (channel.open) {
+      return true
+    } else {
+      return channel.user_id === data.user.id
+    }
+  }, [channel])
 
   useEffect(() => {
     fetchBlocks()
@@ -51,22 +61,28 @@ function Window ({ path, channel }) {
     }
   }, [page, totalPages])
 
-  const addBlock = useCallback(
+  const connectBlock = useCallback(
     async block => {
-      setBlocks(blocks => [...blocks, block])
-
+      addBlock(block)
       const channelObj = arena.channel(channel.id)
       const result = await channelObj.connect.block(block.id)
 
-      console.log(result)
-
       // TODO: should update the block that was added with new info (connection_id, etc)
+
+      console.log(result)
     },
     [arena, channel.id]
   )
 
   const disconnectBlock = useCallback(
     async block => {
+      // We check for authorization here to prevent an error when "moving" a block from a
+      // channel that the user doesn't have write access to. It might be better to do this in
+      // the Block components useDrag.end callback, but we need to know the drop target's channel
+      // there somehow
+
+      if (!canWrite) return
+
       removeBlock(block)
 
       const channelObj = arena.channel(channel.id)
@@ -74,11 +90,15 @@ function Window ({ path, channel }) {
 
       console.log(result)
     },
-    [arena, channel.id]
+    [arena, channel.id, canWrite]
   )
 
-  const removeBlock = block => {
-    setBlocks(blocks => blocks.filter(b => b.id !== block.id))
+  const addBlock = block => {
+    setBlocks(blocks => [...blocks, block])
+  }
+
+  const removeBlock = removingBlock => {
+    setBlocks(blocks => blocks.filter(block => block.id !== removingBlock.id))
   }
 
   const [{ isActive }, dropRef] = useDrop({
@@ -87,17 +107,32 @@ function Window ({ path, channel }) {
     collect: monitor => ({
       isActive: monitor.canDrop() && monitor.isOver()
     }),
-    canDrop: (item, monitor) => handleCanDrop(item, monitor)
+    canDrop: (item, monitor) => determineCanDrop(item, monitor)
   })
 
   const handleDrop = (item, monitor) => {
-    addBlock(item)
+    connectBlock(item)
 
     return item
   }
 
-  const handleCanDrop = (item, monitor) => {
-    return !isLoading && !blocks.find(block => block.id === item.id)
+  const determineCanDrop = (item, monitor) => {
+    if (isLoading) {
+      console.log('Cannot drop', 'Blocks are loading')
+      return false
+    }
+
+    if (blocks.find(block => block.id === item.id)) {
+      console.log('Cannot drop', 'Block already connected')
+      return false
+    }
+
+    if (!canWrite) {
+      console.log('Cannot drop', 'Unauthorized')
+      return false
+    }
+
+    return true
   }
 
   return (
