@@ -1,7 +1,7 @@
 import { addWindow } from '@/lib/mosaic'
 import { useCallback, useMemo, useState } from 'react'
 import { Mosaic } from 'react-mosaic-component'
-import BlockQuickLook from './BlockQuickLook'
+import BlockViewer from './BlockViewer'
 import { DesktopContext } from '../context/DesktopContext'
 import Header from './Header'
 import Window from './Window'
@@ -10,7 +10,7 @@ import ZeroState from './ZeroState'
 export default function Desktop () {
   const [channels, setChannels] = useState({})
   const [layout, setLayout] = useState(null)
-  const [quickLookBlockData, setQuickLookBlockData] = useState(null)
+  const [blockViewerData, setBlockViewerData] = useState(null)
 
   const addChannel = useCallback(
     channel => {
@@ -47,7 +47,7 @@ export default function Desktop () {
     () => ({
       addChannel,
       removeChannel,
-      setQuickLookBlockData
+      setBlockViewerData
     }),
     [addChannel, removeChannel]
   )
@@ -66,7 +66,7 @@ export default function Desktop () {
             className='arena-multiplexer'
             zeroStateView={<ZeroState />}
           />
-          <BlockQuickLook blockData={quickLookBlockData} />
+          <BlockViewer blockData={blockViewerData} />
         </main>
       </DesktopContext.Provider>
     </div>

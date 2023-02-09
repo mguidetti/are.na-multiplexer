@@ -63,13 +63,13 @@ function TextBlock ({ data }) {
   )
 }
 
-function BlockQuickLook ({ blockData }) {
+function BlockViewer ({ blockData }) {
   const desktop = useContext(DesktopContext)
 
   useHotkeys('esc', () => close(), { enabled: blockData !== null })
 
   const close = () => {
-    desktop.setQuickLookBlockData(null)
+    desktop.setBlockViewerData(null)
   }
 
   const renderBlock = () => {
@@ -126,4 +126,4 @@ function BlockQuickLook ({ blockData }) {
   )
 }
 
-export default BlockQuickLook
+export default BlockViewer

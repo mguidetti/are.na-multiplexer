@@ -27,7 +27,7 @@ function BlockContainer ({ data, disconnectBlock, children }) {
     if (data.class === 'Channel') {
       desktop.addChannel(data)
     } else {
-      desktop.setQuickLookBlockData(data)
+      desktop.setBlockViewerData(data)
     }
   }
 
