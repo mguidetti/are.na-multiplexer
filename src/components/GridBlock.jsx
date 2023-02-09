@@ -20,7 +20,9 @@ function ChannelBlock ({ data }) {
       <span className='text-center text-base-relative font-bold text-inherit truncate whitespace-normal'>
         {data.title}
       </span>
-      <span className='text-xs-relative text-center'>by {data.user.full_name}<br />
+      <span className='text-xs-relative text-center'>
+        by {data.user.full_name}
+        <br />
         {data.length} blocks
       </span>
     </div>
@@ -43,7 +45,7 @@ function TextBlock ({ data }) {
   )
 }
 
-function GridBlock ({ data, disconnectBlock }) {
+function GridBlock ({ data }) {
   const renderBlock = () => {
     switch (data.class) {
       case 'Attachment':

@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Virtuoso } from 'react-virtuoso'
 import ListBlock from './ListBlock'
 import WindowFooter from './WindowFooter'
 import WindowScroller from './WindowScroller'
+import { WindowContext } from '@/context/WindowContext'
 
-function BlocksList ({ blocks, disconnectBlock, loadMore }) {
+function BlocksList ({ blocks, loadMore }) {
+  const windowCtx = useContext(WindowContext)
+
   const ListContainer = React.forwardRef(function ListContainer (props, ref) {
     return <ul {...props} ref={ref} className='divide-y divide divide-primary/70 text-primary' />
   })
@@ -12,7 +15,7 @@ function BlocksList ({ blocks, disconnectBlock, loadMore }) {
   return (
     <Virtuoso
       data={blocks}
-      endReached={loadMore}
+      endReached={windowCtx.loadMore}
       overscan={400}
       components={{
         List: ListContainer,
@@ -21,7 +24,7 @@ function BlocksList ({ blocks, disconnectBlock, loadMore }) {
       }}
       itemContent={(index, block) => (
         <li key={block.id}>
-          <ListBlock data={block} disconnectBlock={disconnectBlock} />
+          <ListBlock data={block} />
         </li>
       )}
     />

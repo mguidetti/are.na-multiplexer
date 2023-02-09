@@ -23,9 +23,9 @@ function BlockBody ({ data }) {
   )
 }
 
-function ListBlock ({ data, disconnectBlock }) {
+function ListBlock ({ data }) {
   return (
-    <BlockContainer data={data} disconnectBlock={disconnectBlock}>
+    <BlockContainer data={data}>
       <div
         className={`grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-secondary/30 cursor-pointer channel-status-${data.status}`}
       >

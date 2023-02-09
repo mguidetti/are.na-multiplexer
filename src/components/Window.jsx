@@ -87,7 +87,7 @@ function Window ({ path, channel }) {
       // TODO: should update the block that was added with new info (connection_id, etc)
       return result
     },
-    [arena, channel.id]
+    [arena, channel]
   )
 
   const disconnectBlock = useCallback(
@@ -106,7 +106,7 @@ function Window ({ path, channel }) {
 
       console.log(result)
     },
-    [arena, channel.id, canDelete]
+    [arena, channel, canDelete]
   )
 
   const addBlock = block => {
@@ -153,11 +153,21 @@ function Window ({ path, channel }) {
 
   const renderBlocks = () => {
     if (view === 'grid') {
-      return <BlocksGrid blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} />
+      return <BlocksGrid blocks={blocks} />
     } else {
-      return <BlocksList blocks={blocks} disconnectBlock={disconnectBlock} loadMore={loadMore} />
+      return <BlocksList blocks={blocks} />
     }
   }
+
+  const contextValues = useMemo(
+    () => ({
+      loadingStatus,
+      loadMore,
+      connectBlock,
+      disconnectBlock
+    }),
+    [loadingStatus, loadMore, connectBlock, disconnectBlock]
+  )
 
   return (
     <MosaicWindow
@@ -190,7 +200,7 @@ function Window ({ path, channel }) {
 
         {!blocks.length && loadingStatus !== 'active' && <BlankSlate />}
 
-        <WindowContext.Provider value={{ loadingStatus }}>{renderBlocks()}</WindowContext.Provider>
+        <WindowContext.Provider value={contextValues}>{renderBlocks()}</WindowContext.Provider>
       </div>
     </MosaicWindow>
   )

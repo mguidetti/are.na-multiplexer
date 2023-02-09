@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { VirtuosoGrid } from 'react-virtuoso'
 import GridBlock from './GridBlock'
 import WindowFooter from './WindowFooter'
 import WindowScroller from './WindowScroller'
+import { WindowContext } from '@/context/WindowContext'
 
-function BlocksGrid ({ blocks, disconnectBlock, loadMore }) {
+function BlocksGrid ({ blocks }) {
+  const windowCtx = useContext(WindowContext)
+
   const ListContainer = React.forwardRef(function ListContainer (props, ref) {
     return (
       <div className='py-2'>
@@ -20,7 +23,7 @@ function BlocksGrid ({ blocks, disconnectBlock, loadMore }) {
   return (
     <VirtuosoGrid
       data={blocks}
-      endReached={loadMore}
+      endReached={windowCtx.loadMore}
       overscan={800}
       components={{
         List: ListContainer,
@@ -28,7 +31,7 @@ function BlocksGrid ({ blocks, disconnectBlock, loadMore }) {
         Scroller: WindowScroller,
         Footer: WindowFooter
       }}
-      itemContent={(index, block) => <GridBlock key={block.id} data={block} disconnectBlock={disconnectBlock} />}
+      itemContent={(index, block) => <GridBlock key={block.id} data={block} />}
     />
   )
 }

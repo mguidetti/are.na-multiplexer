@@ -2,9 +2,11 @@ import { useContext } from 'react'
 import { useDrag } from 'react-dnd'
 import { DesktopContext } from '../context/DesktopContext'
 import classNames from 'classnames'
+import { WindowContext } from '@/context/WindowContext'
 
-function BlockContainer ({ data, disconnectBlock, children }) {
-  const desktop = useContext(DesktopContext)
+function BlockContainer ({ data, children }) {
+  const desktopCtx = useContext(DesktopContext)
+  const windowCtx = useContext(WindowContext)
 
   const [{ isDragging }, drag] = useDrag({
     type: 'block',
@@ -14,7 +16,7 @@ function BlockContainer ({ data, disconnectBlock, children }) {
         const result = monitor.getDropResult()
 
         if (result && result.dropEffect === 'move') {
-          disconnectBlock(data)
+          windowCtx.disconnectBlock(data)
         }
       }
     },
@@ -25,9 +27,9 @@ function BlockContainer ({ data, disconnectBlock, children }) {
 
   const handleDoubleClick = () => {
     if (data.class === 'Channel') {
-      desktop.addChannel(data)
+      desktopCtx.addChannel(data)
     } else {
-      desktop.setBlockViewerData(data)
+      desktopCtx.setBlockViewerData(data)
     }
   }
 
