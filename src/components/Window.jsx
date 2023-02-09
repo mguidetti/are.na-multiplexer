@@ -134,17 +134,17 @@ function Window ({ path, channel }) {
 
   const determineCanDrop = (item, monitor) => {
     if (loadingStatus === 'active') {
-      console.log('Cannot drop', 'Blocks are loading')
+      // console.log('Cannot drop', 'Blocks are loading')
       return false
     }
 
     if (blocks.find(block => block.id === item.id)) {
-      console.log('Cannot drop', 'Block already connected')
+      // console.log('Cannot drop', 'Block already connected')
       return false
     }
 
     if (!canWrite) {
-      console.log('Cannot drop', 'Unauthorized')
+      // console.log('Cannot drop', 'Unauthorized')
       return false
     }
 
