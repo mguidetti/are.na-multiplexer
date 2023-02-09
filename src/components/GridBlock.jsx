@@ -15,9 +15,14 @@ function AttachmentBlock ({ data }) {
 function ChannelBlock ({ data }) {
   return (
     <div
-      className={`h-full w-full flex items-center justify-center border-2 channel-status-${data.status} channel-block p-2`}
+      className={`h-full w-full flex flex-col space-y-2 items-center justify-center border-2 channel-status-${data.status} channel-block p-2`}
     >
-      <p className='text-center text-md-relative font-bold text-inherit truncate whitespace-normal'>{data.title}</p>
+      <span className='text-center text-base-relative font-bold text-inherit truncate whitespace-normal'>
+        {data.title}
+      </span>
+      <span className='text-xs-relative text-center'>by {data.user.full_name}<br />
+        {data.length} blocks
+      </span>
     </div>
   )
 }
