@@ -49,7 +49,7 @@ function ImageBlock ({ data }) {
 function LinkBlock ({ data }) {
   return (
     <>
-      <a href={data.source.url} target='_blank' rel='noreferrer'>
+      <a href={data.source.url} target='_blank' rel='noreferrer' className='h-full w-full flex'>
         <ImageBlock data={data} />
       </a>
     </>
