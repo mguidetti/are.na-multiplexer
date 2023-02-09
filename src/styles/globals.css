@@ -18,7 +18,7 @@ main,
   height: 100vh;
   width: 100vw;
   margin: 0;
-  background: rgb(var(--background-color))
+  background: rgb(var(--background-color));
 }
 
 #root {
@@ -72,7 +72,8 @@ main,
   border-color: rgb(var(--color));
 }
 
-.mosaic-window .mosaic-window-toolbar, .mosaic-preview .mosaic-window-toolbar {
+.mosaic-window .mosaic-window-toolbar,
+.mosaic-preview .mosaic-window-toolbar {
   border-bottom-width: 2px;
   border-color: inherit;
   background-color: rgb(var(--background-color));
@@ -103,4 +104,9 @@ main,
 
 .scrollbar-thin {
   overflow: auto;
+}
+
+.embedly-embed {
+  height: 100%;
+  width: 100%;
 }

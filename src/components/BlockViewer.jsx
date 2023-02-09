@@ -57,11 +57,11 @@ function LinkBlock ({ data }) {
 }
 
 function MediaBlock ({ data }) {
+  const embed = { __html: data.embed.html }
+
   return (
     <>
-      <a href={data.source.url} target='_blank' rel='noreferrer'>
-        <ImageBlock data={data} />
-      </a>
+      <div dangerouslySetInnerHTML={embed} className='aspect-video w-full h-full p-16' />
     </>
   )
 }
