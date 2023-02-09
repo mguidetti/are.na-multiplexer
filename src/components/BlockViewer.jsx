@@ -5,6 +5,9 @@ import Spinner from './Spinner'
 import XMarkIcon from '@/icons/x-mark.svg'
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
 import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+
+dayjs.extend(relativeTime)
 
 function AttachmentBlock ({ data }) {
   return (
@@ -107,17 +110,20 @@ function BlockViewer ({ blockData }) {
       <div className='relative h-full w-full overflow-hidden flex justify-center items-center z-50 bg-background bg-opacity-70  border-2 border-secondary rounded-sm p-8 drop-shadow-panel'>
         {renderBlock()}
 
-        <div className='absolute bottom-0 right-0 text-primary text-sm border-secondary border-t-2 border-l-2 py-2 px-4 rounded-sm bg-background bg-opacity-90 text-right'>
-          <h1 className='font-bold'>{blockData.generated_title}</h1>
-          <p className=''>
-            Connected {dayjs(blockData.connected_at).format('MMM D, YYYY HH:MM:ss ZZ')} by {blockData.user.full_name}
+        <div className='absolute bottom-0 right-0 text-primary text-sm border-secondary border-t-2 border-l-2 py-2 px-4 rounded-sm bg-background bg-opacity-90 text-right max-w-[70vw]'>
+          <h1 className='font-bold truncate'>{blockData.generated_title}</h1>
+          {blockData.description && <p className='truncate'>{blockData.description}</p>}
+          <p className='truncate'>
+            Added {dayjs(blockData.connected_at).fromNow()} by {blockData.user.full_name}
           </p>
           {blockData.source && (
-            <a href={blockData.source.url} className='underline' target='_blank' rel='noreferrer'>
-              {blockData.source.url}
-            </a>
+            <span className='block truncate'>
+              Source:{' '}
+              <a href={blockData.source.url} className='underline' target='_blank' rel='noreferrer'>
+                {blockData.source.title}
+              </a>
+            </span>
           )}
-          {blockData.description && <p>{blockData.description}</p>}
         </div>
 
         <button onClick={close} className='fixed top-0 right-0'>
