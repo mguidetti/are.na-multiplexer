@@ -91,11 +91,11 @@ function GridBlock ({ data }) {
         {renderBlock()}
         <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-20' />
         <div className='absolute bottom-0 hidden group-hover:flex gap-x-2 p-1 z-10 w-full text-secondary drop-shadow-md justify-end'>
-          <button className='w-5 h-5' title='View' onClick={handleView}>
+          <button className='w-5 h-5 hover:scale-125' title='View' onClick={handleView}>
             <EyeIcon />
           </button>
           {windowCtx.canDelete && (
-            <button className='w-5 h-5' title='Disconnect' onClick={handleDelete}>
+            <button className='w-5 h-5 hover:scale-125' title='Disconnect' onClick={handleDelete}>
               <TrashIcon />
             </button>
           )}
