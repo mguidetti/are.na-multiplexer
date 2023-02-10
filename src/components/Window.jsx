@@ -164,9 +164,10 @@ function Window ({ path, channel }) {
       loadingStatus,
       loadMore,
       connectBlock,
-      disconnectBlock
+      disconnectBlock,
+      canDelete
     }),
-    [loadingStatus, loadMore, connectBlock, disconnectBlock]
+    [loadingStatus, loadMore, connectBlock, disconnectBlock, canDelete]
   )
 
   return (

@@ -1,3 +1,8 @@
+import { DesktopContext } from '@/context/DesktopContext'
+import { WindowContext } from '@/context/WindowContext'
+import EyeIcon from '@/icons/eye.svg'
+import TrashIcon from '@/icons/trash.svg'
+import { useContext } from 'react'
 import BlockContainer from './BlockContainer'
 
 function AttachmentBlock ({ data }) {
@@ -46,6 +51,9 @@ function TextBlock ({ data }) {
 }
 
 function GridBlock ({ data }) {
+  const desktopCtx = useContext(DesktopContext)
+  const windowCtx = useContext(WindowContext)
+
   const renderBlock = () => {
     switch (data.class) {
       case 'Attachment':
@@ -63,11 +71,35 @@ function GridBlock ({ data }) {
     }
   }
 
+  const handleView = () => {
+    if (data.class === 'Channel') {
+      desktopCtx.addChannel(data)
+    } else {
+      desktopCtx.setBlockViewerData(data)
+    }
+  }
+
+  const handleDelete = () => {
+    if (window.confirm('Are you sure you want to disconnect this block?')) {
+      windowCtx.disconnectBlock(data)
+    }
+  }
+
   return (
-    <BlockContainer data={data} disconnectBlock={disconnectBlock}>
-      <div className='group relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer hover:outline hover:outline-2 hover:outline-secondary'>
+    <BlockContainer data={data}>
+      <div className='group relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer hover:outline hover:outline-2 hover:outline-secondary outlin'>
         {renderBlock()}
-        <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-10' />
+        <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-20' />
+        <div className='absolute bottom-0 hidden group-hover:flex gap-x-2 p-1 z-10 w-full text-secondary drop-shadow-md justify-end'>
+          <button className='w-5 h-5' title='View' onClick={handleView}>
+            <EyeIcon />
+          </button>
+          {windowCtx.canDelete && (
+            <button className='w-5 h-5' title='Disconnect' onClick={handleDelete}>
+              <TrashIcon />
+            </button>
+          )}
+        </div>
       </div>
     </BlockContainer>
   )
