@@ -35,7 +35,11 @@ function BlockContainer ({ data, children }) {
   }
 
   return (
-    <div ref={drag} onDoubleClick={handleDoubleClick} className={classNames({ 'opacity-25': isDragging })}>
+    <div
+      ref={drag}
+      onDoubleClick={handleDoubleClick}
+      className={classNames({ 'opacity-25': isDragging, 'pointer-events-none': data.processing })}
+    >
       {children}
     </div>
   )

@@ -45,10 +45,7 @@ function GridBlock ({ data }) {
   return (
     <BlockContainer data={data}>
       <div
-        className={classNames(
-          'group relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer hover:outline hover:outline-2 hover:outline-secondary outlin',
-          { 'pointer-events-none': data.processing }
-        )}
+        className='group relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer hover:outline hover:outline-2 hover:outline-secondary'
       >
         {renderBlock()}
         <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-20' />
