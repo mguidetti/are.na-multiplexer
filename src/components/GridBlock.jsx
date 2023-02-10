@@ -5,12 +5,8 @@ import TrashIcon from '@/icons/trash.svg'
 import { useContext } from 'react'
 import BlockContainer from './BlockContainer'
 import Spinner from './Spinner'
-import classNames from 'classnames'
 
 function GridBlock ({ data }) {
-  const desktopCtx = useContext(DesktopContext)
-  const windowCtx = useContext(WindowContext)
-
   const renderBlock = () => {
     switch (data.class) {
       case 'Attachment':
@@ -28,6 +24,27 @@ function GridBlock ({ data }) {
     }
   }
 
+  return (
+    <BlockContainer data={data}>
+      <div className='group relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer hover:outline hover:outline-2 hover:outline-secondary'>
+        {renderBlock()}
+        <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-20' />
+        {data.processing && (
+          <div className='absolute h-full w-full flex justify-center items-center bg-background bg-opacity-75'>
+            <Spinner />
+          </div>
+        )}
+
+        <Actions data={data} />
+      </div>
+    </BlockContainer>
+  )
+}
+
+function Actions ({ data }) {
+  const desktopCtx = useContext(DesktopContext)
+  const windowCtx = useContext(WindowContext)
+
   const handleView = () => {
     if (data.class === 'Channel') {
       desktopCtx.addChannel(data)
@@ -43,29 +60,16 @@ function GridBlock ({ data }) {
   }
 
   return (
-    <BlockContainer data={data}>
-      <div
-        className='group relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer hover:outline hover:outline-2 hover:outline-secondary'
-      >
-        {renderBlock()}
-        <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-20' />
-        {data.processing && (
-          <div className='absolute h-full w-full flex justify-center items-center bg-background bg-opacity-75'>
-            <Spinner />
-          </div>
-        )}
-        <div className='absolute bottom-0 hidden group-hover:flex gap-x-2 p-1 z-10 w-full text-secondary drop-shadow-md justify-end'>
-          <button className='w-5 h-5 hover:scale-125' title='View' onClick={handleView}>
-            <EyeIcon />
-          </button>
-          {windowCtx.canDelete && (
-            <button className='w-5 h-5 hover:scale-125' title='Disconnect' onClick={handleDelete}>
-              <TrashIcon />
-            </button>
-          )}
-        </div>
-      </div>
-    </BlockContainer>
+    <div className='absolute bottom-0 hidden group-hover:flex gap-x-2 p-1 z-10 w-full text-secondary drop-shadow-md justify-end'>
+      <button className='w-5 h-5 hover:scale-125' title='View' onClick={handleView}>
+        <EyeIcon />
+      </button>
+      {windowCtx.canDelete && (
+        <button className='w-5 h-5 hover:scale-125' title='Disconnect' onClick={handleDelete}>
+          <TrashIcon />
+        </button>
+      )}
+    </div>
   )
 }
 

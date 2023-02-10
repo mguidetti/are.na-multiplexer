@@ -29,7 +29,7 @@ function BlockBody ({ data }) {
   )
 }
 
-function ListBlock ({ data }) {
+function Actions ({ data }) {
   const desktopCtx = useContext(DesktopContext)
   const windowCtx = useContext(WindowContext)
 
@@ -48,6 +48,21 @@ function ListBlock ({ data }) {
   }
 
   return (
+    <div class='hidden gap-x-2 absolute right-0 px-2 group-hover:flex'>
+      <button className='w-5 h-5 hover:text-secondary' title='View' onClick={handleView}>
+        <EyeIcon />
+      </button>
+      {windowCtx.canDelete && (
+        <button className='w-5 h-5 hover:text-secondary' title='Disconnect' onClick={handleDelete}>
+          <TrashIcon />
+        </button>
+      )}
+    </div>
+  )
+}
+
+function ListBlock ({ data }) {
+  return (
     <BlockContainer data={data}>
       <div
         className={`relative group grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-secondary/30 cursor-pointer border-b border-[var(--color)] channel-status-${data.status}`}
@@ -60,16 +75,7 @@ function ListBlock ({ data }) {
           </div>
         )}
 
-        <div class='hidden gap-x-2 absolute right-0 px-2 group-hover:flex'>
-          <button className='w-5 h-5 hover:text-secondary' title='View' onClick={handleView}>
-            <EyeIcon />
-          </button>
-          {windowCtx.canDelete && (
-            <button className='w-5 h-5 hover:text-secondary' title='Disconnect' onClick={handleDelete}>
-              <TrashIcon />
-            </button>
-          )}
-        </div>
+        <Actions data={data} />
       </div>
     </BlockContainer>
   )
