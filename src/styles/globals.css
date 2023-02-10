@@ -85,6 +85,7 @@ main,
 .mosaic-preview .mosaic-window-title {
   padding-left: 0.5rem;
   font-weight: bold;
+  user-select: none;
 }
 
 .mosaic-window .mosaic-window-body,
