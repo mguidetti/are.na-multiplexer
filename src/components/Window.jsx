@@ -127,7 +127,7 @@ function Window ({ path, channel }) {
   )
 
   const addBlock = block => {
-    setBlocks(blocks => [...blocks, block])
+    setBlocks(blocks => [block, ...blocks])
   }
 
   const removeBlock = removingBlock => {
