@@ -1,5 +1,10 @@
 import BlockContainer from './BlockContainer'
 import SquareIcon from '@/icons/square.svg'
+import EyeIcon from '@/icons/eye.svg'
+import TrashIcon from '@/icons/trash.svg'
+import { DesktopContext } from '@/context/DesktopContext'
+import { WindowContext } from '@/context/WindowContext'
+import { useContext } from 'react'
 
 function ChannelBody ({ data }) {
   return (
@@ -24,12 +29,40 @@ function BlockBody ({ data }) {
 }
 
 function ListBlock ({ data }) {
+  const desktopCtx = useContext(DesktopContext)
+  const windowCtx = useContext(WindowContext)
+
+  const handleView = () => {
+    if (data.class === 'Channel') {
+      desktopCtx.addChannel(data)
+    } else {
+      desktopCtx.setBlockViewerData(data)
+    }
+  }
+
+  const handleDelete = () => {
+    if (window.confirm('Are you sure you want to disconnect this block?')) {
+      windowCtx.disconnectBlock(data)
+    }
+  }
+
   return (
     <BlockContainer data={data}>
       <div
-        className={`grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-secondary/30 cursor-pointer channel-status-${data.status}`}
+        className={`group grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-secondary/30 cursor-pointer channel-status-${data.status}`}
       >
         {data.class === 'Channel' ? <ChannelBody data={data} /> : <BlockBody data={data} />}
+
+        <div class='hidden gap-x-2 absolute right-0 px-2 group-hover:flex'>
+          <button className='w-5 h-5 hover:text-secondary' title='View' onClick={handleView}>
+            <EyeIcon />
+          </button>
+          {windowCtx.canDelete && (
+            <button className='w-5 h-5 hover:text-secondary' title='Disconnect' onClick={handleDelete}>
+              <TrashIcon />
+            </button>
+          )}
+        </div>
       </div>
     </BlockContainer>
   )
