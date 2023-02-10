@@ -9,7 +9,7 @@ function BlocksList ({ blocks }) {
   const windowCtx = useContext(WindowContext)
 
   const ListContainer = React.forwardRef(function ListContainer (props, ref) {
-    return <ul {...props} ref={ref} className='divide-y divide divide-primary/70 text-primary' />
+    return <ul {...props} ref={ref} />
   })
 
   return (
