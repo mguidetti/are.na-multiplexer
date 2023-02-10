@@ -114,7 +114,7 @@ function BlockViewer ({ blockData }) {
       <div className='relative h-full w-full overflow-hidden flex justify-center items-center z-50 bg-background bg-opacity-70  border-2 border-secondary rounded-sm p-8 drop-shadow-panel'>
         {renderBlock()}
         <button onClick={close} className='absolute top-0 right-0 p-1'>
-          <XMarkIcon className='w-8 hover:text-secondary' title='Close' strokeWidth='1.5' />
+          <XMarkIcon className='w-8 text-secondary hover:text-primary' title='Close' strokeWidth='1.5' />
         </button>
         <a
           href={`https://are.na/block/${blockData.id}`}
@@ -123,13 +123,13 @@ function BlockViewer ({ blockData }) {
           rel='noreferrer'
           title='View at Are.na'
         >
-          <ArenaMarkIcon className='w-8 hover:text-secondary' />
+          <ArenaMarkIcon className='w-8 text-secondary hover:text-primary' />
         </a>
 
         {infoVisible && <BlockInfo blockData={blockData} setInfoVisible={setInfoVisible} />}
         {!infoVisible && (
           <button onClick={() => setInfoVisible(true)} title='Show info' className='absolute bottom-0 right-0 p-2'>
-            <InfoIcon className='w-6 hover:text-secondary' />
+            <InfoIcon className='w-6 text-secondary hover:text-primary' />
           </button>
         )}
       </div>
@@ -140,9 +140,9 @@ function BlockViewer ({ blockData }) {
 
 function BlockInfo ({ blockData, setInfoVisible }) {
   return (
-    <div className='absolute bottom-0 right-0 text-primary text-sm border-secondary border-t-2 border-l-2 py-2 px-4 rounded-sm bg-background bg-opacity-90 text-right max-w-[70vw]'>
-      <button onClick={() => setInfoVisible(true)} className='absolute top-0 right-0 p-1'>
-        <XMarkIcon className='w-6 hover:text-secondary' title='Close' strokeWidth='1.5' />
+    <div className='absolute bottom-0 right-0 text-primary text-sm border-secondary border-t-2 border-l-2 py-2 px-4 rounded-sm bg-background bg-opacity-90 max-w-[70vw]'>
+      <button onClick={() => setInfoVisible(false)} className='absolute top-0 right-0 p-1'>
+        <XMarkIcon className='w-6 text-secondary hover:text-primary' title='Close' strokeWidth='2' />
       </button>
 
       <div className='mr-6'>
