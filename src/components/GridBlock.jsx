@@ -2,11 +2,17 @@ import { DesktopContext } from '@/context/DesktopContext'
 import { WindowContext } from '@/context/WindowContext'
 import EyeIcon from '@/icons/eye.svg'
 import TrashIcon from '@/icons/trash.svg'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import BlockContainer from './BlockContainer'
 import Spinner from './Spinner'
 
 function GridBlock ({ data }) {
+  const [isHovering, setIsHovering] = useState(false)
+
+  const handleHover = () => {
+    setIsHovering(prevState => !prevState)
+  }
+
   const renderBlock = () => {
     switch (data.class) {
       case 'Attachment':
@@ -26,7 +32,11 @@ function GridBlock ({ data }) {
 
   return (
     <BlockContainer data={data}>
-      <div className='group relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer hover:outline hover:outline-2 hover:outline-secondary'>
+      <div
+        className='group relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer hover:outline hover:outline-2 hover:outline-secondary'
+        onMouseOver={handleHover}
+        onMouseOut={handleHover}
+      >
         {renderBlock()}
         <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-20' />
         {data.processing && (
@@ -35,7 +45,7 @@ function GridBlock ({ data }) {
           </div>
         )}
 
-        <Actions data={data} />
+        {isHovering && <Actions data={data} />}
       </div>
     </BlockContainer>
   )
@@ -60,7 +70,7 @@ function Actions ({ data }) {
   }
 
   return (
-    <div className='absolute bottom-0 hidden group-hover:flex gap-x-2 p-1 z-10 w-full text-secondary drop-shadow-md justify-end'>
+    <div className='absolute bottom-0 flex gap-x-2 p-1 z-10 w-full text-secondary drop-shadow-md justify-end'>
       <button className='w-5 h-5 hover:scale-125' title='View' onClick={handleView}>
         <EyeIcon />
       </button>

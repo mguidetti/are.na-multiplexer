@@ -4,7 +4,7 @@ import EyeIcon from '@/icons/eye.svg'
 import TrashIcon from '@/icons/trash.svg'
 import { DesktopContext } from '@/context/DesktopContext'
 import { WindowContext } from '@/context/WindowContext'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 import Spinner from './Spinner'
 
 function ChannelBody ({ data }) {
@@ -48,7 +48,7 @@ function Actions ({ data }) {
   }
 
   return (
-    <div class='hidden gap-x-2 absolute right-0 px-2 group-hover:flex'>
+    <div class='absolute right-0 flex gap-x-2 px-2'>
       <button className='w-5 h-5 hover:text-secondary' title='View' onClick={handleView}>
         <EyeIcon />
       </button>
@@ -62,10 +62,18 @@ function Actions ({ data }) {
 }
 
 function ListBlock ({ data }) {
+  const [isHovering, setIsHovering] = useState(false)
+
+  const handleHover = () => {
+    setIsHovering(prevState => !prevState)
+  }
+
   return (
     <BlockContainer data={data}>
       <div
-        className={`relative group grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-secondary/30 cursor-pointer border-b border-[var(--color)] channel-status-${data.status}`}
+        className={`relative grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-secondary/30 cursor-pointer border-b border-[var(--color)] channel-status-${data.status}`}
+        onMouseOver={handleHover}
+        onMouseOut={handleHover}
       >
         {data.class === 'Channel' ? <ChannelBody data={data} /> : <BlockBody data={data} />}
 
@@ -75,7 +83,7 @@ function ListBlock ({ data }) {
           </div>
         )}
 
-        <Actions data={data} />
+        {isHovering && <Actions data={data} />}
       </div>
     </BlockContainer>
   )
