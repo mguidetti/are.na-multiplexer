@@ -37,8 +37,8 @@ function Info () {
           <li>Load or create channels into the workspace</li>
           <li>Resize and move channels</li>
           <li>
-            Click and drag blocks to rearrange their order. Or drag them into other channels to connect them. When
-            dragging into other channels, hold ALT to copy a block instead of moving it
+            Click and drag blocks into other channels to connect them. While dragging, hold ALT to copy
+            a block instead of moving it
           </li>
           <li>View blocks in channels as lists or grids</li>
           <li>Double click blocks to open them in a fullscreen viewer</li>
