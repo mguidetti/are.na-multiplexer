@@ -12,9 +12,15 @@ dayjs.extend(relativeTime)
 
 function AttachmentBlock ({ data }) {
   return (
-    <>
-      <ImageBlock data={data} />
-    </>
+    <a href={data.attachment.url} target='_blank' rel='noreferrer' className='h-full w-full flex flex-col '>
+      {data.image
+        ? (
+          <ImageBlock data={data} />
+          )
+        : (
+          <span className='font-bold text-2xl uppercase'>{data.generated_title}</span>
+          )}
+    </a>
   )
 }
 
@@ -53,7 +59,8 @@ function ImageBlock ({ data }) {
 function LinkBlock ({ data }) {
   return (
     <>
-      <a href={data.source.url} target='_blank' rel='noreferrer' className='h-full w-full flex'>
+      <a href={data.source.url} target='_blank' rel='noreferrer' className='h-full w-full flex flex-col gap-y-2'>
+        <div className='underline'>{data.source.url}</div>
         <ImageBlock data={data} />
       </a>
     </>
@@ -65,7 +72,7 @@ function MediaBlock ({ data }) {
 
   return (
     <>
-      <div dangerouslySetInnerHTML={embed} className='aspect-video w-full h-full p-16' />
+      <div dangerouslySetInnerHTML={embed} className='w-full h-full flex items-center justify-center p-16' />
     </>
   )
 }
@@ -111,7 +118,7 @@ function BlockViewer ({ blockData }) {
 
   return (
     <div className='fixed inset-0 h-screen w-screen z-50 p-8 bg-background/30'>
-      <div className='relative h-full w-full overflow-hidden flex justify-center items-center z-50 bg-background bg-opacity-70  border-2 border-secondary rounded-sm p-8 drop-shadow-panel'>
+      <div className='relative h-full w-full overflow-hidden flex justify-center items-center z-50 bg-background bg-opacity-70 border-2 border-secondary rounded-sm p-8 drop-shadow-panel'>
         {renderBlock()}
         <button onClick={close} className='absolute top-0 right-0 p-1'>
           <XMarkIcon className='w-8 text-secondary hover:text-primary' title='Close' strokeWidth='1.5' />
