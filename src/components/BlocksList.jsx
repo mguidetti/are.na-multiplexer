@@ -5,7 +5,7 @@ import WindowFooter from './WindowFooter'
 import WindowScroller from './WindowScroller'
 import { WindowContext } from '@/context/WindowContext'
 
-function BlocksList ({ blocks, loadMore }) {
+function BlocksList ({ blocks }) {
   const windowCtx = useContext(WindowContext)
 
   const ListContainer = React.forwardRef(function ListContainer (props, ref) {
