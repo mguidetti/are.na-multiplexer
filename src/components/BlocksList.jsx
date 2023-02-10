@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { Virtuoso } from 'react-virtuoso'
-import ListBlock from './ListBlock'
+import BlocksListItem from './BlocksListItem'
 import WindowFooter from './WindowFooter'
 import WindowScroller from './WindowScroller'
 import { WindowContext } from '@/context/WindowContext'
@@ -22,11 +22,7 @@ function BlocksList ({ blocks }) {
         Scroller: WindowScroller,
         Footer: WindowFooter
       }}
-      itemContent={(index, block) => (
-        <li key={block.id}>
-          <ListBlock data={block} />
-        </li>
-      )}
+      itemContent={(index, block) => <BlocksListItem key={block.id} data={block} />}
     />
   )
 }

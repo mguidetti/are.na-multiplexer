@@ -61,7 +61,7 @@ function Actions ({ data }) {
   )
 }
 
-function ListBlock ({ data }) {
+function BlocksListItem ({ data }) {
   const [isHovering, setIsHovering] = useState(false)
 
   const handleHover = () => {
@@ -69,24 +69,26 @@ function ListBlock ({ data }) {
   }
 
   return (
-    <BlockContainer data={data}>
-      <div
-        className={`relative grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-secondary/30 cursor-pointer border-b border-[var(--color)] channel-status-${data.status}`}
-        onMouseOver={handleHover}
-        onMouseOut={handleHover}
-      >
-        {data.class === 'Channel' ? <ChannelBody data={data} /> : <BlockBody data={data} />}
+    <li>
+      <BlockContainer data={data}>
+        <div
+          className={`relative grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-secondary/30 cursor-pointer border-b border-[var(--color)] channel-status-${data.status}`}
+          onMouseOver={handleHover}
+          onMouseOut={handleHover}
+        >
+          {data.class === 'Channel' ? <ChannelBody data={data} /> : <BlockBody data={data} />}
 
-        {data.processing && (
-          <div className='absolute h-full w-full flex justify-start items-center bg-background bg-opacity-75 py-1 px-2'>
-            <Spinner className='h-full' />
-          </div>
-        )}
+          {data.processing && (
+            <div className='absolute h-full w-full flex justify-start items-center bg-background bg-opacity-75 py-1 px-2'>
+              <Spinner className='h-full' />
+            </div>
+          )}
 
-        {isHovering && <Actions data={data} />}
-      </div>
-    </BlockContainer>
+          {isHovering && <Actions data={data} />}
+        </div>
+      </BlockContainer>
+    </li>
   )
 }
 
-export default ListBlock
+export default BlocksListItem

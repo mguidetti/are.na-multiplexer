@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { VirtuosoGrid } from 'react-virtuoso'
-import GridBlock from './GridBlock'
+import BlocksGridItem from './BlocksGridItem'
 import WindowFooter from './WindowFooter'
 import WindowScroller from './WindowScroller'
 import { WindowContext } from '@/context/WindowContext'
@@ -31,7 +31,7 @@ function BlocksGrid ({ blocks }) {
         Scroller: WindowScroller,
         Footer: WindowFooter
       }}
-      itemContent={(index, block) => <GridBlock key={block.id} data={block} />}
+      itemContent={(index, block) => <BlocksGridItem key={block.id} data={block} />}
     />
   )
 }

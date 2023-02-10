@@ -6,7 +6,7 @@ import { useContext, useState } from 'react'
 import BlockContainer from './BlockContainer'
 import Spinner from './Spinner'
 
-function GridBlock ({ data }) {
+function BlocksGridItem ({ data }) {
   const [isHovering, setIsHovering] = useState(false)
 
   const handleHover = () => {
@@ -128,4 +128,4 @@ function TextBlock ({ data }) {
   )
 }
 
-export default GridBlock
+export default BlocksGridItem
