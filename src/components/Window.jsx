@@ -12,6 +12,9 @@ import WindowToolbar from './WindowToolbar'
 
 function Window ({ path, channel }) {
   const arena = useArena()
+  const channelObj = useMemo(() => {
+    if (arena) return arena.channel(channel.id)
+  }, [arena, channel])
 
   const { data } = useSession()
   const [loadingStatus, setLoadingStatus] = useState('inactive')
@@ -73,21 +76,27 @@ function Window ({ path, channel }) {
 
   const connectBlock = useCallback(
     async block => {
+      block.processing = true
       addBlock(block)
-      const channelObj = arena.channel(channel.id)
 
       let result
 
-      if (block.class === 'Channel') {
-        result = await channelObj.connect.channel(block.id)
-      } else {
-        result = await channelObj.connect.block(block.id)
-      }
+      try {
+        if (block.class === 'Channel') {
+          result = await channelObj.connect.channel(block.id)
+        } else {
+          result = await channelObj.connect.block(block.id)
+        }
+        // Replace copied block with updated data from response after connection
+        setBlocks(blocks => blocks.map(b => (b.id === result.id ? result : b)))
 
-      // TODO: should update the block that was added with new info (connection_id, etc)
-      return result
+        return result
+      } catch (error) {
+        setError(error)
+        removeBlock(block)
+      }
     },
-    [arena, channel]
+    [channelObj]
   )
 
   const disconnectBlock = useCallback(
@@ -99,14 +108,22 @@ function Window ({ path, channel }) {
 
       if (!canDelete) return
 
-      removeBlock(block)
+      block.processing = true
+      setBlocks(blocks => blocks.map(b => (b.id === block.id ? block : b)))
 
-      const channelObj = arena.channel(channel.id)
-      const result = await channelObj.disconnect.block(block.id)
+      try {
+        await channelObj.disconnect.connection(block.connection_id)
 
-      console.log(result)
+        removeBlock(block)
+
+        return true
+      } catch (error) {
+        setError(error)
+        block.processing = null
+        setBlocks(blocks => blocks.map(b => (b.id === block.id ? block : b)))
+      }
     },
-    [arena, channel, canDelete]
+    [channelObj, canDelete]
   )
 
   const addBlock = block => {

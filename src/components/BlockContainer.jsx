@@ -20,6 +20,7 @@ function BlockContainer ({ data, children }) {
         }
       }
     },
+    canDrag: (item, monitor) => !data.processing,
     collect: monitor => ({
       isDragging: monitor.isDragging()
     })
