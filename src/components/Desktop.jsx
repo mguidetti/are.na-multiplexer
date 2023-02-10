@@ -58,7 +58,7 @@ export default function Desktop () {
         <header>
           <Header />
         </header>
-        <main class='h-full'>
+        <main className='h-full'>
           <Mosaic
             renderTile={tileRenderer}
             initialValue={layout}
