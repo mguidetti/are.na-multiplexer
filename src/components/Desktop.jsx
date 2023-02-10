@@ -61,7 +61,7 @@ export default function Desktop () {
         <main className='h-full'>
           <Mosaic
             renderTile={tileRenderer}
-            initialValue={layout}
+            value={layout}
             onChange={handleChange}
             className='arena-multiplexer'
             zeroStateView={<ZeroState />}
