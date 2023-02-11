@@ -6,12 +6,12 @@ import BlocksListItem from './BlocksListItem'
 import WindowFooter from './WindowFooter'
 import WindowScroller from './WindowScroller'
 
+const ListContainer = React.forwardRef(function ListContainer (props, ref) {
+  return <div {...props} ref={ref} />
+})
+
 function BlocksList ({ blocks }) {
   const windowCtx = useContext(WindowContext)
-
-  const ListContainer = React.forwardRef(function ListContainer (props, ref) {
-    return <div {...props} ref={ref} />
-  })
 
   return (
     <Virtuoso
