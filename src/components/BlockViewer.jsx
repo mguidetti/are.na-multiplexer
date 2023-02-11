@@ -11,15 +11,17 @@ import InfoIcon from '@/icons/info.svg'
 dayjs.extend(relativeTime)
 
 function AttachmentBlock ({ data }) {
+  const renderBody = () => {
+    if (data.image) {
+      return <ImageBlock data={data} />
+    } else {
+      return <span className='font-bold text-2xl uppercase'>{data.generated_title}</span>
+    }
+  }
+
   return (
     <a href={data.attachment.url} target='_blank' rel='noreferrer' className='h-full w-full flex flex-col '>
-      {data.image
-        ? (
-          <ImageBlock data={data} />
-          )
-        : (
-          <span className='font-bold text-2xl uppercase'>{data.generated_title}</span>
-          )}
+      {renderBody()}
     </a>
   )
 }
