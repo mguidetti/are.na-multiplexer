@@ -4,6 +4,7 @@ import BlocksGridItem from './BlocksGridItem'
 import WindowFooter from './WindowFooter'
 import WindowScroller from './WindowScroller'
 import { WindowContext } from '@/context/WindowContext'
+import BlockContainer from './BlockContainer'
 
 function BlocksGrid ({ blocks }) {
   const windowCtx = useContext(WindowContext)
@@ -31,7 +32,11 @@ function BlocksGrid ({ blocks }) {
         Scroller: WindowScroller,
         Footer: WindowFooter
       }}
-      itemContent={(index, block) => <BlocksGridItem key={block.id} data={block} />}
+      itemContent={(index, block) => (
+        <BlockContainer data={block}>
+          <BlocksGridItem key={block.id} data={block} />
+        </BlockContainer>
+      )}
     />
   )
 }

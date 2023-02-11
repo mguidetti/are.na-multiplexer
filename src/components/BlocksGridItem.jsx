@@ -1,17 +1,10 @@
-import { DesktopContext } from '@/context/DesktopContext'
-import { WindowContext } from '@/context/WindowContext'
-import EyeIcon from '@/icons/eye.svg'
-import TrashIcon from '@/icons/trash.svg'
-import { useContext, useState } from 'react'
-import BlockContainer from './BlockContainer'
+import { BlockContext } from '@/context/BlockContext'
+import { useContext } from 'react'
+import BlockActions from './BlockActions'
 import Spinner from './Spinner'
 
 function BlocksGridItem ({ data }) {
-  const [isHovering, setIsHovering] = useState(false)
-
-  const handleHover = () => {
-    setIsHovering(prevState => !prevState)
-  }
+  const blockCtx = useContext(BlockContext)
 
   const renderBlock = () => {
     switch (data.class) {
@@ -31,53 +24,21 @@ function BlocksGridItem ({ data }) {
   }
 
   return (
-    <BlockContainer data={data}>
-      <div
-        className='group relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer hover:outline hover:outline-2 hover:outline-secondary'
-        onMouseOver={handleHover}
-        onMouseOut={handleHover}
-      >
-        {renderBlock()}
-        <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-20' />
-        {data.processing && (
-          <div className='absolute h-full w-full flex justify-center items-center bg-background bg-opacity-75'>
-            <Spinner />
-          </div>
-        )}
+    <div className='group relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer hover:outline hover:outline-2 hover:outline-secondary'>
+      {renderBlock()}
 
-        {isHovering && <Actions data={data} />}
-      </div>
-    </BlockContainer>
-  )
-}
+      <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-20' />
 
-function Actions ({ data }) {
-  const desktopCtx = useContext(DesktopContext)
-  const windowCtx = useContext(WindowContext)
+      {data.processing && (
+        <div className='absolute h-full w-full flex justify-center items-center bg-background bg-opacity-75'>
+          <Spinner />
+        </div>
+      )}
 
-  const handleView = () => {
-    if (data.class === 'Channel') {
-      desktopCtx.addChannel(data)
-    } else {
-      desktopCtx.setBlockViewerData(data)
-    }
-  }
-
-  const handleDelete = () => {
-    if (window.confirm('Are you sure you want to disconnect this block?')) {
-      windowCtx.disconnectBlock(data)
-    }
-  }
-
-  return (
-    <div className='absolute bottom-0 flex gap-x-2 p-1 z-10 w-full text-secondary drop-shadow-md justify-end'>
-      <button className='w-5 h-5 hover:scale-125' title='View' onClick={handleView}>
-        <EyeIcon />
-      </button>
-      {windowCtx.canDelete && (
-        <button className='w-5 h-5 hover:scale-125' title='Disconnect' onClick={handleDelete}>
-          <TrashIcon />
-        </button>
+      {blockCtx.isHovering && (
+        <div className='absolute bottom-0 flex gap-x-2 p-1 z-10 w-full text-secondary drop-shadow-md justify-end'>
+          <BlockActions data={data} />
+        </div>
       )}
     </div>
   )
