@@ -88,7 +88,7 @@ function Window ({ path, channel }) {
           result = await channelObj.connect.block(block.id)
         }
         // Replace copied block with updated data from response after connection
-        setBlocks(blocks => blocks.map(b => (b.id === result.id ? result : b)))
+        updateBlock(result)
 
         return result
       } catch (error) {
@@ -109,7 +109,7 @@ function Window ({ path, channel }) {
       if (!canDelete) return
 
       block.processing = true
-      setBlocks(blocks => blocks.map(b => (b.id === block.id ? block : b)))
+      updateBlock(block)
 
       try {
         await channelObj.disconnect.connection(block.connection_id)
@@ -120,7 +120,7 @@ function Window ({ path, channel }) {
       } catch (error) {
         setError(error)
         block.processing = null
-        setBlocks(blocks => blocks.map(b => (b.id === block.id ? block : b)))
+        updateBlock(block)
       }
     },
     [channelObj, canDelete]
@@ -130,8 +130,12 @@ function Window ({ path, channel }) {
     setBlocks(blocks => [block, ...blocks])
   }
 
-  const removeBlock = removingBlock => {
-    setBlocks(blocks => blocks.filter(block => block.id !== removingBlock.id))
+  const removeBlock = block => {
+    setBlocks(blocks => blocks.filter(b => b.id !== block.id))
+  }
+
+  const updateBlock = block => {
+    setBlocks(blocks => blocks.map(b => (b.id === block.id ? block : b)))
   }
 
   const [{ isActive }, dropRef] = useDrop({
