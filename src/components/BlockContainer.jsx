@@ -48,11 +48,12 @@ function BlockContainer ({ data, children }) {
 
   const contextValues = useMemo(
     () => ({
+      data,
       handleDelete,
       handleView,
       isHovering
     }),
-    [handleDelete, handleView, isHovering]
+    [data, handleDelete, handleView, isHovering]
   )
 
   return (
