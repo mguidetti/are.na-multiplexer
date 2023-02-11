@@ -47,10 +47,10 @@ function ChannelLoader () {
           control: ({ isFocused, menuIsOpen }) =>
             classNames('bg-background border-2 rounded-md border-primary/70 px-2 font-bold', {
               'bg-secondary/10 !text-secondary !border-secondary': isFocused,
-              '!rounded-b-none !border-b-transparent': menuIsOpen
+              '!rounded-b-none !border-b-0': menuIsOpen
             }),
           placeholder: ({ isFocused }) => classNames('font-normal', { hidden: isFocused }),
-          menu: () => '-mt-1 bg-zinc-900 border-2 border-t-0 border-secondary rounded-b-md drop-shadow-panel',
+          menu: () => 'bg-zinc-900 border-2 border-t-0 border-secondary rounded-b-md drop-shadow-panel',
           menuList: () => 'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/30 rounded-b-md',
           loadingMessage: () => 'p-2',
           option: ({ data, isFocused }) =>
