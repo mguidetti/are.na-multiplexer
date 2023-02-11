@@ -82,9 +82,11 @@ function ImageBlock ({ data }) {
 }
 
 function TextBlock ({ data }) {
+  const body = { __html: data.content_html }
+
   return (
     <div className='border border-primary/25 p-2 h-full w-full overflow-hidden'>
-      <p className='text-sm-relative truncate whitespace-normal'>{data.content}</p>
+      <div dangerouslySetInnerHTML={body} className='text-xs-relative truncate whitespace-normal prose prose-invert prose-sm' />
     </div>
   )
 }

@@ -80,10 +80,13 @@ function MediaBlock ({ data }) {
 }
 
 function TextBlock ({ data }) {
+  const body = { __html: data.content_html }
+
   return (
-    <>
-      <p className='text-base self-start justify-self-start'>{data.content}</p>
-    </>
+    <div
+      dangerouslySetInnerHTML={body}
+      className='text-base self-start prose prose-invert lg:prose-lg prose-li:!my-0'
+    />
   )
 }
 
