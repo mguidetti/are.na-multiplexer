@@ -6,11 +6,13 @@ import { DesktopContext } from '../context/DesktopContext'
 import Header from './Header'
 import Window from './Window'
 import ZeroState from './ZeroState'
+import Dialog from './Dialog'
 
 export default function Desktop () {
   const [channels, setChannels] = useState({})
   const [layout, setLayout] = useState(null)
   const [blockViewerData, setBlockViewerData] = useState(null)
+  const [dialog, setDialog] = useState({ isOpen: false })
 
   const addChannel = useCallback(
     channel => {
@@ -47,7 +49,8 @@ export default function Desktop () {
     () => ({
       addChannel,
       removeChannel,
-      setBlockViewerData
+      setBlockViewerData,
+      setDialog
     }),
     [addChannel, removeChannel]
   )
@@ -66,8 +69,9 @@ export default function Desktop () {
             className='arena-multiplexer'
             zeroStateView={<ZeroState />}
           />
-          <BlockViewer blockData={blockViewerData} />
         </main>
+        <BlockViewer blockData={blockViewerData} />
+        <Dialog data={dialog} setDialog={setDialog} />
       </DesktopContext.Provider>
     </div>
   )

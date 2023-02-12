@@ -37,10 +37,12 @@ function BlockContainer ({ data, children }) {
   }, [data, desktopCtx])
 
   const handleDelete = useCallback(() => {
-    if (window.confirm('Are you sure you want to disconnect this block?')) {
-      windowCtx.disconnectBlock(data)
-    }
-  }, [data, windowCtx])
+    desktopCtx.setDialog({
+      isOpen: true,
+      message: 'Are you sure you want to disconnect this block?',
+      onConfirm: () => windowCtx.disconnectBlock(data)
+    })
+  }, [data, desktopCtx, windowCtx])
 
   const handleHover = () => {
     setIsHovering(prevState => !prevState)
