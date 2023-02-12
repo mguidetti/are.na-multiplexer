@@ -31,7 +31,7 @@ function BlocksListItem ({ data }) {
 
   return (
     <div
-      className={`relative grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-secondary/30 cursor-pointer border-b border-[var(--color)] channel-status-${data.status}`}
+      className={`relative grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-dot-grid-secondary cursor-pointer border-b border-[var(--color)] channel-status-${data.status}`}
     >
       {data.class === 'Channel' ? <ChannelBody data={data} /> : <BlockBody data={data} />}
 

@@ -24,20 +24,20 @@ function BlocksGridItem ({ data }) {
   }
 
   return (
-    <div className='group relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer hover:outline hover:outline-2 hover:outline-secondary'>
+    <div className='relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer'>
       {renderBlock()}
 
-      <div className='absolute h-full w-full group-hover:bg-secondary z-10 opacity-20' />
+      {blockCtx.isHovering && (
+        <div className='absolute h-full w-full bg-dot-grid-secondary'>
+          <div className='absolute bottom-0 right-0 p-1 pl-2 flex gap-x-2 text-secondary drop-shadow-md justify-end'>
+            <BlockActions data={data} />
+          </div>
+        </div>
+      )}
 
       {data.processing && (
         <div className='absolute h-full w-full flex justify-center items-center bg-background bg-opacity-75'>
           <Spinner />
-        </div>
-      )}
-
-      {blockCtx.isHovering && (
-        <div className='absolute bottom-0 flex gap-x-2 p-1 z-10 w-full text-secondary drop-shadow-md justify-end'>
-          <BlockActions data={data} />
         </div>
       )}
     </div>
@@ -86,7 +86,10 @@ function TextBlock ({ data }) {
 
   return (
     <div className='border border-primary/25 p-2 h-full w-full overflow-hidden'>
-      <div dangerouslySetInnerHTML={body} className='text-xs-relative truncate whitespace-normal prose prose-invert prose-sm' />
+      <div
+        dangerouslySetInnerHTML={body}
+        className='text-xs-relative truncate whitespace-normal prose prose-invert prose-sm'
+      />
     </div>
   )
 }

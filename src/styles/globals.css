@@ -103,6 +103,21 @@ main,
   background: rgb(var(--secondary-color) / 50%);
 }
 
-.scrollbar-thin {
-  overflow: auto;
+@layer components {
+  .scrollbar-thin {
+    overflow: auto;
+  }
+}
+
+@layer utilities {
+  .bg-dot-grid-secondary {
+    background: linear-gradient(
+      45deg,
+      rgb(var(--secondary-color) / 30%),
+      rgb(var(--secondary-color) / 30%) 50%,
+      rgb(var(--secondary-color) / 20%) 50%,
+      rgb(var(--secondary-color) / 20%)
+    );
+    background-size: 2px 2px;
+  }
 }
