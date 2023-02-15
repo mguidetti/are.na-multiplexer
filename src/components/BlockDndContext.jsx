@@ -45,10 +45,15 @@ function BlockDndContext ({ children }) {
     setDraggingBlock(null)
   }
 
+  function handleDragCancel () {
+    setDraggingBlock(null)
+  }
+
   return (
     <DndContext
       onDragStart={handleDragStart}
       onDragEnd={handleDragEnd}
+      onDragCancel={handleDragCancel}
       sensors={sensors}
       collisionDetection={collisionDetection}
     >
