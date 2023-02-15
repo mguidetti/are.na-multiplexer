@@ -7,7 +7,7 @@ import WindowFooter from './WindowFooter'
 import WindowScroller from './WindowScroller'
 
 const ListContainer = React.forwardRef(function ListContainer (props, ref) {
-  return <div {...props} ref={ref} />
+  return <div {...props} ref={ref} className='border-b border-[var(--color)] divide-y divide-[var(--color)]' />
 })
 
 function BlocksList ({ blocks }) {
