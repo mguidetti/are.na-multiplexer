@@ -7,10 +7,10 @@ import Spinner from './Spinner'
 function ChannelBody ({ data }) {
   return (
     <>
-      <div className='w-[calc(1.5em*var(--scale))] flex items-center justify-center channel-block'>
-        <SquareIcon className='w-6 h-6' strokeWidth='1' />
+      <div className='flex items-center justify-center channel-block'>
+        <SquareIcon className='object-contain w-full h-full aspect-square' strokeWidth='2' />
       </div>
-      <div className='truncate channel-block'>{`${data.user.full_name} / ${data.title}`}</div>
+      <div className='font-bold truncate channel-block'>{`${data.user.full_name} / ${data.title}`}</div>
     </>
   )
 }
@@ -18,8 +18,8 @@ function ChannelBody ({ data }) {
 function BlockBody ({ data }) {
   return (
     <>
-      <div className='w-[calc(1.5em*var(--scale))] flex items-center justify-center'>
-        {data.image && <img src={data.image.thumb.url} alt='' className='aspect-square object-contain' />}
+      <div className='flex items-center justify-center'>
+        {data.image && <img src={data.image.thumb.url} alt='' className='object-contain aspect-square' />}
       </div>
       <div className='truncate text-primary'>{data.title || data.generated_title}</div>
     </>
@@ -31,18 +31,18 @@ function BlocksListItem ({ data }) {
 
   return (
     <div
-      className={`relative grid grid-cols-[min-content_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-dot-grid-secondary cursor-pointer border-b border-[var(--color)] channel-status-${data.status}`}
+      className={`relative grid grid-cols-[1.5em_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-dot-grid-secondary cursor-pointer channel-status-${data.status}`}
     >
       {data.class === 'Channel' ? <ChannelBody data={data} /> : <BlockBody data={data} />}
 
       {data.processing && (
-        <div className='absolute h-full w-full flex justify-start items-center bg-background bg-opacity-75 py-1 px-2'>
+        <div className='absolute flex items-center justify-start w-full h-full px-2 py-1 bg-opacity-75 bg-background'>
           <Spinner className='h-full' />
         </div>
       )}
 
       {blockCtx.isHovering && (
-        <div className='absolute right-0 flex gap-x-2 px-2'>
+        <div className='absolute right-0 flex px-2 gap-x-2'>
           <BlockActions data={data} />
         </div>
       )}
