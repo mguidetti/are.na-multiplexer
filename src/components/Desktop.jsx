@@ -1,18 +1,29 @@
+import { useArena } from '@/hooks/useArena'
 import { addWindow } from '@/lib/mosaic'
-import { useCallback, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Mosaic } from 'react-mosaic-component'
-import BlockViewer from './BlockViewer'
+import { v4 as uuidv4 } from 'uuid'
 import { DesktopContext } from '../context/DesktopContext'
+import BlockViewer from './BlockViewer'
+import Dialog from './Dialog'
 import Header from './Header'
 import Window from './Window'
 import ZeroState from './ZeroState'
-import Dialog from './Dialog'
 
 export default function Desktop () {
   const [channels, setChannels] = useState({})
   const [layout, setLayout] = useState(null)
   const [blockViewerData, setBlockViewerData] = useState(null)
   const [dialog, setDialog] = useState({ isOpen: false })
+  const saveStateKey = 'save-state'
+  const [savedLayouts, setSavedLayouts] = useState(JSON.parse(localStorage.getItem(saveStateKey)))
+  const [isLoadingLayout, setIsLoadingLayout] = useState(false)
+
+  const arena = useArena()
+
+  useEffect(() => {
+    localStorage.setItem(saveStateKey, JSON.stringify(savedLayouts))
+  }, [savedLayouts])
 
   const addChannel = useCallback(
     channel => {
@@ -37,6 +48,45 @@ export default function Desktop () {
     [channels]
   )
 
+  const saveLayout = useCallback(
+    name => {
+      setSavedLayouts({
+        ...savedLayouts,
+        [uuidv4()]: {
+          name: name,
+          layout: layout,
+          channels: Object.keys(channels),
+          version: '1.0.0'
+        }
+      })
+    },
+    [savedLayouts, channels]
+  )
+
+  const restoreLayout = useCallback(
+    async layoutId => {
+      setLayout(null)
+      setIsLoadingLayout(true)
+
+      const save = savedLayouts[layoutId]
+
+      const savedChannels = Object.fromEntries(
+        await Promise.all(
+          save.channels.map(async channelId => {
+            const result = await arena.channel(channelId).get()
+
+            return [result.id, result]
+          })
+        )
+      )
+
+      setChannels(savedChannels)
+      setLayout(save.layout)
+      setIsLoadingLayout(false)
+    },
+    [arena, savedLayouts]
+  )
+
   const handleChange = newLayout => {
     setLayout(newLayout)
   }
@@ -50,13 +100,16 @@ export default function Desktop () {
       addChannel,
       removeChannel,
       setBlockViewerData,
-      setDialog
+      setDialog,
+      savedLayouts,
+      restoreLayout,
+      saveLayout
     }),
-    [addChannel, removeChannel]
+    [addChannel, removeChannel, savedLayouts, restoreLayout, saveLayout]
   )
 
   return (
-    <div id='app' className='flex w-full h-full flex-col overflow-hidden antialiased'>
+    <div id='app' className='flex flex-col w-full h-full overflow-hidden antialiased'>
       <DesktopContext.Provider value={contextValues}>
         <header>
           <Header />
@@ -67,7 +120,7 @@ export default function Desktop () {
             value={layout}
             onChange={handleChange}
             className='arena-multiplexer'
-            zeroStateView={<ZeroState />}
+            zeroStateView={<ZeroState isLoadingLayout={isLoadingLayout} />}
           />
         </main>
         <BlockViewer blockData={blockViewerData} />

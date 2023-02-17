@@ -1,9 +1,10 @@
-import ChannelLoader from './ChannelLoader'
-import ChannelCreator from './ChannelCreator'
-import UserMenu from './UserMenu'
-import Info from './Info'
 import AmuxIcon from '@/icons/amux.svg'
 import React from 'react'
+import ChannelCreator from './ChannelCreator'
+import ChannelLoader from './ChannelLoader'
+import Info from './Info'
+import SaveRestore from './SaveRestore'
+import UserMenu from './UserMenu'
 
 function Header () {
   return (
@@ -11,7 +12,7 @@ function Header () {
       <div>
         <a
           href='https://github.com/mguidetti/are.na-multiplexer'
-          className='hover:text-secondary font-mono text-xs flex items-center gap-x-3'
+          className='flex items-center font-mono text-xs hover:text-secondary gap-x-3'
           target='_blank'
           rel='noreferrer'
         >
@@ -23,11 +24,12 @@ function Header () {
           </span>
         </a>
       </div>
-      <div className='flex-1 flex justify-center items-center gap-x-2'>
+      <div className='flex items-center justify-center flex-1 gap-x-2'>
         <ChannelLoader />
         <ChannelCreator />
       </div>
-      <div className='text-right flex gap-x-4 justify-end items-center'>
+      <div className='flex items-center justify-end text-right gap-x-4'>
+        <SaveRestore />
         <Info />
         <UserMenu />
       </div>

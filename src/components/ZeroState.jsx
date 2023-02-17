@@ -1,7 +1,10 @@
-function ZeroState () {
+import Spinner from './Spinner'
+
+function ZeroState ({ isLoadingLayout }) {
   return (
-    <div className='h-full w-full flex flex-col items-center justify-center text-primary/25'>
-      <p className='text-center mt-8 text-'>No channels loaded</p>
+    <div className='flex flex-col items-center justify-center w-full h-full text-primary/25'>
+      {isLoadingLayout && <Spinner />}
+      <p className='mt-8 text-center text-'>{isLoadingLayout ? 'Loading channels' : 'No channels loaded'}</p>
     </div>
   )
 }
