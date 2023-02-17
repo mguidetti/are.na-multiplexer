@@ -1,29 +1,16 @@
-import classNames from 'classnames'
-import { useState } from 'react'
-import { useOutsideClick } from '@/hooks/useOutsideClick'
 import HelpIcon from '@/icons/help.svg'
+import * as Popover from '@radix-ui/react-popover'
 
 function Info () {
-  const [isOpen, setIsOpen] = useState(false)
-
-  const ref = useOutsideClick(() => setIsOpen(false))
-
   return (
-    <div className='relative'>
-      <button
-        onClick={() => setIsOpen(true)}
-        className={classNames(
-          'flex justify-center items-center h-9 w-9 opacity-80 marker:p-2 select-none hover:text-secondary',
-          { 'text-secondary': isOpen }
-        )}
-      >
+    <Popover.Root>
+      <Popover.Trigger className='flex justify-center items-center h-9 w-9 opacity-80 marker:p-2 select-none hover:text-secondary data-[state=open]:text-secondary'>
         <HelpIcon className='h-6' />
-      </button>
-
-      <div
-        ref={ref}
-        hidden={!isOpen}
-        className='absolute top-12 right-0 z-40 text-left max-w-md min-w-[36rem] bg-zinc-900 text-primary/70 border-2 border-primary/70 rounded p-4 space-y-4 leading-tight text-sm drop-shadow-panel '
+      </Popover.Trigger>
+      <Popover.Content
+        align='end'
+        sideOffset={6}
+        className='z-20 p-4 space-y-4 leading-tight text-sm text-left max-w-md min-w-[36rem] border-2 rounded bg-zinc-900 border-primary/70 drop-shadow-panel'
       >
         <p>
           <strong>Are.na Multiplexer</strong> is a tiling window manager for{' '}
@@ -33,12 +20,12 @@ function Info () {
           channels and blocks.
         </p>
 
-        <ul className='list-disc ml-4'>
+        <ul className='ml-4 list-disc'>
           <li>Load or create channels into the workspace</li>
           <li>Resize and move channels</li>
           <li>
-            Click and drag blocks into other channels to connect them. While dragging, hold ALT to copy
-            a block instead of moving it
+            Click and drag blocks into other channels to connect them. While dragging, hold ALT to copy a block instead
+            of moving it
           </li>
           <li>View blocks in channels as lists or grids</li>
           <li>Double click blocks to open them in a fullscreen viewer</li>
@@ -61,8 +48,8 @@ function Info () {
           </a>
           .
         </p>
-      </div>
-    </div>
+      </Popover.Content>
+    </Popover.Root>
   )
 }
 
