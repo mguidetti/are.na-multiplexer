@@ -1,7 +1,7 @@
 import { WindowContext } from '@/context/WindowContext'
 import classNames from 'classnames/bind'
 import { useSession } from 'next-auth/react'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { useDrop } from 'react-dnd'
 import { MosaicWindow } from 'react-mosaic-component'
 import { useArena } from '../hooks/useArena'
@@ -9,6 +9,7 @@ import BlocksGrid from './BlocksGrid'
 import BlocksList from './BlocksList'
 import Spinner from './Spinner'
 import WindowToolbar from './WindowToolbar'
+import blocksReducer from '@/reducers/blocksReducer'
 
 function Window ({ path, channel }) {
   const arena = useArena()
@@ -18,7 +19,7 @@ function Window ({ path, channel }) {
 
   const { data } = useSession()
   const [loadingStatus, setLoadingStatus] = useState('inactive')
-  const [blocks, setBlocks] = useState([])
+  const [blocks, dispatchBlocks] = useReducer(blocksReducer, [])
   const [page, setPage] = useState(1)
   const [error, setError] = useState(null)
   const [scale, setScale] = useState(1)
@@ -52,7 +53,7 @@ function Window ({ path, channel }) {
     const results = await arena.channel(channel.id).contents({ page, per: blockPageSize })
 
     try {
-      setBlocks(blocks => [...blocks, ...results.contents])
+      dispatchBlocks({ type: 'prepend', blocks: results.contents })
     } catch (error) {
       setError(error)
     } finally {
@@ -77,7 +78,7 @@ function Window ({ path, channel }) {
   const connectBlock = useCallback(
     async block => {
       block.processing = true
-      addBlock(block)
+      dispatchBlocks({ type: 'append', blocks: [block] })
 
       let result
 
@@ -88,12 +89,12 @@ function Window ({ path, channel }) {
           result = await channelObj.connect.block(block.id)
         }
         // Replace copied block with updated data from response after connection
-        updateBlock(result)
+        dispatchBlocks({ type: 'update', block: result })
 
         return result
       } catch (error) {
         setError(error)
-        removeBlock(block)
+        dispatchBlocks({ type: 'remove', block: block })
       }
     },
     [channelObj]
@@ -109,34 +110,22 @@ function Window ({ path, channel }) {
       if (!canDelete) return
 
       block.processing = true
-      updateBlock(block)
+      dispatchBlocks({ type: 'update', block: block })
 
       try {
         await channelObj.disconnect.connection(block.connection_id)
 
-        removeBlock(block)
+        dispatchBlocks({ type: 'remove', block: block })
 
         return true
       } catch (error) {
         setError(error)
         block.processing = null
-        updateBlock(block)
+        dispatchBlocks({ type: 'update', block: block })
       }
     },
     [channelObj, canDelete]
   )
-
-  const addBlock = block => {
-    setBlocks(blocks => [block, ...blocks])
-  }
-
-  const removeBlock = block => {
-    setBlocks(blocks => blocks.filter(b => b.id !== block.id))
-  }
-
-  const updateBlock = block => {
-    setBlocks(blocks => blocks.map(b => (b.id === block.id ? block : b)))
-  }
 
   const [{ isActive }, dropRef] = useDrop({
     accept: 'block',
@@ -215,7 +204,7 @@ function Window ({ path, channel }) {
         {error && <div className='text-red-500'>Error: {error.message}</div>}
 
         {!blocks.length && loadingStatus === 'active' && (
-          <div className='w-full h-full flex items-center justify-center'>
+          <div className='flex items-center justify-center w-full h-full'>
             <Spinner />
           </div>
         )}
@@ -229,7 +218,7 @@ function Window ({ path, channel }) {
 }
 
 function BlankSlate () {
-  return <div className='w-full h-full flex items-center justify-center'>No blocks</div>
+  return <div className='flex items-center justify-center w-full h-full'>No blocks</div>
 }
 
 export default Window
