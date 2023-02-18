@@ -53,9 +53,9 @@ export default function Desktop () {
       setSavedLayouts({
         ...savedLayouts,
         [uuidv4()]: {
+          channels: Object.keys(channels),
           name: name,
           layout: layout,
-          channels: Object.keys(channels),
           version: '1.0.0'
         }
       })

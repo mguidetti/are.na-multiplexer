@@ -28,7 +28,7 @@ function Header () {
         <ChannelLoader />
         <ChannelCreator />
       </div>
-      <div className='flex items-center justify-end text-right gap-x-4'>
+      <div className='flex items-center justify-end text-right gap-x-1'>
         <SaveLoadLayout />
         <Info />
         <UserMenu />

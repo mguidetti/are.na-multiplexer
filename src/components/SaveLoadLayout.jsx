@@ -41,7 +41,7 @@ function SaveLoadLayout () {
   const renderSavedLayouts = () => {
     if (desktopCtx.savedLayouts && Object.keys(desktopCtx.savedLayouts).length) {
       return (
-        <ul className='overflow-y-auto border-2 divide-y rounded-md bg-background border-primary/70 text-primary/70 divide-primary/70 max-h-72 scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-700 hover:scrollbar-thumb-zinc-400'>
+        <ul className='overflow-y-auto border-2 divide-y rounded-md bg-background border-zinc-600 divide-zinc-600 max-h-72 scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-700 hover:scrollbar-thumb-zinc-400'>
           {Object.entries(desktopCtx.savedLayouts)
             .reverse()
             .map(([key, value]) => (
@@ -76,16 +76,16 @@ function SaveLoadLayout () {
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
-      <Popover.Trigger className='flex items-center justify-center px-1 py-1 font-bold border-2 rounded-md select-none border-primary/70 aspect-square bg-background hover:bg-secondary/10 hover:border-secondary hover:text-secondary'>
+      <Popover.Trigger className='flex items-center justify-center px-1 py-1 font-bold rounded-md select-none aspect-square hover:bg-secondary/10 hover:text-secondary data-[state=open]:bg-secondary/10 data-[state=open]:text-secondary'>
         <SaveIcon className='w-6 h-6' />
       </Popover.Trigger>
       <Popover.Content
         align={'center'}
         sideOffset={4}
-        className='z-20 p-4 mx-4 text-left border-2 rounded-md bg-zinc-900 text-primary/70 border-primary/70 w-72 drop-shadow-panel'
+        className='z-20 p-4 mx-4 text-left border-2 rounded-md bg-zinc-900 text-zinc-400 border-zinc-600 w-72 drop-shadow-panel'
       >
         <div>
-          <h2>Save Layout</h2>
+          <h2 className="font-semibold">Save Layout</h2>
 
           <div
             className={classNames('flex mt-2 gap-x-3 items-center', {
@@ -93,7 +93,7 @@ function SaveLoadLayout () {
             })}
           >
             <input
-              className='px-2 py-1 border-2 rounded-md bg-background border-primary/70'
+              className='px-2 py-1 border-2 rounded-md bg-background border-zinc-600'
               placeholder='Layout name'
               value={newSaveName}
               onChange={event => {
@@ -118,7 +118,7 @@ function SaveLoadLayout () {
         <div className='my-5 border border-zinc-600'></div>
 
         <div>
-          <h2>Load Layout</h2>
+          <h2 className='font-semibold'>Load Layout</h2>
           <div className='mt-2'>{renderSavedLayouts()}</div>
         </div>
 
@@ -128,7 +128,7 @@ function SaveLoadLayout () {
           <ExclamationTriangleIcon className='inline w-4 h-4 mr-1 align-text-bottom' />
           Saved layouts are saved in local browser storage
         </p>
-        <Popover.Arrow fill='currentColor' />
+        <Popover.Arrow className='text-zinc-600' fill='currentColor' />
       </Popover.Content>
     </Popover.Root>
   )
