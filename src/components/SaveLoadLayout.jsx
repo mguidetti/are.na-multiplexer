@@ -39,7 +39,7 @@ function SaveLoadLayout () {
   }
 
   const renderSavedLayouts = () => {
-    if (Object.keys(desktopCtx.savedLayouts).length) {
+    if (desktopCtx.savedLayouts && Object.keys(desktopCtx.savedLayouts).length) {
       return (
         <ul className='overflow-y-auto border-2 divide-y rounded-md bg-background border-primary/70 text-primary/70 divide-primary/70 max-h-72 scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-700 hover:scrollbar-thumb-zinc-400'>
           {Object.entries(desktopCtx.savedLayouts)
@@ -70,7 +70,7 @@ function SaveLoadLayout () {
         </ul>
       )
     } else {
-      return <div className='text-sm opacity-50'>No saved layouts</div>
+      return <div className='mt-4 text-sm text-center opacity-50'>No saved layouts</div>
     }
   }
 
@@ -107,7 +107,12 @@ function SaveLoadLayout () {
             </button>
           </div>
 
-            {!Object.keys(desktopCtx.channels).length && <p className='mt-2 text-sm opacity-50'><InformationCircleIcon className="inline w-4 h-4 mr-1 align-text-bottom" />Add channels to layout to save</p>}
+          {!Object.keys(desktopCtx.channels).length && (
+            <p className='mt-2 text-sm opacity-50'>
+              <InformationCircleIcon className='inline w-4 h-4 mr-1 align-text-bottom' />
+              Add channels to layout to save
+            </p>
+          )}
         </div>
 
         <div className='my-5 border border-zinc-600'></div>
