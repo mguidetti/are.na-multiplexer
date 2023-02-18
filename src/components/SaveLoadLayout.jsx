@@ -1,11 +1,10 @@
 import { DesktopContext } from '@/context/DesktopContext'
-import FolderArrowDown from '@/icons/folder-arrow-down.svg'
-import FolderOpen from '@/icons/folder-open.svg'
 import SaveIcon from '@/icons/save.svg'
+import { ExclamationTriangleIcon, FolderOpenIcon, TrashIcon, InformationCircleIcon } from '@heroicons/react/20/solid'
+import { FolderArrowDownIcon } from '@heroicons/react/24/solid'
 import * as Popover from '@radix-ui/react-popover'
-import { useContext, useState } from 'react'
-import TrashIcon from '@/icons/trash.svg'
 import classNames from 'classnames'
+import { useContext, useState } from 'react'
 
 function SaveLoadLayout () {
   const [open, setOpen] = useState(false)
@@ -21,7 +20,7 @@ function SaveLoadLayout () {
   const handleRestore = layoutId => {
     desktopCtx.setDialog({
       isOpen: true,
-      message: `Are you sure you want to restore this layout?`,
+      message: `Are you sure you want to load this saved layout?`,
       onConfirm: () => {
         desktopCtx.restoreLayout(layoutId)
         setOpen(false)
@@ -32,11 +31,47 @@ function SaveLoadLayout () {
   const handleDelete = layoutId => {
     desktopCtx.setDialog({
       isOpen: true,
-      message: `Are you sure you want to delete this layout?`,
+      message: `Are you sure you want to delete this saved layout?`,
       onConfirm: () => {
         desktopCtx.removeSavedLayout(layoutId)
       }
     })
+  }
+
+  const renderSavedLayouts = () => {
+    if (Object.keys(desktopCtx.savedLayouts).length) {
+      return (
+        <ul className='overflow-y-auto border-2 divide-y rounded-md bg-background border-primary/70 text-primary/70 divide-primary/70 max-h-72 scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-700 hover:scrollbar-thumb-zinc-400'>
+          {Object.entries(desktopCtx.savedLayouts)
+            .reverse()
+            .map(([key, value]) => (
+              <li key={key} className='grid grid-cols-[1fr_min-content] px-2 py-1 hover:bg-secondary/50 group'>
+                <div className='truncate'>{value.name}</div>
+                <div className='hidden gap-x-2 group-hover:flex'>
+                  <button
+                    type='button'
+                    onClick={() => handleRestore(key)}
+                    title='Load Saved Layout'
+                    className='hover:text-secondary'
+                  >
+                    <FolderOpenIcon className='w-5 h-5' />
+                  </button>
+                  <button
+                    type='button'
+                    onClick={() => handleDelete(key)}
+                    title='Delete Saved Layout'
+                    className='hover:text-secondary'
+                  >
+                    <TrashIcon className='w-5 h-5' />
+                  </button>
+                </div>
+              </li>
+            ))}
+        </ul>
+      )
+    } else {
+      return <div className='text-sm opacity-50'>No saved layouts</div>
+    }
   }
 
   return (
@@ -47,12 +82,16 @@ function SaveLoadLayout () {
       <Popover.Content
         align={'center'}
         sideOffset={4}
-        className='z-20 p-4 mx-4 text-left border-2 rounded-md bg-zinc-900 text-primary/70 border-primary/70 w-72'
+        className='z-20 p-4 mx-4 text-left border-2 rounded-md bg-zinc-900 text-primary/70 border-primary/70 w-72 drop-shadow-panel'
       >
         <div>
           <h2>Save Layout</h2>
-          
-          <div className={classNames('flex mt-2 gap-x-2', { 'pointer-events-none opacity-25': !Object.keys(desktopCtx.channels).length })}>
+
+          <div
+            className={classNames('flex mt-2 gap-x-3 items-center', {
+              'pointer-events-none opacity-25': !Object.keys(desktopCtx.channels).length
+            })}
+          >
             <input
               className='px-2 py-1 border-2 rounded-md bg-background border-primary/70'
               placeholder='Layout name'
@@ -64,44 +103,24 @@ function SaveLoadLayout () {
             />
 
             <button className='hover:text-secondary' onClick={handleSave} title='Save Layout'>
-              <FolderArrowDown className='w-7 h-7' />
+              <FolderArrowDownIcon className='w-6 h-6' />
             </button>
           </div>
+
+            {!Object.keys(desktopCtx.channels).length && <p className='mt-2 text-sm opacity-50'><InformationCircleIcon className="inline w-4 h-4 mr-1 align-text-bottom" />Add channels to layout to save</p>}
         </div>
 
-        <div className='mt-6'>
+        <div className='my-5 border border-zinc-600'></div>
+
+        <div>
           <h2>Load Layout</h2>
-
-          <ul className='mt-2 overflow-y-auto border-2 divide-y rounded-md bg-background border-primary/70 text-primary/70 divide-primary/70 max-h-72 scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-700 hover:scrollbar-thumb-zinc-400'>
-            {Object.entries(desktopCtx.savedLayouts)
-              .reverse()
-              .map(([key, value]) => (
-                <li key={key} className='grid grid-cols-[1fr_min-content] px-2 py-1 hover:bg-secondary/50 group'>
-                  <div className='truncate'>{value.name}</div>
-                  <div className='hidden gap-x-2 group-hover:flex'>
-                    <button
-                      type='button'
-                      onClick={() => handleRestore(key)}
-                      title='Restore Layout'
-                      className='hover:text-secondary'
-                    >
-                      <FolderOpen className='w-5 h-5' />
-                    </button>
-                    <button
-                      type='button'
-                      onClick={() => handleDelete(key)}
-                      title='Restore Layout'
-                      className='hover:text-secondary'
-                    >
-                      <TrashIcon className='w-5 h-5' />
-                    </button>
-                  </div>
-                </li>
-              ))}
-          </ul>
+          <div className='mt-2'>{renderSavedLayouts()}</div>
         </div>
 
-        <p className="mt-6 text-sm">
+        <div className='my-5 border border-zinc-600'></div>
+
+        <p className='text-sm'>
+          <ExclamationTriangleIcon className='inline w-4 h-4 mr-1 align-text-bottom' />
           Saved layouts are saved in local browser storage
         </p>
         <Popover.Arrow fill='currentColor' />
