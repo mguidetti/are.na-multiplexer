@@ -102,10 +102,8 @@ main,
   background: rgb(var(--secondary-color) / 50%);
 }
 
-@layer components {
-  .scrollbar-thin {
-    overflow: auto;
-  }
+.scrollbar-thin {
+  overflow: auto;
 }
 
 @layer utilities {

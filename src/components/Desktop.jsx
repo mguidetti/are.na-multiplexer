@@ -87,6 +87,14 @@ export default function Desktop () {
     [arena, savedLayouts]
   )
 
+  const removeSavedLayout = useCallback(
+    id => {
+      const { [id]: tmp, ...rest } = savedLayouts
+      setSavedLayouts(rest)
+    },
+    [savedLayouts]
+  )
+
   const handleChange = newLayout => {
     setLayout(newLayout)
   }
@@ -98,14 +106,16 @@ export default function Desktop () {
   const contextValues = useMemo(
     () => ({
       addChannel,
+      channels,
       removeChannel,
       setBlockViewerData,
       setDialog,
       savedLayouts,
       restoreLayout,
+      removeSavedLayout,
       saveLayout
     }),
-    [addChannel, removeChannel, savedLayouts, restoreLayout, saveLayout]
+    [addChannel, channels, removeChannel, savedLayouts, restoreLayout, saveLayout, removeSavedLayout]
   )
 
   return (

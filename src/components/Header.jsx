@@ -3,7 +3,7 @@ import React from 'react'
 import ChannelCreator from './ChannelCreator'
 import ChannelLoader from './ChannelLoader'
 import Info from './Info'
-import SaveRestore from './SaveRestore'
+import SaveLoadLayout from './SaveLoadLayout'
 import UserMenu from './UserMenu'
 
 function Header () {
@@ -29,7 +29,7 @@ function Header () {
         <ChannelCreator />
       </div>
       <div className='flex items-center justify-end text-right gap-x-4'>
-        <SaveRestore />
+        <SaveLoadLayout />
         <Info />
         <UserMenu />
       </div>
