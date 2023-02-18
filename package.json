@@ -13,6 +13,7 @@
     "format": "standard --fix"
   },
   "dependencies": {
+    "@radix-ui/react-alert-dialog": "^1.0.2",
     "@radix-ui/react-popover": "1.0.3",
     "@vercel/analytics": "^0.1.8",
     "arena-ts": "^0.1.4",
