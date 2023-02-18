@@ -19,12 +19,11 @@ main,
   width: 100vw;
   margin: 0;
   background: rgb(var(--background-color));
+  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+  font-size: 16px;
 }
 
 #root {
-  font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
-  font-size: 16px;
-
   color: rgb(var(--primary-color));
 }
 
