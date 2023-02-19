@@ -11,7 +11,7 @@ import Spinner from './Spinner'
 import WindowToolbar from './WindowToolbar'
 import blocksReducer from '@/reducers/blocksReducer'
 
-function Window ({ path, channel }) {
+function Window ({ path, channel, scale, view }) {
   const arena = useArena()
   const channelObj = useMemo(() => {
     if (arena) return arena.channel(channel.id)
@@ -22,16 +22,9 @@ function Window ({ path, channel }) {
   const [blocks, dispatchBlocks] = useReducer(blocksReducer, [])
   const [page, setPage] = useState(1)
   const [error, setError] = useState(null)
-  const [scale, setScale] = useState(1)
-  const [view, setView] = useState('grid')
 
   const blockPageSize = 50
   const totalPages = useMemo(() => Math.ceil(channel.length / blockPageSize), [channel])
-  const scaleDefaults = {
-    multiplier: 1.25,
-    min: 0.75,
-    max: 3
-  }
 
   const canWrite = useMemo(() => {
     if (channel.open) {
@@ -185,16 +178,7 @@ function Window ({ path, channel }) {
       title={`${channel.user.full_name} / ${channel.title}`}
       className={`channel-status-${channel.status}`}
       path={path}
-      toolbarControls={
-        <WindowToolbar
-          scaleDefaults={scaleDefaults}
-          scale={scale}
-          setScale={setScale}
-          view={view}
-          setView={setView}
-          channel={channel}
-        />
-      }
+      toolbarControls={<WindowToolbar channel={channel} scale={scale} view={view} />}
     >
       <div
         style={{ '--scale': scale }}

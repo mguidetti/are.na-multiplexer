@@ -32,7 +32,7 @@ export default function Desktop () {
         return
       }
 
-      setChannels(channels => ({ ...channels, [channel.id]: channel }))
+      setChannels(channels => ({ ...channels, [channel.id]: { data: channel, scale: 1, view: 'grid' } }))
 
       const newLayout = addWindow(layout, channel.id)
       setLayout(newLayout)
@@ -48,19 +48,26 @@ export default function Desktop () {
     [channels]
   )
 
+  const updateChannel = useCallback(
+    (id, payload) => {
+      setChannels({ ...channels, [id]: { ...channels[id], ...payload } })
+    },
+    [channels]
+  )
+
   const saveLayout = useCallback(
     name => {
       setSavedLayouts({
         ...savedLayouts,
         [uuidv4()]: {
-          channels: Object.keys(channels),
+          channels: channels,
           name: name,
           layout: layout,
           version: '1.0.0'
         }
       })
     },
-    [savedLayouts, channels]
+    [channels, layout, savedLayouts]
   )
 
   const restoreLayout = useCallback(
@@ -70,17 +77,19 @@ export default function Desktop () {
 
       const save = savedLayouts[layoutId]
 
-      const savedChannels = Object.fromEntries(
+      // Channels are fetched to update any changes made since layout was saved
+      // Would be better to do this in a single request.
+      const updatedChannels = Object.fromEntries(
         await Promise.all(
-          save.channels.map(async channelId => {
-            const result = await arena.channel(channelId).get()
+          Object.values(save.channels).map(async channel => {
+            const result = await arena.channel(channel.data.id).get({ forceRefresh: true })
 
-            return [result.id, result]
+            return [result.id, { ...channel, data: result }]
           })
         )
       )
 
-      setChannels(savedChannels)
+      setChannels(updatedChannels)
       setLayout(save.layout)
       setIsLoadingLayout(false)
     },
@@ -100,13 +109,16 @@ export default function Desktop () {
   }
 
   const tileRenderer = (id, path) => {
-    return <Window path={path} channel={channels[id]} />
+    const channel = channels[id]
+
+    return <Window path={path} channel={channel.data} scale={channel.scale} view={channel.view} />
   }
 
   const contextValues = useMemo(
     () => ({
       addChannel,
       channels,
+      updateChannel,
       removeChannel,
       setBlockViewerData,
       setDialog,
@@ -115,7 +127,7 @@ export default function Desktop () {
       removeSavedLayout,
       saveLayout
     }),
-    [addChannel, channels, removeChannel, savedLayouts, restoreLayout, saveLayout, removeSavedLayout]
+    [addChannel, channels, updateChannel, removeChannel, savedLayouts, restoreLayout, saveLayout, removeSavedLayout]
   )
 
   return (
