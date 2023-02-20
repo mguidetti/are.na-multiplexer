@@ -15,7 +15,7 @@ function ChannelCreator () {
   const [isCreating, setIsCreating] = useState(false)
   const [formData, setFormData] = useState({
     name: '',
-    privacy: ''
+    privacy: {}
   })
   const [error, setError] = useState(null)
 
@@ -36,7 +36,7 @@ function ChannelCreator () {
 
       if (results) {
         desktop.addChannelWindow(results)
-        setFormData({})
+        setFormData({name: '', privacy: {}})
         setOpen(false)
       }
     } catch (error) {
