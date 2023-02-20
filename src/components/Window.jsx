@@ -24,6 +24,7 @@ function Window ({ path, channel, scale, view }) {
   const [blocks, dispatchBlocks] = useReducer(blocksReducer, [])
   const [page, setPage] = useState(1)
   const [error, setError] = useState(null)
+  const [isActiveDrop, setIsActiveDrop] = useState(false)
 
   const blockPageSize = 50
   const totalPages = useMemo(() => Math.ceil(channel.length / blockPageSize), [channel])
