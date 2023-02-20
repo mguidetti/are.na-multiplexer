@@ -11,7 +11,9 @@ function SaveLoadLayout () {
   const [newSaveName, setNewSaveName] = useState('')
   const desktopCtx = useContext(DesktopContext)
 
-  const handleSave = () => {
+  const handleSave = (event) => {
+    event.preventDefault()
+
     desktopCtx.saveLayout(newSaveName)
     setOpen(false)
     setNewSaveName('')
@@ -105,7 +107,7 @@ function SaveLoadLayout () {
                 setNewSaveName(event.target.value)
               }}
               disabled={!Object.keys(desktopCtx.channels).length}
-              required='true'
+              required={true}
             />
 
             <button type='submit' className='hover:text-secondary' title='Save Layout'>
