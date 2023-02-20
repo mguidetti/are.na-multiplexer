@@ -15,8 +15,6 @@ function SaveLoadLayout () {
     desktopCtx.saveLayout(newSaveName)
     setOpen(false)
     setNewSaveName('')
-
-    
   }
 
   const handleRestore = layoutId => {
@@ -93,26 +91,27 @@ function SaveLoadLayout () {
         <div>
           <h2 className='font-semibold'>Save Layout</h2>
 
-          <div
+          <form
+            onSubmit={handleSave}
             className={classNames('flex mt-2 gap-x-3 items-center', {
               'pointer-events-none opacity-25': !Object.keys(desktopCtx.channels).length
             })}
           >
             <input
-              className='px-2 py-1 border-2 rounded-md bg-background border-zinc-600'
+              className='px-2 py-1 border-2 rounded-md bg-background border-zinc-600 placeholder:text-zinc-600 '
               placeholder='Layout name'
               value={newSaveName}
               onChange={event => {
                 setNewSaveName(event.target.value)
               }}
               disabled={!Object.keys(desktopCtx.channels).length}
-              required="true"
+              required='true'
             />
 
-            <button className='hover:text-secondary' onClick={handleSave} title='Save Layout'>
+            <button type='submit' className='hover:text-secondary' title='Save Layout'>
               <FolderArrowDownIcon className='w-6 h-6' />
             </button>
-          </div>
+          </form>
 
           {!Object.keys(desktopCtx.channels).length && (
             <p className='mt-2 text-sm opacity-50'>
