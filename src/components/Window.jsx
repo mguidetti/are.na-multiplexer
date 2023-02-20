@@ -130,8 +130,10 @@ function Window ({ path, channel, scale, view }) {
 
   const connectBlock = useCallback(
     async block => {
-      block.processing = true
-      dispatchBlocks({ type: 'append', blocks: [block] })
+      dispatchBlocks({
+        type: 'append',
+        blocks: [{ ...block, ...{ processing: true, connection_id: null } }]
+      })
 
       let result
 
@@ -155,8 +157,7 @@ function Window ({ path, channel, scale, view }) {
 
   const disconnectBlock = useCallback(
     async block => {
-      block.processing = true
-      dispatchBlocks({ type: 'update', block: block })
+      dispatchBlocks({ type: 'update', block: { ...block, ...{ processing: true } } })
 
       try {
         await channelObj.disconnect.connection(block.connection_id)
@@ -166,8 +167,7 @@ function Window ({ path, channel, scale, view }) {
         return true
       } catch (error) {
         setError(error)
-        block.processing = null
-        dispatchBlocks({ type: 'update', block: block })
+        dispatchBlocks({ type: 'update', block: { ...block, ...{ processing: null } } })
       }
     },
     [channelObj]
