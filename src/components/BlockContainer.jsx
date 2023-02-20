@@ -30,7 +30,7 @@ function BlockContainer ({ data, children }) {
 
   const handleView = useCallback(() => {
     if (data.class === 'Channel') {
-      desktopCtx.addChannel(data)
+      desktopCtx.addChannelWindow(data)
     } else {
       desktopCtx.setBlockViewerData(data)
     }
@@ -39,7 +39,8 @@ function BlockContainer ({ data, children }) {
   const handleDelete = useCallback(() => {
     desktopCtx.setDialog({
       isOpen: true,
-      message: 'Are you sure you want to disconnect this block?',
+      title: 'Are you sure you want to disconnect this block?',
+      message: "This cannot be undone",
       onConfirm: () => windowCtx.disconnectBlock(data)
     })
   }, [data, desktopCtx, windowCtx])
