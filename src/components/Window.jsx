@@ -28,6 +28,7 @@ function Window ({ path, channel, scale, view }) {
 
   const blockPageSize = 50
   const totalPages = useMemo(() => Math.ceil(channel.length / blockPageSize), [channel])
+  const isLoading = useMemo(() => loadingStatus === 'active', [loadingStatus])
 
   const fetchBlocks = useCallback(async () => {
     if (!arena) return
@@ -76,7 +77,7 @@ function Window ({ path, channel, scale, view }) {
         return false
       }
 
-      if (loadingStatus === 'active') {
+      if (isLoading) {
         console.debug('Cannot drop', 'Blocks are loading')
         return false
       }
@@ -88,7 +89,7 @@ function Window ({ path, channel, scale, view }) {
 
       return true
     },
-    [blocks, canWrite, loadingStatus]
+    [blocks, canWrite, isLoading]
   )
 
   const { setNodeRef } = useDroppable({
@@ -208,7 +209,7 @@ function Window ({ path, channel, scale, view }) {
       >
         {error && <div className='text-red-500'>Error: {error.message}</div>}
 
-        {!blocks.length && loadingStatus === 'active' && (
+        {!blocks.length && isLoading && (
           <div className='flex items-center justify-center w-full h-full'>
             <Spinner />
           </div>
