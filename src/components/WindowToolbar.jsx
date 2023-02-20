@@ -22,7 +22,7 @@ function WindowToolbar ({ channel, scale, view }) {
 
   const remove = () => {
     mosaic.mosaicActions.remove(mosaicWindow.mosaicWindowActions.getPath())
-    desktopCtx.removeChannel(channel.id)
+    desktopCtx.dispatchChannels({ type: 'remove', id: channel.id })
   }
 
   const expand = () => {
@@ -33,18 +33,22 @@ function WindowToolbar ({ channel, scale, view }) {
     const value = scale * scaleDefaults.multiplier
     const clampedValue = Math.min(Math.max(value, scaleDefaults.min), scaleDefaults.max)
 
-    desktopCtx.updateChannel(channel.id, {scale: clampedValue})
+    desktopCtx.dispatchChannels({ type: 'update', id: channel.id, payload: { scale: clampedValue } })
   }
 
   const decrementScale = () => {
     const value = scale / scaleDefaults.multiplier
     const clampedValue = Math.min(Math.max(value, scaleDefaults.min), scaleDefaults.max)
 
-    desktopCtx.updateChannel(channel.id, {scale: clampedValue})
+    desktopCtx.dispatchChannels({ type: 'update', id: channel.id, payload: { scale: clampedValue } })
   }
 
   const toggleView = () => {
-    desktopCtx.updateChannel(channel.id, {view: view === 'grid' ? 'list' : 'grid'})
+    desktopCtx.dispatchChannels({
+      type: 'update',
+      id: channel.id,
+      payload: { view: view === 'grid' ? 'list' : 'grid' }
+    })
   }
 
   return (

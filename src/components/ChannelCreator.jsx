@@ -35,7 +35,7 @@ function ChannelCreator () {
       const results = await arena.channel(formData.name).create(formData.privacy.value)
 
       if (results) {
-        desktop.addChannel(results)
+        desktop.addChannelWindow(results)
         setFormData({})
         setOpen(false)
       }

@@ -1,6 +1,7 @@
 import { useArena } from '@/hooks/useArena'
 import { addWindow } from '@/lib/mosaic'
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import channelsReducer from '@/reducers/channelsReducer'
+import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { Mosaic } from 'react-mosaic-component'
 import { v4 as uuidv4 } from 'uuid'
 import { DesktopContext } from '../context/DesktopContext'
@@ -11,7 +12,7 @@ import Window from './Window'
 import ZeroState from './ZeroState'
 
 export default function Desktop () {
-  const [channels, setChannels] = useState({})
+  const [channels, dispatchChannels] = useReducer(channelsReducer, {})
   const [layout, setLayout] = useState(null)
   const [blockViewerData, setBlockViewerData] = useState(null)
   const [dialog, setDialog] = useState({ isOpen: false })
@@ -25,32 +26,17 @@ export default function Desktop () {
     localStorage.setItem(saveStateKey, JSON.stringify(savedLayouts))
   }, [savedLayouts])
 
-  const addChannel = useCallback(
+  const addChannelWindow = useCallback(
     channel => {
       if (channel.id in channels) {
-        console.warn('Duplicate channel added', channel.id)
-        return
+        console.warn('Attempted to add duplicate channel', action.channel.id)
+        return false
       }
 
-      setChannels(channels => ({ ...channels, [channel.id]: { data: channel, scale: 1, view: 'grid' } }))
+      dispatchChannels({ type: 'add', channel: channel })
 
       const newLayout = addWindow(layout, channel.id)
       setLayout(newLayout)
-    },
-    [channels]
-  )
-
-  const removeChannel = useCallback(
-    id => {
-      const { [id]: tmp, ...rest } = channels
-      setChannels(rest)
-    },
-    [channels]
-  )
-
-  const updateChannel = useCallback(
-    (id, payload) => {
-      setChannels({ ...channels, [id]: { ...channels[id], ...payload } })
     },
     [channels]
   )
@@ -89,7 +75,7 @@ export default function Desktop () {
         )
       )
 
-      setChannels(updatedChannels)
+      dispatchChannels({ type: 'replace', channels: updatedChannels })
       setLayout(save.layout)
       setIsLoadingLayout(false)
     },
@@ -116,10 +102,9 @@ export default function Desktop () {
 
   const contextValues = useMemo(
     () => ({
-      addChannel,
+      addChannelWindow,
       channels,
-      updateChannel,
-      removeChannel,
+      dispatchChannels,
       setBlockViewerData,
       setDialog,
       savedLayouts,
@@ -127,7 +112,7 @@ export default function Desktop () {
       removeSavedLayout,
       saveLayout
     }),
-    [addChannel, channels, updateChannel, removeChannel, savedLayouts, restoreLayout, saveLayout, removeSavedLayout]
+    [addChannelWindow, channels, dispatchChannels, savedLayouts, restoreLayout, saveLayout, removeSavedLayout]
   )
 
   return (

@@ -30,7 +30,7 @@ function BlockContainer ({ data, children }) {
 
   const handleView = useCallback(() => {
     if (data.class === 'Channel') {
-      desktopCtx.addChannel(data)
+      desktopCtx.addChannelWindow(data)
     } else {
       desktopCtx.setBlockViewerData(data)
     }
