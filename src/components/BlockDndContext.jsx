@@ -36,8 +36,7 @@ function BlockDndContext ({ children }) {
 
     setDraggingBlock({
       block: current.block,
-      view: current.view,
-      scale: current.scale
+      window: current.window
     })
   }
 
@@ -60,7 +59,7 @@ function BlockDndContext ({ children }) {
       {children}
       <DragOverlay className='relative bg-background drop-shadow-panel' dropAnimation={null}>
         {draggingBlock && (
-          <BlockDragOverlay data={draggingBlock.block} view={draggingBlock.view} scale={draggingBlock.scale} />
+          <BlockDragOverlay data={draggingBlock.block} window={draggingBlock.window} />
         )}
       </DragOverlay>
     </DndContext>

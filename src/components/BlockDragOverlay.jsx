@@ -1,9 +1,9 @@
 import BlocksGridItem from './BlocksGridItem'
 import BlocksListItem from './BlocksListItem'
 
-function BlockDragOverlay ({ data, view, scale }) {
+function BlockDragOverlay ({ data, window }) {
   const renderItem = () => {
-    switch (view) {
+    switch (window.view) {
       case 'grid':
         return <BlocksGridItem data={data} />
       case 'list':
@@ -12,7 +12,7 @@ function BlockDragOverlay ({ data, view, scale }) {
   }
 
   return (
-    <div style={{ '--scale': scale }} className='text-[calc(1rem*var(--scale))]'>
+    <div style={{ '--scale': window.scale }} className='text-[calc(1rem*var(--scale))]'>
       {renderItem()}
       <div className='absolute inset-0 bg-dot-grid-secondary'></div>
     </div>

@@ -15,9 +15,11 @@ function BlockContainer ({ data, children }) {
     data: {
       type: 'block',
       block: { ...data },
-      originId: windowCtx.channel.id,
-      view: windowCtx.view,
-      scale: windowCtx.scale
+      window: {
+        id: windowCtx.channel.id,
+        view: windowCtx.view,
+        scale: windowCtx.scale
+      }
     }
   })
 
