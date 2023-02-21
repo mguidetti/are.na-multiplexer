@@ -40,19 +40,15 @@ function BlockDndContext ({ children }) {
     })
   }
 
-  function handleDragEnd () {
-    setDraggingBlock(null)
-  }
-
-  function handleDragCancel () {
+  function clearDraggingBlock() {
     setDraggingBlock(null)
   }
 
   return (
     <DndContext
       onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDragCancel={handleDragCancel}
+      onDragEnd={clearDraggingBlock}
+      onDragCancel={clearDraggingBlock}
       sensors={sensors}
       collisionDetection={collisionDetection}
     >
