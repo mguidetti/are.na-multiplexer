@@ -5,7 +5,7 @@ import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { Mosaic } from 'react-mosaic-component'
 import { v4 as uuidv4 } from 'uuid'
 import { DesktopContext } from '../context/DesktopContext'
-import BlockDndContext from './BlockDndContext'
+import BlockDndWrapper from './BlockDndWrapper'
 import BlockViewer from './BlockViewer'
 import Dialog from './Dialog'
 import Header from './Header'
@@ -145,7 +145,7 @@ export default function Desktop () {
           <Header />
         </header>
         <main className='h-full'>
-          <BlockDndContext>
+          <BlockDndWrapper>
             <Mosaic
               renderTile={tileRenderer}
               value={layout}
@@ -153,7 +153,7 @@ export default function Desktop () {
               className='arena-multiplexer'
               zeroStateView={<ZeroState isLoadingLayout={isLoadingLayout} />}
             />
-          </BlockDndContext>
+          </BlockDndWrapper>
         </main>
         <BlockViewer blockData={blockViewerData} />
         <Dialog data={dialog} setDialog={setDialog} />

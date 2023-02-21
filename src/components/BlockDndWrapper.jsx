@@ -10,7 +10,7 @@ import {
 import { useState } from 'react'
 import BlockDragOverlay from './BlockDragOverlay'
 
-function BlockDndContext ({ children }) {
+function BlockDndWrapper ({ children }) {
   const [draggingBlock, setDraggingBlock] = useState(null)
 
   const pointerSensor = useSensor(PointerSensor, {
@@ -62,4 +62,4 @@ function BlockDndContext ({ children }) {
   )
 }
 
-export default BlockDndContext
+export default BlockDndWrapper
