@@ -1,5 +1,5 @@
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
-import { ArrowsPointingOutIcon, ListBulletIcon, MinusIcon, PlusIcon, Squares2X2Icon, XMarkIcon } from '@heroicons/react/20/solid'
+import { ArrowsPointingOutIcon, ListBulletIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, Squares2X2Icon, XMarkIcon } from '@heroicons/react/20/solid'
 import { useContext } from 'react'
 import { MosaicContext, MosaicWindowContext } from 'react-mosaic-component'
 import { DesktopContext } from '../context/DesktopContext'
@@ -64,11 +64,11 @@ function WindowToolbar ({ channel, scale, view }) {
       </button>
 
       <button onClick={incrementScale} title='Increase scale' className='px-1 hover:text-secondary'>
-        <PlusIcon className='w-5 h-5' strokeWidth='2' />
+        <MagnifyingGlassPlusIcon className='w-5 h-5' />
       </button>
 
       <button onClick={decrementScale} title='Decrease scale' className='px-1 hover:text-secondary'>
-        <MinusIcon className='w-5 h-5' strokeWidth='2' />
+        <MagnifyingGlassMinusIcon className='w-5 h-5' />
       </button>
 
       <button onClick={expand} title='Expand' className='px-1 hover:text-secondary'>
