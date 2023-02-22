@@ -1,11 +1,11 @@
 import * as Popover from '@radix-ui/react-popover'
-import { QuestionMarkCircleIcon } from '@heroicons/react/24/solid'
+import { InformationCircleIcon } from '@heroicons/react/24/solid'
 
 function Info () {
   return (
     <Popover.Root>
       <Popover.Trigger className='flex items-center justify-center px-1 py-1 font-bold rounded-md select-none aspect-square hover:bg-secondary/10 hover:text-secondary data-[state=open]:bg-secondary/10 data-[state=open]:text-secondary'>
-        <QuestionMarkCircleIcon className='h-6' />
+        <InformationCircleIcon className='h-6' />
       </Popover.Trigger>
       <Popover.Content
         align='center'
