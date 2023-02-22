@@ -13,7 +13,7 @@ function UserMenu () {
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
-          sideOffset={6}
+          sideOffset={5}
           align={'end'}
           className='z-20 flex flex-col border-2 rounded bg-zinc-900 text-zinc-400 border-zinc-600 drop-shadow-panel'
         >

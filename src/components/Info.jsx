@@ -9,7 +9,7 @@ function Info () {
       </Popover.Trigger>
       <Popover.Content
         align='center'
-        sideOffset={6}
+        sideOffset={4}
         className='z-20 mx-4 border-2 rounded-md bg-zinc-900 text-zinc-400 border-zinc-600 drop-shadow-panel w-[90vw] max-w-[600px]'
       >
         <div className='p-4 space-y-4 text-sm leading-snug text-left'>

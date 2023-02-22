@@ -87,7 +87,7 @@ function SaveLoadLayout () {
       </Popover.Trigger>
       <Popover.Content
         align={'center'}
-        sideOffset={4}
+        sideOffset={3}
         className='z-20 p-4 mx-4 text-left border-2 rounded-md bg-zinc-900 text-zinc-400 border-zinc-600 w-72 drop-shadow-panel'
       >
         <div>
