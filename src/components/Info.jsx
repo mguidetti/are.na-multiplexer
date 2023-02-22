@@ -9,10 +9,10 @@ function Info () {
       </Popover.Trigger>
       <Popover.Content
         align='center'
-        sideOffset={6}
+        sideOffset={4}
         className='z-20 mx-4 border-2 rounded-md bg-zinc-900 text-zinc-400 border-zinc-600 drop-shadow-panel w-[90vw] max-w-[600px]'
       >
-        <div className='p-4 space-y-4 leading-snug text-left'>
+        <div className='p-4 space-y-4 text-sm leading-snug text-left'>
           <p>
             <span className='font-semibold'>Are.na Multiplexer</span> is a tiling window manager for{' '}
             <a href='https://are.na' className='underline' target='_blank' rel='noreferrer'>
@@ -50,7 +50,7 @@ function Info () {
             .
           </p>
         </div>
-        <Popover.Arrow className='text-zinc-600' fill='currentColor' />
+        <Popover.Arrow className='text-zinc-600' fill='currentColor' height="7" width="14" />
       </Popover.Content>
     </Popover.Root>
   )
