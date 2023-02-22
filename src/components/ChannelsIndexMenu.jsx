@@ -120,7 +120,7 @@ function ChannelsIndexMenu () {
                 )}
                 onClick={() => handleSelect(channel)}
                 className={classNames(
-                  'py-1 px-2 text-primary font-bold truncate hover:bg-secondary/50 w-full text-left grid grid-cols-[1fr_min-content] disabled:opacity-25 disabled:pointer-events-none',
+                  'py-1 px-2 text-primary font-bold truncate hover:bg-secondary/50 w-full text-left grid grid-cols-[1fr_min-content] items-center disabled:opacity-25 disabled:pointer-events-none',
                   {
                     '!text-public-channel': channel.status === 'public',
                     '!text-private-channel': channel.status === 'private'
