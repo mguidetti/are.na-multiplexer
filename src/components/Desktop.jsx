@@ -5,6 +5,7 @@ import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { Mosaic } from 'react-mosaic-component'
 import { v4 as uuidv4 } from 'uuid'
 import { DesktopContext } from '../context/DesktopContext'
+import BlockDndWrapper from './BlockDndWrapper'
 import BlockViewer from './BlockViewer'
 import Dialog from './Dialog'
 import Header from './Header'
@@ -17,7 +18,9 @@ export default function Desktop () {
   const [blockViewerData, setBlockViewerData] = useState(null)
   const [dialog, setDialog] = useState({ isOpen: false })
   const saveStateKey = 'save-state'
-  const [savedLayouts, setSavedLayouts] = useState(JSON.parse(localStorage.getItem(saveStateKey)))
+  const [savedLayouts, setSavedLayouts] = useState(
+    JSON.parse(localStorage.getItem(saveStateKey))
+  )
   const [isLoadingLayout, setIsLoadingLayout] = useState(false)
 
   const arena = useArena()
@@ -68,7 +71,9 @@ export default function Desktop () {
       const updatedChannels = Object.fromEntries(
         await Promise.all(
           Object.values(save.channels).map(async channel => {
-            const result = await arena.channel(channel.data.id).get({ forceRefresh: true })
+            const result = await arena
+              .channel(channel.data.id)
+              .get({ forceRefresh: true })
 
             return [result.id, { ...channel, data: result }]
           })
@@ -97,7 +102,14 @@ export default function Desktop () {
   const tileRenderer = (id, path) => {
     const channel = channels[id]
 
-    return <Window path={path} channel={channel.data} scale={channel.scale} view={channel.view} />
+    return (
+      <Window
+        path={path}
+        channel={channel.data}
+        scale={channel.scale}
+        view={channel.view}
+      />
+    )
   }
 
   const contextValues = useMemo(
@@ -112,23 +124,36 @@ export default function Desktop () {
       removeSavedLayout,
       saveLayout
     }),
-    [addChannelWindow, channels, dispatchChannels, savedLayouts, restoreLayout, saveLayout, removeSavedLayout]
+    [
+      addChannelWindow,
+      channels,
+      dispatchChannels,
+      savedLayouts,
+      restoreLayout,
+      saveLayout,
+      removeSavedLayout
+    ]
   )
 
   return (
-    <div id='app' className='flex flex-col w-full h-full overflow-hidden antialiased'>
+    <div
+      id='app'
+      className='flex flex-col w-full h-full overflow-hidden antialiased'
+    >
       <DesktopContext.Provider value={contextValues}>
         <header>
           <Header />
         </header>
         <main className='h-full'>
-          <Mosaic
-            renderTile={tileRenderer}
-            value={layout}
-            onChange={handleChange}
-            className='arena-multiplexer'
-            zeroStateView={<ZeroState isLoadingLayout={isLoadingLayout} />}
-          />
+          <BlockDndWrapper>
+            <Mosaic
+              renderTile={tileRenderer}
+              value={layout}
+              onChange={handleChange}
+              className='arena-multiplexer'
+              zeroStateView={<ZeroState isLoadingLayout={isLoadingLayout} />}
+            />
+          </BlockDndWrapper>
         </main>
         <BlockViewer blockData={blockViewerData} />
         <Dialog data={dialog} setDialog={setDialog} />

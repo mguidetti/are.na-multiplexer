@@ -24,19 +24,21 @@ function BlocksGridItem ({ data }) {
   }
 
   return (
-    <div className='relative text-primary aspect-square w-full h-full flex flex-col justify-center items-center cursor-pointer'>
+    <div className='relative flex flex-col items-center justify-center w-full h-full cursor-pointer text-primary aspect-square'>
       {renderBlock()}
 
-      {blockCtx.isHovering && (
-        <div className='absolute h-full w-full bg-dot-grid-secondary'>
-          <div className='absolute bottom-0 right-0 p-1 pl-2 flex gap-x-2 text-secondary drop-shadow-md justify-end'>
-            <BlockActions data={data} />
-          </div>
+      {(blockCtx.isHovering || blockCtx.isDragging) && (
+        <div className='absolute w-full h-full bg-dot-grid-secondary'>
+          {blockCtx.isHovering && (
+            <div className='absolute bottom-0 right-0 flex justify-end p-1 pl-2 gap-x-2 text-secondary drop-shadow-md'>
+              <BlockActions data={data} />
+            </div>
+          )}
         </div>
       )}
 
       {data.processing && (
-        <div className='absolute h-full w-full flex justify-center items-center bg-background bg-opacity-75'>
+        <div className='absolute flex items-center justify-center w-full h-full bg-opacity-75 bg-background'>
           <Spinner />
         </div>
       )}
@@ -49,8 +51,8 @@ function AttachmentBlock ({ data }) {
     return <ImageBlock data={data} />
   } else {
     return (
-      <div className='bg-zinc-800 p-2 h-full w-full overflow-hidden flex items-center justify-center'>
-        <p className='text-md-relative font-bold truncate whitespace-normal'>{data.generated_title}</p>
+      <div className='flex items-center justify-center w-full h-full p-2 overflow-hidden bg-zinc-800'>
+        <p className='font-bold truncate whitespace-normal text-md-relative'>{data.generated_title}</p>
       </div>
     )
   }
@@ -59,12 +61,12 @@ function AttachmentBlock ({ data }) {
 function ChannelBlock ({ data }) {
   return (
     <div
-      className={`h-full w-full flex flex-col space-y-2 items-center justify-center border-2 channel-status-${data.status} channel-block p-2`}
+      className={`bg-background h-full w-full flex flex-col space-y-2 items-center justify-center border-2 channel-status-${data.status} channel-block p-2`}
     >
-      <span className='text-center text-base-relative font-bold text-inherit truncate whitespace-normal'>
+      <span className='font-bold text-center truncate whitespace-normal text-base-relative text-inherit'>
         {data.title}
       </span>
-      <span className='text-xs-relative text-center'>
+      <span className='text-center text-xs-relative'>
         by {data.user.full_name}
         <br />
         {data.length} blocks
@@ -76,7 +78,7 @@ function ChannelBlock ({ data }) {
 function ImageBlock ({ data }) {
   return (
     <>
-      <img src={data.image?.thumb?.url} alt='' className='aspect-square object-contain w-full h-full p-0' />
+      <img src={data.image?.thumb?.url} alt='' className='object-contain w-full h-full p-0 aspect-square' />
     </>
   )
 }
@@ -85,10 +87,10 @@ function TextBlock ({ data }) {
   const body = { __html: data.content_html }
 
   return (
-    <div className='border border-primary/25 p-2 h-full w-full overflow-hidden'>
+    <div className='w-full h-full p-2 overflow-hidden border border-primary/25'>
       <div
         dangerouslySetInnerHTML={body}
-        className='text-xs-relative truncate whitespace-normal prose prose-invert prose-sm'
+        className='prose-sm prose truncate whitespace-normal text-xs-relative prose-invert'
       />
     </div>
   )

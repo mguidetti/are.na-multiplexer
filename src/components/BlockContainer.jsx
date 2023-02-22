@@ -3,29 +3,24 @@ import { WindowContext } from '@/context/WindowContext'
 import { BlockContext } from '@/context/BlockContext'
 import classNames from 'classnames'
 import { useCallback, useContext, useMemo, useState } from 'react'
-import { useDrag } from 'react-dnd'
+import { useDraggable } from '@dnd-kit/core'
 
 function BlockContainer ({ data, children }) {
   const desktopCtx = useContext(DesktopContext)
   const windowCtx = useContext(WindowContext)
   const [isHovering, setIsHovering] = useState(false)
 
-  const [{ isDragging }, drag] = useDrag({
-    type: 'block',
-    item: { ...data },
-    end: (item, monitor) => {
-      if (monitor.didDrop()) {
-        const result = monitor.getDropResult()
-
-        if (result && result.dropEffect === 'move') {
-          windowCtx.disconnectBlock(data)
-        }
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
+    id: data.connection_id,
+    data: {
+      type: 'block',
+      block: { ...data },
+      window: {
+        id: windowCtx.channel.id,
+        view: windowCtx.view,
+        scale: windowCtx.scale
       }
-    },
-    canDrag: (item, monitor) => !data.processing,
-    collect: monitor => ({
-      isDragging: monitor.isDragging()
-    })
+    }
   })
 
   const handleView = useCallback(() => {
@@ -54,18 +49,24 @@ function BlockContainer ({ data, children }) {
       data,
       handleDelete,
       handleView,
+      isDragging,
       isHovering
     }),
-    [data, handleDelete, handleView, isHovering]
+    [data, handleDelete, handleView, isDragging, isHovering]
   )
 
   return (
     <div
-      ref={drag}
+      ref={setNodeRef}
       onDoubleClick={handleView}
-      className={classNames({ 'opacity-25': isDragging, 'pointer-events-none': data.processing })}
+      className={classNames('relative select-none', {
+        'opacity-50': isDragging,
+        'pointer-events-none': data.processing
+      })}
       onMouseOver={handleHover}
       onMouseOut={handleHover}
+      {...listeners}
+      {...attributes}
     >
       <BlockContext.Provider value={contextValues}>{children}</BlockContext.Provider>
     </div>

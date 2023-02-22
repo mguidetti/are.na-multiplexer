@@ -7,7 +7,7 @@ const WindowFooter = () => {
 
   return (
     <div className='w-full flex justify-center h-24 items-center'>
-      {windowContext.loadingStatus === 'active' && <Spinner />}
+      {windowContext.isLoading && <Spinner />}
     </div>
   )
 }

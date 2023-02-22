@@ -1,15 +1,16 @@
 import { WindowContext } from '@/context/WindowContext'
+import blocksReducer from '@/reducers/blocksReducer'
+import { useDndMonitor, useDroppable } from '@dnd-kit/core'
 import classNames from 'classnames/bind'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
-import { useDrop } from 'react-dnd'
+import { isHotkeyPressed } from 'react-hotkeys-hook'
 import { MosaicWindow } from 'react-mosaic-component'
 import { useArena } from '../hooks/useArena'
 import BlocksGrid from './BlocksGrid'
 import BlocksList from './BlocksList'
 import Spinner from './Spinner'
 import WindowToolbar from './WindowToolbar'
-import blocksReducer from '@/reducers/blocksReducer'
 
 function Window ({ path, channel, scale, view }) {
   const arena = useArena()
@@ -22,21 +23,12 @@ function Window ({ path, channel, scale, view }) {
   const [blocks, dispatchBlocks] = useReducer(blocksReducer, [])
   const [page, setPage] = useState(1)
   const [error, setError] = useState(null)
+  const [isActiveDrop, setIsActiveDrop] = useState(false)
+  const [draggingBlock, setDraggingBlock] = useState(null)
 
   const blockPageSize = 50
   const totalPages = useMemo(() => Math.ceil(channel.length / blockPageSize), [channel])
-
-  const canWrite = useMemo(() => {
-    if (channel.open) {
-      return true
-    } else {
-      return channel.user_id === data.user.id
-    }
-  }, [channel, data.user])
-
-  const canDelete = useMemo(() => {
-    return channel.user_id === data.user.id
-  }, [channel, data.user])
+  const isLoading = useMemo(() => loadingStatus === 'active', [loadingStatus])
 
   const fetchBlocks = useCallback(async () => {
     if (!arena) return
@@ -68,10 +60,100 @@ function Window ({ path, channel, scale, view }) {
     }
   }, [page, totalPages])
 
+  const canWrite = useMemo(() => {
+    if (channel.open) {
+      return true
+    } else {
+      return channel.user_id === data.user.id
+    }
+  }, [channel, data.user])
+
+  const canDelete = useMemo(() => channel.user_id === data.user.id, [channel, data.user])
+
+  const canDrop = useCallback(
+    block => {
+      if (!canWrite) {
+        console.debug('Cannot drop', 'Unauthorized')
+        return false
+      }
+
+      if (isLoading) {
+        console.debug('Cannot drop', 'Blocks are loading')
+        return false
+      }
+
+      if (blocks.find(b => b.id === block.id)) {
+        console.debug('Cannot drop', 'Block already connected')
+        return false
+      }
+
+      return true
+    },
+    [blocks, canWrite, isLoading]
+  )
+
+  // The draggingBlock state is needed in order to disable the droppable window
+  // based off conditions in canDrop, which requires the block data as an
+  // argument. This is needed to prevent blocks being disconnected when holding
+  // ALT and dropping over a window that doesn't actually connect the dragging
+  // block. (Example: dropping over a window where the block is already
+  // connected)
+  //
+  // However, this is a duplicate of the same state in BlockDndContext that
+  // drives BlockOverlay. Not sure how to access that here. Can DndContext be
+  // added to? Custom pointer sensor? Should be refactored some time later.
+
+  const { setNodeRef } = useDroppable({
+    id: channel.id,
+    disabled: draggingBlock && !canDrop(draggingBlock)
+  })
+
+  useDndMonitor({
+    onDragOver (event) {
+      const { active, over } = event
+      const { block } = active.data.current
+
+      if (channel.id === over?.id) {
+        setDraggingBlock(block)
+        setIsActiveDrop(canDrop(block))
+      } else {
+        setIsActiveDrop(false)
+      }
+    },
+    onDragEnd (event) {
+      const { active, over } = event
+      const { block } = active.data.current
+      const { window } = active.data.current
+
+      setDraggingBlock(null)
+      setIsActiveDrop(false)
+
+      // If this window is where the block was dropped...
+      if (channel.id === over?.id) {
+        if (canDrop(block)) {
+          connectBlock(block)
+        }
+        // If this window is the window the dropped block was dragged from...
+      } else if (over && channel.id === window.id) {
+        if (isHotkeyPressed('alt') && canDelete) {
+          disconnectBlock(block)
+        }
+      }
+    },
+    onDragCancel (event) {
+      setDraggingBlock(null)
+      setIsActiveDrop(false)
+    }
+  })
+
   const connectBlock = useCallback(
     async block => {
-      block.processing = true
-      dispatchBlocks({ type: 'append', blocks: [block] })
+      if (!canWrite) return
+
+      dispatchBlocks({
+        type: 'append',
+        blocks: [{ ...block, ...{ processing: true, connection_id: null } }]
+      })
 
       let result
 
@@ -90,20 +172,14 @@ function Window ({ path, channel, scale, view }) {
         dispatchBlocks({ type: 'remove', block: block })
       }
     },
-    [channelObj]
+    [canWrite, channelObj]
   )
 
   const disconnectBlock = useCallback(
     async block => {
-      // We check for authorization here to prevent an error when "moving" a block from a
-      // channel that the user doesn't have delete access to. It might be better to do this in
-      // the Block components useDrag.end callback, but we need to know the drop target's channel
-      // there somehow
-
       if (!canDelete) return
 
-      block.processing = true
-      dispatchBlocks({ type: 'update', block: block })
+      dispatchBlocks({ type: 'update', block: { ...block, ...{ processing: true } } })
 
       try {
         await channelObj.disconnect.connection(block.connection_id)
@@ -113,46 +189,11 @@ function Window ({ path, channel, scale, view }) {
         return true
       } catch (error) {
         setError(error)
-        block.processing = null
-        dispatchBlocks({ type: 'update', block: block })
+        dispatchBlocks({ type: 'update', block: { ...block, ...{ processing: null } } })
       }
     },
-    [channelObj, canDelete]
+    [canDelete, channelObj]
   )
-
-  const [{ isActive }, dropRef] = useDrop({
-    accept: 'block',
-    drop: (item, monitor) => handleDrop(item, monitor),
-    collect: monitor => ({
-      isActive: monitor.canDrop() && monitor.isOver()
-    }),
-    canDrop: (item, monitor) => determineCanDrop(item, monitor)
-  })
-
-  const handleDrop = (item, monitor) => {
-    connectBlock(item)
-
-    return item
-  }
-
-  const determineCanDrop = (item, monitor) => {
-    if (loadingStatus === 'active') {
-      // console.log('Cannot drop', 'Blocks are loading')
-      return false
-    }
-
-    if (blocks.find(block => block.id === item.id)) {
-      // console.log('Cannot drop', 'Block already connected')
-      return false
-    }
-
-    if (!canWrite) {
-      // console.log('Cannot drop', 'Unauthorized')
-      return false
-    }
-
-    return true
-  }
 
   const renderBlocks = () => {
     if (view === 'grid') {
@@ -164,13 +205,16 @@ function Window ({ path, channel, scale, view }) {
 
   const contextValues = useMemo(
     () => ({
-      loadingStatus,
-      loadMore,
+      canDelete,
+      channel,
       connectBlock,
       disconnectBlock,
-      canDelete
+      loadingStatus,
+      loadMore,
+      scale,
+      view
     }),
-    [loadingStatus, loadMore, connectBlock, disconnectBlock, canDelete]
+    [loadingStatus, loadMore, connectBlock, disconnectBlock, canDelete, channel, scale, view]
   )
 
   return (
@@ -182,12 +226,14 @@ function Window ({ path, channel, scale, view }) {
     >
       <div
         style={{ '--scale': scale }}
-        className={classNames('h-full text-[calc(1rem*var(--scale))]', { 'bg-secondary/25': isActive })}
-        ref={dropRef}
+        ref={setNodeRef}
+        className={classNames('h-full text-[calc(1rem*var(--scale))]', {
+          'bg-dot-grid-secondary': isActiveDrop
+        })}
       >
         {error && <div className='text-red-500'>Error: {error.message}</div>}
 
-        {!blocks.length && loadingStatus === 'active' && (
+        {!blocks.length && isLoading && (
           <div className='flex items-center justify-center w-full h-full'>
             <Spinner />
           </div>
