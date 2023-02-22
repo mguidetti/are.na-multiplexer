@@ -5,7 +5,7 @@ import GithubIcon from '@/icons/github.svg'
 
 function Welcome () {
   return (
-    <div className='bg-background h-full w-full flex flex-col gap-y-4 items-center justify-center text-center  text-primary/70'>
+    <div className='flex flex-col items-center justify-center w-full h-full text-center bg-background gap-y-4 text-zinc-400'>
       <AmuxIcon className='w-16' fill='currentColor' />
       <p className='font-mono text-lg'>Are.na Multiplexer</p>
 
@@ -23,14 +23,14 @@ function Welcome () {
         </MobileView>
       </div>
 
-      <p className='mt-8 font-mono text-sm'>
+      <p className='mt-12 font-mono text-sm'>
         <a
           href='https://github.com/mguidetti/are.na-multiplexer'
-          className='hover:text-secondary gap-x-2 inline-flex items-center mt-1'
+          className='inline-flex items-center mt-1 hover:text-secondary gap-x-2'
           target='_blank'
           rel='noreferrer'
         >
-          <GithubIcon className='inline h-8' />
+          <GithubIcon className='inline h-8 text-zinc-600 hover:text-zinc-400' />
         </a>
       </p>
     </div>
