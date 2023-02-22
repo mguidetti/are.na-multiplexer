@@ -45,12 +45,12 @@ function ChannelLoader () {
         value={query}
         classNames={{
           control: ({ isFocused, menuIsOpen }) =>
-            classNames('bg-background border-2 rounded-md border-primary/70 px-2 font-bold', {
-              'bg-secondary/10 !text-secondary !border-secondary': isFocused,
+            classNames('bg-background border-2 rounded-md border-zinc-600 px-2 font-bold', {
+              'bg-secondary/10 !text-secondary !border-secondary/70': isFocused,
               '!rounded-b-none !border-b-0 !transition-none': menuIsOpen
             }),
           placeholder: ({ isFocused }) => classNames('font-normal', { hidden: isFocused }),
-          menu: () => 'bg-zinc-900 border-2 border-t-0 border-secondary rounded-b-md drop-shadow-panel',
+          menu: () => 'bg-zinc-900 border-2 border-t-0 border-secondary/70 rounded-b-md drop-shadow-panel',
           menuList: () => 'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/30 rounded-b-md',
           loadingMessage: () => 'p-2',
           option: ({ data, isFocused }) =>

@@ -8,7 +8,7 @@ import UserMenu from './UserMenu'
 
 function Header () {
   return (
-    <div className='grid grid-cols-[minmax(auto,150px)_1fr_minmax(10px,150px)] gap-x-4 px-4 items-center bg-zinc-900 text-primary/70 py-2'>
+    <div className='grid grid-cols-[minmax(auto,150px)_1fr_minmax(10px,150px)] gap-x-4 px-4 items-center bg-zinc-900 text-zinc-400 py-2'>
       <div>
         <a
           href='https://github.com/mguidetti/are.na-multiplexer'
