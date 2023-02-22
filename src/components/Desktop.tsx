@@ -95,11 +95,17 @@ export default function Desktop () {
       const updatedChannels = Object.fromEntries(
         await Promise.all(
           Object.values(save.channels).map(async channel => {
-            const result = await arena
-              .channel(channel.data.id)
-              .get({ forceRefresh: true })
+            let result
 
-            return [result.id, { ...channel, data: result }]
+            try {
+              result = await arena
+                .channel(channel.data.id)
+                .get({ forceRefresh: true })
+            } catch (error) {
+              console.warn(error)
+            }
+
+            return result ? [result.id, { ...channel, data: result }] : []
           })
         )
       )
