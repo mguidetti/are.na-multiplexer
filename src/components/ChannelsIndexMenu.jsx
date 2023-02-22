@@ -98,11 +98,11 @@ function ChannelsIndexMenu () {
         align={'end'}
         className='z-20 border-2 rounded-md border-zinc-600 bg-zinc-900 drop-shadow-panel  w-[90vw] max-w-[431px]'
       >
-        <div className='flex p-2 border-b-2 border-zinc-600'>
+        <div className='flex p-2'>
           <h2 className='flex-1 font-bold'>Your Channels</h2>
         </div>
 
-        <div className='scrollbar-thin scrollbar-thumb-zinc-400 scrollbar-track-zinc-600 rounded-b-md h-96'>
+        <div className='border-t-2 scrollbar-thin scrollbar-thumb-zinc-400 scrollbar-track-zinc-600 border-zinc-600 h-96'>
           <Virtuoso
             data={channels}
             endReached={fetchChannels}
