@@ -67,7 +67,7 @@ function ChannelCreator () {
       <Popover.Content
         sideOffset={1}
         align={'end'}
-        className='z-20 p-6 pt-4 border-2 rounded-md border-zinc-600 bg-zinc-900 drop-shadow-panel'
+        className='z-20 p-4 pt-4 border-2 rounded-md border-zinc-600 bg-zinc-900 drop-shadow-panel'
       >
         {isCreating && (
           <div className='absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full'>
