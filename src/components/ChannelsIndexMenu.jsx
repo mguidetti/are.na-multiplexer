@@ -102,7 +102,7 @@ function ChannelsIndexMenu () {
           <h2 className='flex-1 font-bold'>Your Channels</h2>
         </div>
 
-        <div className='border-t-2 scrollbar-thin scrollbar-thumb-zinc-400 scrollbar-track-zinc-600 border-zinc-600 h-96'>
+        <div className='border-t-2 scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-800 border-zinc-600 h-96'>
           <Virtuoso
             data={channels}
             endReached={fetchChannels}

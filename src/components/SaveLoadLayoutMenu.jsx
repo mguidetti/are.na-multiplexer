@@ -46,7 +46,7 @@ function SaveLoadLayout () {
     if (desktopCtx.savedLayouts && Object.keys(desktopCtx.savedLayouts).length) {
       return (
         <div className='overflow-y-auto border-2 rounded border-zinc-600 hover:border-secondary/40'>
-          <ul className='divide-y bg-background divide-zinc-600 max-h-72 scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-700 hover:scrollbar-thumb-zinc-400'>
+          <ul className='divide-y bg-background divide-zinc-600 max-h-72 scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-800 hover:scrollbar-thumb-zinc-400'>
             {Object.entries(desktopCtx.savedLayouts)
               .reverse()
               .map(([key, value]) => (

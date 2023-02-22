@@ -56,7 +56,7 @@ function ChannelLoader () {
             classNames(
               'bg-background border-2 rounded-md border-zinc-600 px-2 font-bold',
               {
-                'bg-secondary/10 !text-secondary !border-secondary/70':
+                'bg-secondary/10 !text-secondary':
                   isFocused,
                 '!rounded-b-none !border-b-0 !transition-none': menuIsOpen
               }
@@ -64,9 +64,9 @@ function ChannelLoader () {
           placeholder: ({ isFocused }) =>
             classNames('font-normal', { hidden: isFocused }),
           menu: () =>
-            'bg-zinc-900 border-2 border-t-0 border-secondary/70 rounded-b-md drop-shadow-panel',
+            'bg-zinc-900 border-2 border-t-0 border-zinc-600 rounded-b-md drop-shadow-panel',
           menuList: () =>
-            'scrollbar-thin scrollbar-thumb-secondary/50 scrollbar-track-secondary/30 rounded-b-md',
+            'scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-800 rounded-b-md',
           loadingMessage: () => 'p-2',
           option: ({ data, isFocused }) =>
             classNames('py-1 px-2 text-primary font-bold truncate', {
