@@ -53,7 +53,7 @@ function BlockDndWrapper ({ children }) {
       collisionDetection={collisionDetection}
     >
       {children}
-      <DragOverlay className='relative bg-background drop-shadow-panel' dropAnimation={null}>
+      <DragOverlay className='relative bg-background drop-shadow-panel opacity-90' dropAnimation={null}>
         {draggingBlock && (
           <BlockDragOverlay data={draggingBlock.block} window={draggingBlock.window} />
         )}
