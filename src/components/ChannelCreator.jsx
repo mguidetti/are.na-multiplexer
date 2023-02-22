@@ -88,7 +88,7 @@ function ChannelCreator () {
           <input
             name='name'
             placeholder='Name'
-            className='px-2 py-1 border-2 rounded-md bg-background border-zinc-600 placeholder:text-zinc-600'
+            className='px-2 py-1 border-2 rounded-md bg-background border-zinc-600 placeholder:text-zinc-600 focus:outline-none focus:border-secondary/70 focus:bg-secondary/20'
             value={formData.name}
             onChange={handleChange}
             required={true}

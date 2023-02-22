@@ -45,19 +45,19 @@ function SaveLoadLayout () {
   const renderSavedLayouts = () => {
     if (desktopCtx.savedLayouts && Object.keys(desktopCtx.savedLayouts).length) {
       return (
-        <div className='overflow-y-auto border-2 rounded border-zinc-600'>
+        <div className='overflow-y-auto border-2 rounded border-zinc-600 hover:border-secondary/40'>
           <ul className='divide-y bg-background divide-zinc-600 max-h-72 scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-700 hover:scrollbar-thumb-zinc-400'>
             {Object.entries(desktopCtx.savedLayouts)
               .reverse()
               .map(([key, value]) => (
-                <li key={key} className='grid grid-cols-[1fr_min-content] px-2 py-1 hover:bg-secondary/50 group'>
+                <li key={key} className='grid grid-cols-[1fr_min-content] px-2 py-1 hover:bg-secondary/30 group hover:text-secondary'>
                   <div className='truncate'>{value.name}</div>
                   <div className='hidden gap-x-2 group-hover:flex'>
                     <button
                       type='button'
                       onClick={() => handleRestore(key)}
                       title='Load Saved Layout'
-                      className='hover:text-secondary'
+                      className='text-secondary/70 hover:text-secondary'
                     >
                       <FolderOpenIcon className='w-5 h-5' />
                     </button>
@@ -65,7 +65,7 @@ function SaveLoadLayout () {
                       type='button'
                       onClick={() => handleDelete(key)}
                       title='Delete Saved Layout'
-                      className='hover:text-secondary'
+                      className='text-secondary/70 hover:text-secondary'
                     >
                       <TrashIcon className='w-5 h-5' />
                     </button>
@@ -100,7 +100,7 @@ function SaveLoadLayout () {
             })}
           >
             <input
-              className='px-2 py-1 border-2 rounded-md bg-background border-zinc-600 placeholder:text-zinc-600 '
+              className='px-2 py-1 border-2 rounded-md bg-background border-zinc-600 placeholder:text-zinc-600 focus:outline-none focus:border-secondary/70 focus:bg-secondary/20'
               placeholder='Layout name'
               value={newSaveName}
               onChange={event => {
