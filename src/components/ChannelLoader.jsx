@@ -19,7 +19,7 @@ function ChannelLoader () {
 
   const loadChannels = useCallback(
     debounce(async query => {
-      const results = await arena.search.channels(query, { page: 1, per: 10 })
+      const results = await arena.search.channels(query, { page: 1, per: 20 })
 
       return results.channels
     }, 200),
