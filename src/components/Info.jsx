@@ -14,8 +14,14 @@ function Info () {
       >
         <div className='p-4 space-y-4 text-sm leading-snug text-left'>
           <p>
-            <span className='font-semibold'>Are.na Multiplexer</span> is a tiling window manager for{' '}
-            <a href='https://are.na' className='underline' target='_blank' rel='noreferrer'>
+            <span className='font-semibold'>Are.na Multiplexer</span> is a
+            tiling window manager for{' '}
+            <a
+              href='https://are.na'
+              className='underline'
+              target='_blank'
+              rel='noreferrer'
+            >
               Are.na
             </a>{' '}
             channels and blocks.
@@ -25,8 +31,8 @@ function Info () {
             <li>Load or create channels into the workspace</li>
             <li>Resize and move channels</li>
             <li>
-              Click and drag blocks into other channels to connect them. While dragging, hold ALT to copy a block
-              instead of moving it
+              Click and drag blocks into other channels to connect them. While
+              dragging, hold ALT to copy a block instead of moving it
             </li>
             <li>View blocks in channels as lists or grids</li>
             <li>Double click blocks to open them in a fullscreen viewer</li>
@@ -35,7 +41,12 @@ function Info () {
 
           <p>
             By{' '}
-            <a href='https://www.michaelguidetti.info' target='_blank' rel='noreferrer' className='underline'>
+            <a
+              href='https://www.michaelguidetti.info'
+              target='_blank'
+              rel='noreferrer'
+              className='underline'
+            >
               Michael Guidetti
             </a>
             . Source available at{' '}
@@ -50,7 +61,12 @@ function Info () {
             .
           </p>
         </div>
-        <Popover.Arrow className='text-zinc-600' fill='currentColor' height="7" width="14" />
+        <Popover.Arrow
+          className='text-zinc-600'
+          fill='currentColor'
+          height='7'
+          width='14'
+        />
       </Popover.Content>
     </Popover.Root>
   )
