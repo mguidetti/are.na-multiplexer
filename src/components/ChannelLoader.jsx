@@ -37,7 +37,7 @@ function ChannelLoader () {
         ref={select}
         cacheOptions
         blurInputOnSelect
-        placeholder='Load Channel'
+        placeholder='Search channels'
         loadingMessage={() => 'Searching...'}
         components={{
           DropdownIndicator: ({ isFocused }) => (
