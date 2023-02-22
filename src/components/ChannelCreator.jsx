@@ -48,7 +48,7 @@ function ChannelCreator () {
   }
 
   const privacyOptions = [
-    { value: 'open', label: 'Open' },
+    { value: 'public', label: 'Open' },
     { value: 'closed', label: 'Closed' },
     { value: 'private', label: 'Private' }
   ]
