@@ -1,12 +1,11 @@
-import { DesktopContext } from '../context/DesktopContext'
-import { useContext, useState } from 'react'
-import { useHotkeys } from 'react-hotkeys-hook'
-import Spinner from './Spinner'
-import XMarkIcon from '@/icons/x-mark.svg'
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
+import { InfoIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import InfoIcon from '@/icons/info.svg'
+import { useContext, useState } from 'react'
+import { useHotkeys } from 'react-hotkeys-hook'
+import { DesktopContext } from '../context/DesktopContext'
+import Spinner from './Spinner'
 
 dayjs.extend(relativeTime)
 
@@ -15,12 +14,12 @@ function AttachmentBlock ({ data }) {
     if (data.image) {
       return <ImageBlock data={data} />
     } else {
-      return <span className='font-bold text-2xl uppercase'>{data.generated_title}</span>
+      return <span className='text-2xl font-bold uppercase'>{data.generated_title}</span>
     }
   }
 
   return (
-    <a href={data.attachment.url} target='_blank' rel='noreferrer' className='h-full w-full flex flex-col '>
+    <a href={data.attachment.url} target='_blank' rel='noreferrer' className='flex flex-col w-full h-full '>
       {renderBody()}
     </a>
   )
@@ -36,7 +35,7 @@ function ImageBlock ({ data }) {
   return (
     <>
       {!imageLoaded && (
-        <div className='absolute z-10 flex justify-center items-center inset-0'>
+        <div className='absolute inset-0 z-10 flex items-center justify-center'>
           <Spinner />
         </div>
       )}
@@ -44,13 +43,13 @@ function ImageBlock ({ data }) {
       <img
         src={data.image?.thumb?.url}
         alt=''
-        className='object-scale-down w-full h-full blur-sm brightness-50 flex-1'
+        className='flex-1 object-scale-down w-full h-full blur-sm brightness-50'
         hidden={imageLoaded}
       />
       <img
         src={data.image?.large?.url}
         alt=''
-        className='object-scale-down w-full h-full flex-1'
+        className='flex-1 object-scale-down w-full h-full'
         onLoad={handleImageLoaded}
         hidden={!imageLoaded}
       />
@@ -61,7 +60,7 @@ function ImageBlock ({ data }) {
 function LinkBlock ({ data }) {
   return (
     <>
-      <a href={data.source.url} target='_blank' rel='noreferrer' className='h-full w-full flex flex-col gap-y-2'>
+      <a href={data.source.url} target='_blank' rel='noreferrer' className='flex flex-col w-full h-full gap-y-2'>
         <div className='underline'>{data.source.url}</div>
         <ImageBlock data={data} />
       </a>
@@ -74,7 +73,7 @@ function MediaBlock ({ data }) {
 
   return (
     <>
-      <div dangerouslySetInnerHTML={embed} className='w-full h-full flex items-center justify-center p-16' />
+      <div dangerouslySetInnerHTML={embed} className='flex items-center justify-center w-full h-full p-16' />
     </>
   )
 }
@@ -122,8 +121,8 @@ function BlockViewer ({ blockData }) {
   }
 
   return (
-    <div className='fixed inset-0 h-screen w-screen z-50 p-8 bg-background/30'>
-      <div className='relative h-full w-full overflow-hidden flex justify-center items-center z-50 bg-background bg-opacity-70 border-2 border-secondary rounded-sm p-8 drop-shadow-panel'>
+    <div className='fixed inset-0 z-50 w-screen h-screen p-8 bg-background/30'>
+      <div className='relative z-50 flex items-center justify-center w-full h-full p-8 overflow-hidden border-2 rounded-sm bg-background bg-opacity-70 border-secondary drop-shadow-panel'>
         {renderBlock()}
         <button onClick={close} className='absolute top-0 right-0 p-1'>
           <XMarkIcon className='w-8 text-secondary hover:text-primary' title='Close' strokeWidth='1.5' />

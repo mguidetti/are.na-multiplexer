@@ -1,5 +1,5 @@
 import { useArena } from '@/hooks/useArena'
-import PlusIcon from '@/icons/plus.svg'
+import { PlusIcon } from '@heroicons/react/24/solid'
 import * as Popover from '@radix-ui/react-popover'
 import classNames from 'classnames'
 import { useContext, useState } from 'react'

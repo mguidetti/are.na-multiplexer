@@ -1,10 +1,5 @@
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
-import ArrowsPointingOutIcon from '@/icons/arrows-pointing-out.svg'
-import ListBulletIcon from '@/icons/list-bullet.svg'
-import MinusIcon from '@/icons/minus.svg'
-import PlusIcon from '@/icons/plus.svg'
-import Squares2x2Icon from '@/icons/squares-2x2.svg'
-import XMarkIcon from '@/icons/x-mark.svg'
+import { ArrowsPointingOutIcon, ListBulletIcon, MinusIcon, PlusIcon, Squares2X2Icon, XMarkIcon } from '@heroicons/react/20/solid'
 import { useContext } from 'react'
 import { MosaicContext, MosaicWindowContext } from 'react-mosaic-component'
 import { DesktopContext } from '../context/DesktopContext'
@@ -64,7 +59,7 @@ function WindowToolbar ({ channel, scale, view }) {
       </a>
 
       <button onClick={toggleView} title='Change view' className='px-1 hover:text-secondary'>
-        {view === 'list' && <Squares2x2Icon className='w-5 h-5' />}
+        {view === 'list' && <Squares2X2Icon className='w-5 h-5' />}
         {view === 'grid' && <ListBulletIcon className='w-5 h-5' />}
       </button>
 

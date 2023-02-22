@@ -1,8 +1,6 @@
 import { BlockContext } from '@/context/BlockContext'
 import { WindowContext } from '@/context/WindowContext'
-import EyeIcon from '@/icons/eye.svg'
-import LinkIcon from '@/icons/link.svg'
-import TrashIcon from '@/icons/trash.svg'
+import { EyeIcon, LinkIcon, TrashIcon } from '@heroicons/react/20/solid'
 import { useContext } from 'react'
 
 function BlockActions () {
