@@ -136,7 +136,7 @@ function SaveLoadLayout () {
           <ExclamationTriangleIcon className='w-4 h-4 top-[2px] relative' />
           <p className='text-sm'>Saved layouts are currently saved in local browser storage</p>
         </div>
-        <Popover.Arrow className='text-zinc-600' fill='currentColor' />
+        <Popover.Arrow className='text-zinc-600' fill='currentColor' height="7" width="14" />
       </Popover.Content>
     </Popover.Root>
   )

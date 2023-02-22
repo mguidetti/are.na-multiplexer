@@ -50,7 +50,7 @@ function Info () {
             .
           </p>
         </div>
-        <Popover.Arrow className='text-zinc-600' fill='currentColor' />
+        <Popover.Arrow className='text-zinc-600' fill='currentColor' height="7" width="14" />
       </Popover.Content>
     </Popover.Root>
   )
