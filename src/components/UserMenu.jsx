@@ -7,8 +7,8 @@ function UserMenu () {
 
   return (
     <Popover.Root>
-      <Popover.Trigger className='relative flex items-center justify-center ml-2 select-none w-9 h-9 bg-zinc-800'>
-        <span className='absolute font-bold'>{data.user.intitals}</span>
+      <Popover.Trigger className='relative flex items-center justify-center ml-2 select-none w-7 h-7 bg-zinc-800'>
+        <span className='absolute text-xs font-bold'>{data.user.intitals}</span>
         <img src={data.user.avatar} alt='User avatar' className='absolute object-contain w-full h-full' />
       </Popover.Trigger>
       <Popover.Portal>
