@@ -41,7 +41,7 @@ function ChannelLoader () {
         loadingMessage={() => 'Searching...'}
         components={{
           DropdownIndicator: ({ isFocused }) => (
-            <div className={classNames('px-2 text-sm font-bold border rounded border-zinc-700 text-zinc-700',{"hidden": isFocused})}>/</div>
+            <div className={classNames('px-1 text-sm font-bold border rounded border-zinc-700 text-zinc-700 font-mono',{"hidden": isFocused})}>/</div>
           ),
           IndicatorSeparator: () => null
         }}
