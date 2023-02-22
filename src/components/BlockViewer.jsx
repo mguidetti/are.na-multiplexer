@@ -1,5 +1,5 @@
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
-import { InfoIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { useContext, useState } from 'react'
@@ -125,7 +125,7 @@ function BlockViewer ({ blockData }) {
       <div className='relative z-50 flex items-center justify-center w-full h-full p-8 overflow-hidden border-2 rounded-sm bg-background bg-opacity-70 border-secondary drop-shadow-panel'>
         {renderBlock()}
         <button onClick={close} className='absolute top-0 right-0 p-1'>
-          <XMarkIcon className='w-8 text-secondary hover:text-primary' title='Close' strokeWidth='1.5' />
+          <XMarkIcon className='w-7 h-7 text-secondary hover:text-primary' title='Close' strokeWidth='1.5' />
         </button>
         <a
           href={`https://are.na/block/${blockData.id}`}
@@ -140,7 +140,7 @@ function BlockViewer ({ blockData }) {
         {infoVisible && <BlockInfo blockData={blockData} setInfoVisible={setInfoVisible} />}
         {!infoVisible && (
           <button onClick={() => setInfoVisible(true)} title='Show info' className='absolute bottom-0 right-0 p-2'>
-            <InfoIcon className='w-6 text-secondary hover:text-primary' />
+            <InformationCircleIcon className='w-7 h-7 text-secondary hover:text-primary' />
           </button>
         )}
       </div>
@@ -153,7 +153,7 @@ function BlockInfo ({ blockData, setInfoVisible }) {
   return (
     <div className='absolute bottom-0 right-0 text-primary text-sm border-secondary border-t-2 border-l-2 py-2 px-4 rounded-sm bg-background bg-opacity-90 max-w-[70vw]'>
       <button onClick={() => setInfoVisible(false)} className='absolute top-0 right-0 p-1'>
-        <XMarkIcon className='w-6 text-secondary hover:text-primary' title='Close' strokeWidth='2' />
+        <XMarkIcon className='w-7 h-7 text-secondary hover:text-primary' title='Close' strokeWidth='2' />
       </button>
 
       <div className='mr-6'>
