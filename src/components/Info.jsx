@@ -44,7 +44,7 @@ function Info () {
               <span className='px-1 font-mono text-xs border rounded border-zinc-600 bg-zinc-800'>
                 Alt
               </span>{' '}
-              whilte dragging to move a block instead of copying it
+              while dragging to move a block instead of copying it
             </li>
             <li>View blocks in channels as lists or grids</li>
             <li>Double click blocks to open them in a fullscreen viewer</li>
