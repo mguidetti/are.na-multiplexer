@@ -1,7 +1,7 @@
 import { WindowContext } from '@/context/WindowContext'
 import blocksReducer from '@/reducers/blocksReducer'
 import { useDndMonitor, useDroppable } from '@dnd-kit/core'
-import classNames from 'classnames/bind'
+import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { isHotkeyPressed } from 'react-hotkeys-hook'
@@ -169,7 +169,7 @@ function Window ({ path, channel, scale, view }) {
         return result
       } catch (error) {
         setError(error)
-        dispatchBlocks({ type: 'remove', block: block })
+        dispatchBlocks({ type: 'remove', block })
       }
     },
     [canWrite, channelObj]
@@ -184,7 +184,7 @@ function Window ({ path, channel, scale, view }) {
       try {
         await channelObj.disconnect.connection(block.connection_id)
 
-        dispatchBlocks({ type: 'remove', block: block })
+        dispatchBlocks({ type: 'remove', block })
 
         return true
       } catch (error) {
@@ -220,7 +220,11 @@ function Window ({ path, channel, scale, view }) {
   return (
     <MosaicWindow
       title={`${channel.user.full_name} / ${channel.title}`}
-      className={`channel-status-${channel.status}`}
+      className={classNames({
+        'channel-status-private': data.status === 'private',
+        'channel-status-public': data.status === 'public',
+        'channel-status-closed': data.status === 'closed'
+      })}
       path={path}
       toolbarControls={<WindowToolbar channel={channel} scale={scale} view={view} />}
     >
@@ -234,7 +238,7 @@ function Window ({ path, channel, scale, view }) {
         {error && <div className='text-red-500'>Error: {error.message}</div>}
 
         {!blocks.length && isLoading && (
-          <div className='flex items-center justify-center w-full h-full'>
+          <div className='flex h-full w-full items-center justify-center'>
             <Spinner />
           </div>
         )}
@@ -248,7 +252,7 @@ function Window ({ path, channel, scale, view }) {
 }
 
 function BlankSlate () {
-  return <div className='flex items-center justify-center w-full h-full'>No blocks</div>
+  return <div className='flex h-full w-full items-center justify-center'>No blocks</div>
 }
 
 export default Window

@@ -9,7 +9,7 @@ import BlockContainer from './BlockContainer'
 const ListContainer = React.forwardRef(function ListContainer (props, ref) {
   return (
     <div className='py-2'>
-      <div {...props} ref={ref} className='p-2 grid gap-2 grid-cols-[repeat(auto-fill,minmax(10em,1fr))]' />
+      <div {...props} ref={ref} className='grid grid-cols-[repeat(auto-fill,minmax(10em,1fr))] gap-2 p-2' />
     </div>
   )
 })

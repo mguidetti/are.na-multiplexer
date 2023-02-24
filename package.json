@@ -9,14 +9,13 @@
     "dev": "next dev & local-ssl-proxy --source 3001 --target 3000",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "format": "standard --fix"
+    "lint": "next lint"
   },
   "dependencies": {
-    "@radix-ui/react-alert-dialog": "^1.0.2",
-    "@heroicons/react": "^2.0.16",
-    "@radix-ui/react-popover": "1.0.3",
     "@dnd-kit/core": "^6.0.7",
+    "@heroicons/react": "^2.0.16",
+    "@radix-ui/react-alert-dialog": "^1.0.2",
+    "@radix-ui/react-popover": "1.0.3",
     "@vercel/analytics": "^0.1.8",
     "arena-ts": "^0.1.4",
     "dayjs": "^1.11.7",
@@ -38,9 +37,13 @@
     "autoprefixer": "^10.4.13",
     "eslint": "8.33.0",
     "eslint-config-next": "13.1.6",
+    "eslint-config-standard": "^17.0.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-n": "^15.6.1",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-tailwindcss": "^3.9.0",
     "local-ssl-proxy": "^1.3.0",
     "postcss": "^8.4.21",
-    "standard": "^17.0.0",
     "tailwind-scrollbar": "^2.1.0",
     "tailwindcss": "^3.2.4"
   }

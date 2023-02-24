@@ -59,24 +59,24 @@ function WindowToolbar ({ channel, scale, view }) {
       </a>
 
       <button onClick={toggleView} title='Change view' className='px-1 hover:text-secondary'>
-        {view === 'list' && <Squares2X2Icon className='w-5 h-5' />}
-        {view === 'grid' && <ListBulletIcon className='w-5 h-5' />}
+        {view === 'list' && <Squares2X2Icon className='h-5 w-5' />}
+        {view === 'grid' && <ListBulletIcon className='h-5 w-5' />}
       </button>
 
       <button onClick={incrementScale} title='Increase scale' className='px-1 hover:text-secondary'>
-        <MagnifyingGlassPlusIcon className='w-5 h-5' />
+        <MagnifyingGlassPlusIcon className='h-5 w-5' />
       </button>
 
       <button onClick={decrementScale} title='Decrease scale' className='px-1 hover:text-secondary'>
-        <MagnifyingGlassMinusIcon className='w-5 h-5' />
+        <MagnifyingGlassMinusIcon className='h-5 w-5' />
       </button>
 
       <button onClick={expand} title='Expand' className='px-1 hover:text-secondary'>
-        <ArrowsPointingOutIcon className='w-5 h-5' />
+        <ArrowsPointingOutIcon className='h-5 w-5' />
       </button>
 
       <button onClick={remove} title='Remove' className='px-1 hover:text-secondary'>
-        <XMarkIcon className='w-5 h-5' strokeWidth='2' />
+        <XMarkIcon className='h-5 w-5' strokeWidth='2' />
       </button>
     </div>
   )

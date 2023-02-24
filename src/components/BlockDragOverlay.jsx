@@ -14,7 +14,7 @@ function BlockDragOverlay ({ data, window }) {
   return (
     <div style={{ '--scale': window.scale }} className='text-[calc(1rem*var(--scale))]'>
       {renderItem()}
-      <div className='absolute inset-0 bg-dot-grid-secondary'></div>
+      <div className='bg-dot-grid-secondary absolute inset-0'></div>
     </div>
   )
 }
