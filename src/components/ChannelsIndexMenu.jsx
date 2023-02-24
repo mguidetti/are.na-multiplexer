@@ -44,6 +44,10 @@ function ChannelsIndexMenu () {
   const [page, setPage] = useState(1)
   const [channels, setChannels] = useState([])
   const [error, setError] = useState(null)
+  const [visibleRange, setVisibleRange] = useState({
+    startIndex: 0,
+    endIndex: 0
+  })
 
   const handleInitialize = () => {
     if (initialized) return
@@ -159,6 +163,8 @@ function ChannelsIndexMenu () {
           <Virtuoso
             data={channels}
             endReached={fetchChannels}
+            rangeChanged={setVisibleRange}
+            initialTopMostItemIndex={visibleRange.startIndex}
             components={{
               List: ListContainer,
               Item: ItemContainer,
