@@ -123,10 +123,10 @@ function ChannelsIndexMenu () {
       >
         <div className='flex items-center rounded-t-md p-2'>
           <h2 className='flex-1 font-bold'>Your Channels</h2>
-          <div className='flex items-center gap-x-2'>
+          <div className='flex items-stretch gap-x-2'>
             <select
               name='channel-index-sort'
-              className='ml-1 rounded border-2 border-zinc-600 bg-background p-1 focus:bg-secondary/20 focus:outline-none'
+              className='rounded border-2 border-zinc-600 bg-background p-1 focus:bg-secondary/20 focus:outline-none'
               onChange={handleSortChange}
               value={sort}
             >
