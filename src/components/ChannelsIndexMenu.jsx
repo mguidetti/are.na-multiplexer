@@ -121,12 +121,12 @@ function ChannelsIndexMenu () {
         align='end'
         className='z-20 w-[90vw] max-w-[431px] rounded-md border-2 border-zinc-600  bg-zinc-900 drop-shadow-panel'
       >
-        <div className='flex items-center p-2 rounded-t-md'>
+        <div className='flex items-center rounded-t-md p-2'>
           <h2 className='flex-1 font-bold'>Your Channels</h2>
           <div className='flex items-center gap-x-2'>
             <select
               name='channel-index-sort'
-              className='p-1 ml-1 border-2 rounded bg-background focus:outline-none focus:bg-secondary/20 border-zinc-600'
+              className='ml-1 rounded border-2 border-zinc-600 bg-background p-1 focus:bg-secondary/20 focus:outline-none'
               onChange={handleSortChange}
               value={sort}
             >
@@ -143,11 +143,11 @@ function ChannelsIndexMenu () {
 
             <button
               onClick={handleToggleDirection}
-              className='p-1 border-2 rounded border-zinc-600 bg-background focus:outline-none focus:bg-secondary/20'
+              className='rounded border-2 border-zinc-600 bg-background p-1 focus:bg-secondary/20 focus:outline-none'
             >
-              {direction === 'asc' && <BarsArrowUpIcon className='w-5 h-5' />}
+              {direction === 'asc' && <BarsArrowUpIcon className='h-5 w-5' />}
               {direction === 'desc' && (
-                <BarsArrowDownIcon className='w-5 h-5' />
+                <BarsArrowDownIcon className='h-5 w-5' />
               )}
             </button>
           </div>
