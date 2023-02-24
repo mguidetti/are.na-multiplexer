@@ -6,7 +6,7 @@ const WindowFooter = () => {
   const windowContext = useContext(WindowContext)
 
   return (
-    <div className='w-full flex justify-center h-24 items-center'>
+    <div className='flex h-24 w-full items-center justify-center'>
       {windowContext.isLoading && <Spinner />}
     </div>
   )

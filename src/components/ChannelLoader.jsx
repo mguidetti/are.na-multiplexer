@@ -32,7 +32,7 @@ function ChannelLoader () {
   }
 
   return (
-    <div className='max-w-[24rem] w-full z-30'>
+    <div className='z-30 w-full max-w-[24rem]'>
       <AsyncSelect
         ref={select}
         cacheOptions
@@ -41,7 +41,7 @@ function ChannelLoader () {
         loadingMessage={() => 'Searching...'}
         components={{
           DropdownIndicator: ({ isFocused }) => (
-            <div className={classNames('px-1 text-sm font-bold border rounded border-zinc-700 text-zinc-700 font-mono',{"hidden": isFocused})}>/</div>
+            <div className={classNames('px-1 text-sm font-bold border rounded border-zinc-700 text-zinc-700 font-mono', { hidden: isFocused })}>/</div>
           ),
           IndicatorSeparator: () => null
         }}

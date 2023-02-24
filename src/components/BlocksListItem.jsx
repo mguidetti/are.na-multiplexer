@@ -3,15 +3,22 @@ import SquareIcon from '@/icons/square.svg'
 import { useContext } from 'react'
 import BlockActions from './BlockActions'
 import Spinner from './Spinner'
+import classNames from 'classnames'
 
 function ChannelBody ({ data }) {
   return (
-    <>
-      <div className='flex items-center justify-center channel-block'>
-        <SquareIcon className='object-contain w-full h-full aspect-square' strokeWidth='2' />
+    <div
+      className={classNames('contents', {
+        'channel-status-private': data.status === 'private',
+        'channel-status-public': data.status === 'public',
+        'channel-status-closed': data.status === 'closed'
+      })}
+    >
+      <div className='channel-block flex items-center justify-center'>
+        <SquareIcon className='aspect-square h-full w-full object-contain' strokeWidth='2' />
       </div>
-      <div className='font-bold truncate channel-block'>{`${data.user.full_name} / ${data.title}`}</div>
-    </>
+      <div className='channel-block truncate font-bold'>{`${data.user.full_name} / ${data.title}`}</div>
+    </div>
   )
 }
 
@@ -19,7 +26,7 @@ function BlockBody ({ data }) {
   return (
     <>
       <div className='flex items-center justify-center'>
-        {data.image && <img src={data.image.thumb.url} alt='' className='object-contain aspect-square' />}
+        {data.image && <img src={data.image.thumb.url} alt='' className='aspect-square object-contain' />}
       </div>
       <div className='truncate text-primary'>{data.title || data.generated_title}</div>
     </>
@@ -31,18 +38,18 @@ function BlocksListItem ({ data }) {
 
   return (
     <div
-      className={`relative grid grid-cols-[1.5em_1fr] gap-x-4 items-center py-1 px-2 text-md-relative hover:bg-dot-grid-secondary cursor-pointer channel-status-${data.status}`}
+      className={'hover:bg-dot-grid-secondary relative grid cursor-pointer grid-cols-[1.5em_1fr] items-center gap-x-4 py-1 px-2'}
     >
       {data.class === 'Channel' ? <ChannelBody data={data} /> : <BlockBody data={data} />}
 
       {data.processing && (
-        <div className='absolute flex items-center justify-start w-full h-full px-2 py-1 bg-opacity-75 bg-background'>
+        <div className='absolute flex h-full w-full items-center justify-start bg-background/70 px-2 py-1'>
           <Spinner className='h-full' />
         </div>
       )}
 
       {blockCtx.isHovering && (
-        <div className='absolute right-0 flex px-2 gap-x-2'>
+        <div className='absolute right-0 flex gap-x-2 px-2'>
           <BlockActions data={data} />
         </div>
       )}
