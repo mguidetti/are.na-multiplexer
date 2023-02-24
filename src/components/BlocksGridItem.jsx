@@ -2,6 +2,7 @@ import { BlockContext } from '@/context/BlockContext'
 import { useContext } from 'react'
 import BlockActions from './BlockActions'
 import Spinner from './Spinner'
+import classNames from 'classnames'
 
 function BlocksGridItem ({ data }) {
   const blockCtx = useContext(BlockContext)
@@ -24,13 +25,13 @@ function BlocksGridItem ({ data }) {
   }
 
   return (
-    <div className='relative flex flex-col items-center justify-center w-full h-full cursor-pointer text-primary aspect-square'>
+    <div className='relative flex aspect-square h-full w-full cursor-pointer flex-col items-center justify-center text-primary'>
       {renderBlock()}
 
       {(blockCtx.isHovering || blockCtx.isDragging) && (
-        <div className='absolute w-full h-full bg-dot-grid-secondary'>
+        <div className='bg-dot-grid-secondary absolute h-full w-full'>
           {blockCtx.isHovering && (
-            <div className='absolute bottom-0 right-0 flex justify-end p-1 pl-2 gap-x-2 text-secondary drop-shadow-md'>
+            <div className='absolute bottom-0 right-0 flex justify-end gap-x-2 p-1 pl-2 text-secondary drop-shadow-md'>
               <BlockActions data={data} />
             </div>
           )}
@@ -38,7 +39,7 @@ function BlocksGridItem ({ data }) {
       )}
 
       {data.processing && (
-        <div className='absolute flex items-center justify-center w-full h-full bg-opacity-75 bg-background'>
+        <div className='absolute flex h-full w-full items-center justify-center bg-background/70'>
           <Spinner />
         </div>
       )}
@@ -51,8 +52,8 @@ function AttachmentBlock ({ data }) {
     return <ImageBlock data={data} />
   } else {
     return (
-      <div className='flex items-center justify-center w-full h-full p-2 overflow-hidden bg-zinc-800'>
-        <p className='font-bold truncate whitespace-normal text-md-relative'>{data.generated_title}</p>
+      <div className='flex h-full w-full items-center justify-center overflow-hidden bg-zinc-800 p-2'>
+        <p className='truncate whitespace-normal font-bold'>{data.generated_title}</p>
       </div>
     )
   }
@@ -61,9 +62,13 @@ function AttachmentBlock ({ data }) {
 function ChannelBlock ({ data }) {
   return (
     <div
-      className={`bg-background h-full w-full flex flex-col space-y-2 items-center justify-center border-2 channel-status-${data.status} channel-block p-2`}
+      className={classNames('flex h-full w-full flex-col items-center justify-center space-y-2 border-2 bg-background channel-block p-2', {
+        'channel-status-private': data.status === 'private',
+        'channel-status-public': data.status === 'public',
+        'channel-status-closed': data.status === 'closed'
+      })}
     >
-      <span className='font-bold text-center truncate whitespace-normal text-base-relative text-inherit'>
+      <span className='truncate whitespace-normal text-center text-base-relative font-bold text-inherit'>
         {data.title}
       </span>
       <span className='text-center text-xs-relative'>
@@ -78,7 +83,7 @@ function ChannelBlock ({ data }) {
 function ImageBlock ({ data }) {
   return (
     <>
-      <img src={data.image?.thumb?.url} alt='' className='object-contain w-full h-full p-0 aspect-square' />
+      <img src={data.image?.thumb?.url} alt='' className='aspect-square h-full w-full object-contain p-0' />
     </>
   )
 }
@@ -87,10 +92,10 @@ function TextBlock ({ data }) {
   const body = { __html: data.content_html }
 
   return (
-    <div className='w-full h-full p-2 overflow-hidden border border-primary/25'>
+    <div className='h-full w-full overflow-hidden border border-primary/25 p-2'>
       <div
         dangerouslySetInnerHTML={body}
-        className='prose-sm prose truncate whitespace-normal text-xs-relative prose-invert'
+        className='prose prose-sm prose-invert truncate whitespace-normal text-xs-relative'
       />
     </div>
   )

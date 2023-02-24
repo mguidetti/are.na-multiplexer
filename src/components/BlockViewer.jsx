@@ -19,7 +19,7 @@ function AttachmentBlock ({ data }) {
   }
 
   return (
-    <a href={data.attachment.url} target='_blank' rel='noreferrer' className='flex flex-col w-full h-full '>
+    <a href={data.attachment.url} target='_blank' rel='noreferrer' className='flex h-full w-full flex-col '>
       {renderBody()}
     </a>
   )
@@ -43,13 +43,13 @@ function ImageBlock ({ data }) {
       <img
         src={data.image?.thumb?.url}
         alt=''
-        className='flex-1 object-scale-down w-full h-full blur-sm brightness-50'
+        className='h-full w-full flex-1 object-scale-down blur-sm brightness-50'
         hidden={imageLoaded}
       />
       <img
         src={data.image?.large?.url}
         alt=''
-        className='flex-1 object-scale-down w-full h-full'
+        className='h-full w-full flex-1 object-scale-down'
         onLoad={handleImageLoaded}
         hidden={!imageLoaded}
       />
@@ -60,7 +60,7 @@ function ImageBlock ({ data }) {
 function LinkBlock ({ data }) {
   return (
     <>
-      <a href={data.source.url} target='_blank' rel='noreferrer' className='flex flex-col w-full h-full gap-y-2'>
+      <a href={data.source.url} target='_blank' rel='noreferrer' className='flex h-full w-full flex-col gap-y-2'>
         <div className='underline'>{data.source.url}</div>
         <ImageBlock data={data} />
       </a>
@@ -73,7 +73,7 @@ function MediaBlock ({ data }) {
 
   return (
     <>
-      <div dangerouslySetInnerHTML={embed} className='flex items-center justify-center w-full h-full p-16' />
+      <div dangerouslySetInnerHTML={embed} className='flex h-full w-full items-center justify-center p-16' />
     </>
   )
 }
@@ -84,7 +84,7 @@ function TextBlock ({ data }) {
   return (
     <div
       dangerouslySetInnerHTML={body}
-      className='text-base self-start prose prose-invert lg:prose-lg prose-li:!my-0'
+      className='prose prose-invert self-start text-base prose-li:!my-0 lg:prose-lg'
     />
   )
 }
@@ -121,11 +121,11 @@ function BlockViewer ({ blockData }) {
   }
 
   return (
-    <div className='fixed inset-0 z-50 w-screen h-screen p-8 bg-background/30'>
-      <div className='relative z-50 flex items-center justify-center w-full h-full p-8 overflow-hidden border-2 rounded-sm bg-background bg-opacity-70 border-secondary drop-shadow-panel'>
+    <div className='fixed inset-0 z-50 h-screen w-screen bg-background/30 p-8'>
+      <div className='relative z-50 flex h-full w-full items-center justify-center overflow-hidden rounded-sm border-2 border-secondary bg-background/70 p-8 drop-shadow-panel'>
         {renderBlock()}
         <button onClick={close} className='absolute top-0 right-0 p-1'>
-          <XMarkIcon className='w-7 h-7 text-secondary hover:text-primary' title='Close' strokeWidth='1.5' />
+          <XMarkIcon className='h-7 w-7 text-secondary hover:text-primary' title='Close' strokeWidth='1.5' />
         </button>
         <a
           href={`https://are.na/block/${blockData.id}`}
@@ -140,7 +140,7 @@ function BlockViewer ({ blockData }) {
         {infoVisible && <BlockInfo blockData={blockData} setInfoVisible={setInfoVisible} />}
         {!infoVisible && (
           <button onClick={() => setInfoVisible(true)} title='Show info' className='absolute bottom-0 right-0 p-2'>
-            <InformationCircleIcon className='w-7 h-7 text-secondary hover:text-primary' />
+            <InformationCircleIcon className='h-7 w-7 text-secondary hover:text-primary' />
           </button>
         )}
       </div>
@@ -151,13 +151,13 @@ function BlockViewer ({ blockData }) {
 
 function BlockInfo ({ blockData, setInfoVisible }) {
   return (
-    <div className='absolute bottom-0 right-0 text-primary text-sm border-secondary border-t-2 border-l-2 py-2 px-4 rounded-sm bg-background bg-opacity-90 max-w-[70vw]'>
+    <div className='absolute bottom-0 right-0 max-w-[70vw] rounded-sm border-t-2 border-l-2 border-secondary bg-background/90 py-2 px-4 text-sm text-primary'>
       <button onClick={() => setInfoVisible(false)} className='absolute top-0 right-0 p-1'>
-        <XMarkIcon className='w-7 h-7 text-secondary hover:text-primary' title='Close' strokeWidth='2' />
+        <XMarkIcon className='h-7 w-7 text-secondary hover:text-primary' title='Close' strokeWidth='2' />
       </button>
 
       <div className='mr-6'>
-        <h1 className='font-bold truncate'>{blockData.generated_title}</h1>
+        <h1 className='truncate font-bold'>{blockData.generated_title}</h1>
         {blockData.description && <p className='truncate'>{blockData.description}</p>}
         <p className='truncate'>
           Added {dayjs(blockData.connected_at).fromNow()} by {blockData.user.full_name}

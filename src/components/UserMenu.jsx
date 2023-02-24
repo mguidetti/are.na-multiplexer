@@ -7,19 +7,19 @@ function UserMenu () {
 
   return (
     <Popover.Root>
-      <Popover.Trigger className='relative flex items-center justify-center ml-2 select-none w-7 h-7 bg-zinc-800'>
+      <Popover.Trigger className='relative ml-2 flex h-7 w-7 select-none items-center justify-center bg-zinc-800'>
         <span className='absolute text-xs font-bold'>{data.user.intitals}</span>
-        <img src={data.user.avatar} alt='User avatar' className='absolute object-contain w-full h-full' />
+        <img src={data.user.avatar} alt='User avatar' className='absolute h-full w-full object-contain' />
       </Popover.Trigger>
       <Popover.Portal>
         <Popover.Content
           sideOffset={5}
           align={'end'}
-          className='z-20 flex flex-col border-2 rounded bg-zinc-900 text-zinc-400 border-zinc-600 drop-shadow-panel'
+          className='z-20 flex flex-col rounded border-2 border-zinc-600 bg-zinc-900 text-zinc-400 drop-shadow-panel'
         >
           <button
             onClick={() => signOut()}
-            className='p-2 px-4 hover:bg-secondary/10 hover:text-secondary hover'
+            className='p-2 px-4 hover:bg-secondary/10 hover:text-secondary'
             title='Sign out'
           >
             Sign out

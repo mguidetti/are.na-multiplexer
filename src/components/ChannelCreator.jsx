@@ -57,9 +57,9 @@ function ChannelCreator () {
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
-      <Popover.Trigger className='border-2 rounded-md border-zinc-600 px-2 py-1 font-bold bg-background min-h-[38px] hover:bg-secondary/10 hover:border-secondary/70 hover:text-secondary whitespace-nowrap flex gap-x-2 items-center data-[state=open]:text-secondary data-[state=open]:border-secondary/70 data-[state=open]:bg-secondary/10'>
+      <Popover.Trigger className='flex min-h-[38px] items-center gap-x-2 whitespace-nowrap rounded-md border-2 border-zinc-600 bg-background px-2 py-1 font-bold data-[state=open]:border-secondary/70 data-[state=open]:bg-secondary/10 data-[state=open]:text-secondary hover:border-secondary/70 hover:bg-secondary/10 hover:text-secondary'>
         <PlusIcon
-          className='w-5 h-5 text-inherit'
+          className='h-5 w-5 text-inherit'
           strokeWidth='2'
           strokeLinecap='square'
         />
@@ -67,15 +67,15 @@ function ChannelCreator () {
       <Popover.Content
         sideOffset={1}
         align={'end'}
-        className='z-20 p-4 pt-4 border-2 rounded-md border-zinc-600 bg-zinc-900 drop-shadow-panel'
+        className='z-20 rounded-md border-2 border-zinc-600 bg-zinc-900 p-4 drop-shadow-panel'
       >
         {isCreating && (
-          <div className='absolute top-0 left-0 z-10 flex items-center justify-center w-full h-full'>
+          <div className='absolute top-0 left-0 z-10 flex h-full w-full items-center justify-center'>
             <Spinner />
           </div>
         )}
 
-        {error && <p className='text-red'>{error.message}</p>}
+        {error && <p className='text-red-500'>{error.message}</p>}
 
         <form
           className={classNames('flex-col flex space-y-3', {
@@ -88,7 +88,7 @@ function ChannelCreator () {
           <input
             name='name'
             placeholder='Name'
-            className='px-2 py-1 border-2 rounded-md bg-background border-zinc-600 placeholder:text-zinc-600 focus:outline-none focus:border-secondary/70 focus:bg-secondary/20'
+            className='rounded-md border-2 border-zinc-600 bg-background px-2 py-1 placeholder:text-zinc-600 focus:border-secondary/70 focus:bg-secondary/20 focus:outline-none'
             value={formData.name}
             onChange={handleChange}
             required={true}
@@ -102,7 +102,7 @@ function ChannelCreator () {
             placeholder='Privacy'
             required={true}
             classNames={{
-              control: ({menuIsOpen}) =>
+              control: ({ menuIsOpen }) =>
                 classNames(
                   'bg-background border-2 rounded-md border-zinc-600 px-2',
                   { '!rounded-b-none !border-b-0 !transition-none': menuIsOpen }
@@ -126,7 +126,7 @@ function ChannelCreator () {
             }}
           />
 
-          <button className='px-2 py-1 border-2 rounded-md border-zinc-600 bg-zinc-700 hover:text-secondary hover:border-secondary/70 hover:bg-secondary/30'>
+          <button className='rounded-md border-2 border-zinc-600 bg-zinc-700 px-2 py-1 hover:border-secondary/70 hover:bg-secondary/30 hover:text-secondary'>
             Create
           </button>
         </form>

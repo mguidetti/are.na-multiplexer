@@ -4,7 +4,7 @@ const WindowScroller = React.forwardRef(function VirtuosoScroller ({ style, ...p
   return (
     <div
       style={{ ...style }}
-      className='scrollbar-thin scrollbar-thumb-inherit scrollbar-track-inherit hover:scrollbar-thumb-inherit'
+      className='scrollbar-thin scrollbar-track-inherit scrollbar-thumb-inherit hover:scrollbar-thumb-inherit'
       ref={ref}
       {...props}
     />

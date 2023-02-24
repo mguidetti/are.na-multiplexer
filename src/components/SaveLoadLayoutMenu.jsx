@@ -23,7 +23,7 @@ function SaveLoadLayout () {
     desktopCtx.setDialog({
       isOpen: true,
       title: `Are you sure you want to load ${desktopCtx.savedLayouts[layoutId].name}?`,
-      message: `This will replace your current layout`,
+      message: 'This will replace your current layout',
       onConfirm: () => {
         desktopCtx.restoreLayout(layoutId)
         setOpen(false)
@@ -35,7 +35,7 @@ function SaveLoadLayout () {
     desktopCtx.setDialog({
       isOpen: true,
       title: `Are you sure you want to delete ${desktopCtx.savedLayouts[layoutId].name}?`,
-      message: `This is not undoable`,
+      message: 'This is not undoable',
       onConfirm: () => {
         desktopCtx.removeSavedLayout(layoutId)
       }
@@ -45,12 +45,12 @@ function SaveLoadLayout () {
   const renderSavedLayouts = () => {
     if (desktopCtx.savedLayouts && Object.keys(desktopCtx.savedLayouts).length) {
       return (
-        <div className='overflow-y-auto border-2 rounded border-zinc-600 hover:border-secondary/40'>
-          <ul className='divide-y bg-background divide-zinc-600 max-h-72 scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-800 hover:scrollbar-thumb-zinc-400'>
+        <div className='overflow-y-auto rounded border-2 border-zinc-600 hover:border-secondary/40'>
+          <ul className='max-h-72 divide-y divide-zinc-600 bg-background scrollbar-thin scrollbar-track-zinc-800 scrollbar-thumb-zinc-500 hover:scrollbar-thumb-zinc-400'>
             {Object.entries(desktopCtx.savedLayouts)
               .reverse()
               .map(([key, value]) => (
-                <li key={key} className='grid grid-cols-[1fr_min-content] px-2 py-1 hover:bg-secondary/30 group hover:text-secondary'>
+                <li key={key} className='group grid grid-cols-[1fr_min-content] px-2 py-1 hover:bg-secondary/30 hover:text-secondary'>
                   <div className='truncate'>{value.name}</div>
                   <div className='hidden gap-x-2 group-hover:flex'>
                     <button
@@ -59,7 +59,7 @@ function SaveLoadLayout () {
                       title='Load Saved Layout'
                       className='text-secondary/70 hover:text-secondary'
                     >
-                      <FolderOpenIcon className='w-5 h-5' />
+                      <FolderOpenIcon className='h-5 w-5' />
                     </button>
                     <button
                       type='button'
@@ -67,7 +67,7 @@ function SaveLoadLayout () {
                       title='Delete Saved Layout'
                       className='text-secondary/70 hover:text-secondary'
                     >
-                      <TrashIcon className='w-5 h-5' />
+                      <TrashIcon className='h-5 w-5' />
                     </button>
                   </div>
                 </li>
@@ -76,19 +76,19 @@ function SaveLoadLayout () {
         </div>
       )
     } else {
-      return <div className='mt-4 text-sm text-center opacity-50'>No saved layouts</div>
+      return <div className='mt-4 text-center text-sm opacity-50'>No saved layouts</div>
     }
   }
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
-      <Popover.Trigger className='flex items-center justify-center px-1 py-1 font-bold rounded-md select-none hover:bg-secondary/10 hover:text-secondary data-[state=open]:bg-secondary/10 data-[state=open]:text-secondary'>
-        <SaveIcon className='w-6 h-6' />
+      <Popover.Trigger className='flex select-none items-center justify-center rounded-md p-1 font-bold data-[state=open]:bg-secondary/10 data-[state=open]:text-secondary hover:bg-secondary/10 hover:text-secondary'>
+        <SaveIcon className='h-6 w-6' />
       </Popover.Trigger>
       <Popover.Content
         align={'center'}
         sideOffset={3}
-        className='z-20 p-4 mx-4 text-left border-2 rounded-md bg-zinc-900 text-zinc-400 border-zinc-600 w-72 drop-shadow-panel'
+        className='z-20 mx-4 w-72 rounded-md border-2 border-zinc-600 bg-zinc-900 p-4 text-left text-zinc-400 drop-shadow-panel'
       >
         <div>
           <h2 className='font-semibold'>Save Layout</h2>
@@ -100,7 +100,7 @@ function SaveLoadLayout () {
             })}
           >
             <input
-              className='px-2 py-1 border-2 rounded-md bg-background border-zinc-600 placeholder:text-zinc-600 focus:outline-none focus:border-secondary/70 focus:bg-secondary/20'
+              className='rounded-md border-2 border-zinc-600 bg-background px-2 py-1 placeholder:text-zinc-600 focus:border-secondary/70 focus:bg-secondary/20 focus:outline-none'
               placeholder='Layout name'
               value={newSaveName}
               onChange={event => {
@@ -111,13 +111,13 @@ function SaveLoadLayout () {
             />
 
             <button type='submit' className='hover:text-secondary' title='Save Layout'>
-              <FolderArrowDownIcon className='w-6 h-6' />
+              <FolderArrowDownIcon className='h-6 w-6' />
             </button>
           </form>
 
           {!Object.keys(desktopCtx.channels).length && (
             <p className='mt-2 text-sm opacity-50'>
-              <InformationCircleIcon className='inline w-4 h-4 mr-2 align-text-bottom' />
+              <InformationCircleIcon className='mr-2 inline h-4 w-4 align-text-bottom' />
               Load channels to enable saving
             </p>
           )}
@@ -133,7 +133,7 @@ function SaveLoadLayout () {
         <div className='my-5 border border-zinc-600'></div>
 
         <div className='grid grid-cols-[min-content_1fr] gap-x-2'>
-          <ExclamationTriangleIcon className='w-4 h-4 top-[2px] relative' />
+          <ExclamationTriangleIcon className='relative top-[2px] h-4 w-4' />
           <p className='text-sm'>Saved layouts are currently saved in local browser storage</p>
         </div>
         <Popover.Arrow className='text-zinc-600' fill='currentColor' height="7" width="14" />

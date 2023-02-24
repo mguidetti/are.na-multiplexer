@@ -19,10 +19,10 @@ function ItemContainer (props) {
 
 function Footer ({ loadingStatus }) {
   return (
-    <div className='flex items-center justify-center w-full'>
+    <div className='flex w-full items-center justify-center'>
       {loadingStatus === 'active' && (
         <div className='px-2 py-4'>
-          <Spinner className='w-8 h-8' />
+          <Spinner className='h-8 w-8' />
         </div>
       )}
     </div>
@@ -57,7 +57,7 @@ function ChannelsIndexMenu () {
 
     const results = await arena
       .user(data.user.id)
-      .channels({ page: page, per: 30, sort: 'title' })
+      .channels({ page, per: 30, sort: 'title' })
 
     try {
       setChannels([...channels, ...results.channels])
@@ -84,11 +84,11 @@ function ChannelsIndexMenu () {
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
       <Popover.Trigger
-        className='border-2 rounded-md border-zinc-600 px-2 py-1 font-bold bg-background min-h-[38px] hover:bg-secondary/10 hover:border-secondary/70 hover:text-secondary whitespace-nowrap flex gap-x-2 items-center data-[state=open]:text-secondary data-[state=open]:border-secondary/70 data-[state=open]:bg-secondary/10'
+        className='flex min-h-[38px] items-center gap-x-2 whitespace-nowrap rounded-md border-2 border-zinc-600 bg-background px-2 py-1 font-bold data-[state=open]:border-secondary/70 data-[state=open]:bg-secondary/10 data-[state=open]:text-secondary hover:border-secondary/70 hover:bg-secondary/10 hover:text-secondary'
         onClick={handleInitialize}
       >
         <Bars4Icon
-          className='w-5 h-5 text-inherit'
+          className='h-5 w-5 text-inherit'
           strokeWidth='2'
           strokeLinecap='square'
         />
@@ -96,13 +96,13 @@ function ChannelsIndexMenu () {
       <Popover.Content
         sideOffset={1}
         align={'end'}
-        className='z-20 border-2 rounded-md border-zinc-600 bg-zinc-900 drop-shadow-panel  w-[90vw] max-w-[431px]'
+        className='z-20 w-[90vw] max-w-[431px] rounded-md border-2 border-zinc-600  bg-zinc-900 drop-shadow-panel'
       >
         <div className='flex p-2'>
           <h2 className='flex-1 font-bold'>Your Channels</h2>
         </div>
 
-        <div className='border-t-2 scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-800 border-zinc-600 h-96'>
+        <div className='h-96 border-t-2 border-zinc-600 scrollbar-thin scrollbar-track-zinc-800 scrollbar-thumb-zinc-500'>
           <Virtuoso
             data={channels}
             endReached={fetchChannels}

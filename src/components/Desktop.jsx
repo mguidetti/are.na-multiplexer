@@ -32,11 +32,11 @@ export default function Desktop () {
   const addChannelWindow = useCallback(
     channel => {
       if (channel.id in channels) {
-        console.warn('Attempted to add duplicate channel', action.channel.id)
+        console.warn('Attempted to add duplicate channel', channel.id)
         return false
       }
 
-      dispatchChannels({ type: 'add', channel: channel })
+      dispatchChannels({ type: 'add', channel })
 
       const newLayout = addWindow(layout, channel.id)
       setLayout(newLayout)
@@ -49,9 +49,9 @@ export default function Desktop () {
       setSavedLayouts({
         ...savedLayouts,
         [uuidv4()]: {
-          channels: channels,
-          name: name,
-          layout: layout,
+          channels,
+          name,
+          layout,
           version: '1.0.0'
         }
       })
@@ -138,7 +138,7 @@ export default function Desktop () {
   return (
     <div
       id='app'
-      className='flex flex-col w-full h-full overflow-hidden antialiased'
+      className='flex h-full w-full flex-col overflow-hidden antialiased'
     >
       <DesktopContext.Provider value={contextValues}>
         <header>
@@ -150,7 +150,7 @@ export default function Desktop () {
               renderTile={tileRenderer}
               value={layout}
               onChange={handleChange}
-              className='arena-multiplexer'
+              className={null}
               zeroStateView={<ZeroState isLoadingLayout={isLoadingLayout} />}
             />
           </BlockDndWrapper>
