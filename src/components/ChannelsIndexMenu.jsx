@@ -102,6 +102,8 @@ function ChannelsIndexMenu () {
           <h2 className='flex-1 font-bold'>Your Channels</h2>
         </div>
 
+        {error && <div className="text-red-500">{error}</div>}
+
         <div className='h-96 border-t-2 border-zinc-600 scrollbar-thin scrollbar-track-zinc-800 scrollbar-thumb-zinc-500'>
           <Virtuoso
             data={channels}
