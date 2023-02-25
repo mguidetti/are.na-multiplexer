@@ -221,9 +221,9 @@ function Window ({ path, channel, scale, view }) {
     <MosaicWindow
       title={`${channel.user.full_name} / ${channel.title}`}
       className={classNames({
-        'channel-status-private': data.status === 'private',
-        'channel-status-public': data.status === 'public',
-        'channel-status-closed': data.status === 'closed'
+        'channel-status-private': channel.status === 'private',
+        'channel-status-public': channel.status === 'public',
+        'channel-status-closed': channel.status === 'closed'
       })}
       path={path}
       toolbarControls={<WindowToolbar channel={channel} scale={scale} view={view} />}
