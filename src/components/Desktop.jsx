@@ -41,6 +41,7 @@ export default function Desktop () {
       const newLayout = addWindow(layout, channel.id)
       setLayout(newLayout)
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [channels]
   )
 

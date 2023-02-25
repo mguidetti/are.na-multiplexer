@@ -45,7 +45,7 @@ const options = {
 
       return token
     },
-    session: async ({ session, user, token }) => {
+    async session ({ session, token }) {
       const data = {
         id: token.id,
         accessToken: token.accessToken,
@@ -62,4 +62,4 @@ const options = {
   }
 }
 
-export default (req, res) => NextAuth(req, res, options)
+export default NextAuth(options)

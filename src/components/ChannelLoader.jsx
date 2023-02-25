@@ -1,10 +1,10 @@
 import classNames from 'classnames/bind'
-import { useCallback, useContext, useRef, useState } from 'react'
+import debounce from 'debounce-promise'
+import { useContext, useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import AsyncSelect from 'react-select/async'
-import { useArena } from '../hooks/useArena'
 import { DesktopContext } from '../context/DesktopContext'
-import debounce from 'debounce-promise'
+import { useArena } from '../hooks/useArena'
 
 function ChannelLoader () {
   const desktop = useContext(DesktopContext)
@@ -17,14 +17,11 @@ function ChannelLoader () {
     preventDefault: true
   })
 
-  const loadChannels = useCallback(
-    debounce(async query => {
-      const results = await arena.search.channels(query, { page: 1, per: 20 })
+  const loadChannels = debounce(async query => {
+    const results = await arena.search.channels(query, { page: 1, per: 20 })
 
-      return results.channels
-    }, 200),
-    [arena]
-  )
+    return results.channels
+  }, 200)
 
   const handleSelectChange = channel => {
     desktop.addChannelWindow(channel)

@@ -13,6 +13,7 @@ export const useArena = () => {
     const arena = new ArenaClient(options)
 
     setClient(arena)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading])
 
   return client
