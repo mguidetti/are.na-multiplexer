@@ -13,7 +13,7 @@ Hosted at https://arena-mux.michaelguidetti.info
 ### Setup
 - Fork and clone this repo
 - Register an application with Are.na at https://dev.are.na/oauth/applications 
-- Add `https://localhost:30001/api/auth/callback/arena` as a callbacak URL in your registered application's settings.
+- Add `https://localhost:3001/api/auth/callback/arena` as a callback URL in your registered application's settings
 - Set the following variables in `.env.local`
   | KEY | VALUE |
   | --- | --- |
@@ -22,5 +22,5 @@ Hosted at https://arena-mux.michaelguidetti.info
   | `NEXT_AUTH_SECRET` | Generate local secret by running `openssl rand -base64 32` |
   | `NEXT_AUTH_URL` | `https://localhost:3001` |
 - Run `yarn install`
-- Run `yarn dev` 
+- Run `yarn dev`
 - Visit https://localhost:3001 (bypass unsigned certificate warning)
