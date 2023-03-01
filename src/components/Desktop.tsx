@@ -1,7 +1,9 @@
+import { BlockViewerContextProvider } from '@/context/BlockViewerContext'
+import { DialogContextProvider } from '@/context/DialogContext'
 import { useArena } from '@/hooks/useArena'
 import { addWindow } from '@/lib/mosaic'
 import channelsReducer from '@/reducers/channelsReducer'
-import { ArenaBlock, ArenaChannelWithDetails, ConnectionData } from 'arena-ts'
+import { ArenaChannelWithDetails } from 'arena-ts'
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { Mosaic, MosaicNode } from 'react-mosaic-component'
 import { MosaicKey, MosaicPath } from 'react-mosaic-component/lib/types'
@@ -35,12 +37,9 @@ export interface SavedLayoutsState {
   }
 }
 
-export type BlockViewerState = ArenaBlock & ConnectionData | null
-
 export default function Desktop () {
   const [channels, dispatchChannels] = useReducer(channelsReducer, {})
   const [layout, setLayout] = useState<LayoutState>(null)
-  const [blockViewerData, setBlockViewerData] = useState<BlockViewerState>(null)
   const saveStateKey = 'save-state'
   const [savedLayouts, setSavedLayouts] = useState<SavedLayoutsState>(
     JSON.parse(localStorage.getItem(saveStateKey) || '{}')
@@ -143,7 +142,6 @@ export default function Desktop () {
       addChannelWindow,
       channels,
       dispatchChannels,
-      setBlockViewerData,
       savedLayouts,
       restoreLayout,
       removeSavedLayout,
@@ -165,24 +163,28 @@ export default function Desktop () {
       id='app'
       className='flex h-full w-full flex-col overflow-hidden antialiased'
     >
-      <DesktopContext.Provider value={contextValues}>
-        <header>
-          <Header />
-        </header>
-        <main className='h-full'>
-          <BlockDndWrapper>
-            <Mosaic
-              renderTile={tileRenderer}
-              value={layout}
-              onChange={handleChange}
-              className={''}
-              zeroStateView={<ZeroState isLoadingLayout={isLoadingLayout} />}
-            />
-          </BlockDndWrapper>
-        </main>
-        <BlockViewer blockData={blockViewerData} />
-        <Dialog />
-      </DesktopContext.Provider>
+      <DialogContextProvider>
+        <BlockViewerContextProvider>
+          <DesktopContext.Provider value={contextValues}>
+            <header>
+              <Header />
+            </header>
+            <main className='h-full'>
+              <BlockDndWrapper>
+                <Mosaic
+                  renderTile={tileRenderer}
+                  value={layout}
+                  onChange={handleChange}
+                  className={''}
+                  zeroStateView={<ZeroState isLoadingLayout={isLoadingLayout} />}
+                />
+              </BlockDndWrapper>
+            </main>
+          </DesktopContext.Provider>
+          <BlockViewer />
+          <Dialog />
+        </BlockViewerContextProvider>
+      </DialogContextProvider>
     </div>
   )
 }

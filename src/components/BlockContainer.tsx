@@ -1,4 +1,5 @@
 import { BlockContext, BlockContextType } from '@/context/BlockContext'
+import { useBlockViewerActionsContext } from '@/context/BlockViewerContext'
 import { useDesktopContext } from '@/context/DesktopContext'
 import { useDialogActionsContext } from '@/context/DialogContext'
 import { useWindowContext } from '@/context/WindowContext'
@@ -24,11 +25,12 @@ interface BlockContainerProps {
 }
 
 function BlockContainer ({ data, children }: BlockContainerProps) {
-  const { addChannelWindow, setBlockViewerData } = useDesktopContext()
+  const { addChannelWindow } = useDesktopContext()
   const { channel, view, scale, disconnectBlock } = useWindowContext()
+  const setBlockViewerData = useBlockViewerActionsContext()
+  const setDialog = useDialogActionsContext()
   const [isHovering, setIsHovering] = useState(false)
   const isPending = useMemo(() => data.connection_id === undefined, [data])
-  const setDialog = useDialogActionsContext()
 
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: data.connection_id as UniqueIdentifier,

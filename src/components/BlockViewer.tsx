@@ -1,3 +1,4 @@
+import { useBlockViewerActionsContext, useBlockViewerContext } from '@/context/BlockViewerContext'
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import { ArenaBlock, ConnectionData } from 'arena-ts'
@@ -5,8 +6,6 @@ import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { Dispatch, SetStateAction, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
-import { useDesktopContext } from '../context/DesktopContext'
-import { BlockViewerState } from './Desktop'
 import Spinner from './Spinner'
 
 dayjs.extend(relativeTime)
@@ -87,8 +86,9 @@ function TextBlock ({ data }: { data: ArenaBlock }) {
   )
 }
 
-function BlockViewer ({ blockData }: { blockData: BlockViewerState }) {
-  const { setBlockViewerData } = useDesktopContext()
+function BlockViewer () {
+  const setBlockViewerData = useBlockViewerActionsContext()
+  const blockData = useBlockViewerContext()
   const [infoVisible, setInfoVisible] = useState(false)
 
   const close = () => {

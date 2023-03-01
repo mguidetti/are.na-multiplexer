@@ -1,4 +1,3 @@
-import { DialogContextProvider } from '@/context/DialogContext'
 import { useSession } from 'next-auth/react'
 import Head from 'next/head'
 import Desktop from '../components/Desktop'
@@ -16,7 +15,7 @@ export default function Home () {
         <link rel='icon' href='/favicon.svg' sizes='any' type='image/svg+xml' />
       </Head>
       <div id='root'>
-        {data ? <DialogContextProvider><Desktop /></DialogContextProvider> : <Welcome />}
+        {data ? <Desktop /> : <Welcome />}
       </div>
     </>
   )
