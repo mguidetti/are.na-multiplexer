@@ -10,7 +10,7 @@ import Spinner from './Spinner'
 
 interface FormDataType {
   name: '',
-  privacy: ChannelStatus | undefined
+  privacy: ChannelStatus | ''
 }
 
 function ChannelCreator () {
@@ -21,7 +21,7 @@ function ChannelCreator () {
   const [isCreating, setIsCreating] = useState(false)
   const [formData, setFormData] = useState<FormDataType>({
     name: '',
-    privacy: undefined
+    privacy: ''
   })
   const [error, setError] = useState<string | null>(null)
 
@@ -32,7 +32,7 @@ function ChannelCreator () {
   const createChannel = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    if (!arena) return
+    if (!arena || formData.name === '' || formData.privacy === '') return
 
     setIsCreating(true)
 
@@ -43,7 +43,7 @@ function ChannelCreator () {
 
       if (results) {
         desktop.addChannelWindow(results as ArenaChannelWithDetails)
-        setFormData({ name: '', privacy: undefined })
+        setFormData({ name: '', privacy: '' })
         setOpen(false)
       }
     } catch (error) {
@@ -102,7 +102,7 @@ function ChannelCreator () {
               'text-private-channel': formData.privacy === 'private'
             })}
           >
-            <option value="" disabled={true} selected={true} className="text-zinc-600">Privacy</option>
+            <option value="" disabled={true} className="text-zinc-600">Privacy</option>
             <option value="public" className='text-public-channel'>Open</option>
             <option value="closed" className='text-primary'>Closed</option>
             <option value="private"className='text-private-channel'>Private</option>
