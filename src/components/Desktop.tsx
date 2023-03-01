@@ -1,5 +1,3 @@
-import { BlockViewerContextProvider } from '@/context/BlockViewerContext'
-import { DialogContextProvider } from '@/context/DialogContext'
 import { useArena } from '@/hooks/useArena'
 import { addWindow } from '@/lib/mosaic'
 import channelsReducer from '@/reducers/channelsReducer'
@@ -10,8 +8,6 @@ import { MosaicKey, MosaicPath } from 'react-mosaic-component/lib/types'
 import { v4 as uuidv4 } from 'uuid'
 import { DesktopActionsContextType, DesktopContextProvider, DesktopContextType } from '../context/DesktopContext'
 import BlockDndWrapper from './BlockDndWrapper'
-import BlockViewer from './BlockViewer'
-import Dialog from './Dialog'
 import Header from './Header'
 import Window from './Window'
 import ZeroState from './ZeroState'
@@ -166,32 +162,21 @@ export default function Desktop () {
   )
 
   return (
-    <div
-      id='app'
-      className='flex h-full w-full flex-col overflow-hidden antialiased'
-    >
-      <DialogContextProvider>
-        <BlockViewerContextProvider>
-          <DesktopContextProvider contextValue={contextValues} actionsContextValue={actionContextValues}>
-            <header>
-              <Header />
-            </header>
-            <main className='h-full'>
-              <BlockDndWrapper>
-                <Mosaic
-                  renderTile={tileRenderer}
-                  value={layout}
-                  onChange={handleChange}
-                  className={''}
-                  zeroStateView={<ZeroState isLoadingLayout={isLoadingLayout} />}
-                />
-              </BlockDndWrapper>
-            </main>
-          </DesktopContextProvider>
-          <BlockViewer />
-          <Dialog />
-        </BlockViewerContextProvider>
-      </DialogContextProvider>
-    </div>
+    <DesktopContextProvider contextValue={contextValues} actionsContextValue={actionContextValues}>
+      <header>
+        <Header />
+      </header>
+      <main className='h-full'>
+        <BlockDndWrapper>
+          <Mosaic
+            renderTile={tileRenderer}
+            value={layout}
+            onChange={handleChange}
+            className={''}
+            zeroStateView={<ZeroState isLoadingLayout={isLoadingLayout} />}
+          />
+        </BlockDndWrapper>
+      </main>
+    </DesktopContextProvider>
   )
 }
