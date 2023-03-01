@@ -37,18 +37,10 @@ export interface SavedLayoutsState {
 
 export type BlockViewerState = ArenaBlock & ConnectionData | null
 
-export interface DialogState {
-  isOpen: boolean,
-  title?: string,
-  message?: string,
-  onConfirm?: () => void
-}
-
 export default function Desktop () {
   const [channels, dispatchChannels] = useReducer(channelsReducer, {})
   const [layout, setLayout] = useState<LayoutState>(null)
   const [blockViewerData, setBlockViewerData] = useState<BlockViewerState>(null)
-  const [dialog, setDialog] = useState<DialogState>({ isOpen: false })
   const saveStateKey = 'save-state'
   const [savedLayouts, setSavedLayouts] = useState<SavedLayoutsState>(
     JSON.parse(localStorage.getItem(saveStateKey) || '{}')
@@ -152,7 +144,6 @@ export default function Desktop () {
       channels,
       dispatchChannels,
       setBlockViewerData,
-      setDialog,
       savedLayouts,
       restoreLayout,
       removeSavedLayout,
@@ -190,7 +181,7 @@ export default function Desktop () {
           </BlockDndWrapper>
         </main>
         <BlockViewer blockData={blockViewerData} />
-        <Dialog data={dialog} setDialog={setDialog} />
+        <Dialog />
       </DesktopContext.Provider>
     </div>
   )

@@ -1,13 +1,10 @@
+import { useDialogActionsContext, useDialogContext } from '@/context/DialogContext'
 import * as AlertDialog from '@radix-ui/react-alert-dialog'
-import { Dispatch, SetStateAction } from 'react'
-import { DialogState } from './Desktop'
 
-interface DialogProps {
-  data: DialogState,
-  setDialog: Dispatch<SetStateAction<DialogState>>
-}
+function Dialog () {
+  const { isOpen, message, onConfirm, title } = useDialogContext()
+  const setDialog = useDialogActionsContext()
 
-function Dialog ({ data: { isOpen, title, message, onConfirm }, setDialog }: DialogProps) {
   const handleConfirm = () => {
     if (onConfirm) {
       onConfirm()

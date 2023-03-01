@@ -1,4 +1,4 @@
-import { BlockViewerState, ChannelsState, DialogState, SavedLayoutsState } from '@/components/Desktop'
+import { BlockViewerState, ChannelsState, SavedLayoutsState } from '@/components/Desktop'
 import { ChannelsReducerAction } from '@/reducers/channelsReducer'
 import { ArenaChannelWithDetails } from 'arena-ts'
 import { createContext, Dispatch, SetStateAction, useContext } from 'react'
@@ -8,7 +8,6 @@ export interface DesktopContextType {
   channels: ChannelsState,
   dispatchChannels: Dispatch<ChannelsReducerAction>,
   setBlockViewerData: Dispatch<SetStateAction<BlockViewerState>>,
-  setDialog: Dispatch<SetStateAction<DialogState>>,
   savedLayouts: SavedLayoutsState,
   restoreLayout: (layoutId: string) => Promise<void>,
   removeSavedLayout: (id: string) => void,
