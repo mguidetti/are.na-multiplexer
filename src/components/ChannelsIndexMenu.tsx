@@ -51,7 +51,7 @@ function ChannelsIndexMenu () {
     setLoadingStatus('active')
 
     const results = await arena
-      .user(sessionData?.user.id)
+      .user(sessionData?.user.id as unknown as string) // HACK: Type correction
       .channels({ page, per: 30, sort: 'title' })
 
     try {
