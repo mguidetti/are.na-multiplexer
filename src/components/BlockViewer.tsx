@@ -91,16 +91,16 @@ function BlockViewer ({ blockData }: { blockData: BlockViewerState }) {
   const { setBlockViewerData } = useDesktopContext()
   const [infoVisible, setInfoVisible] = useState(false)
 
+  const close = () => {
+    setBlockViewerData(null)
+    setInfoVisible(false)
+  }
+
   useHotkeys('esc', () => close(), { enabled: blockData !== null })
   useHotkeys('i', () => setInfoVisible(prevState => !prevState), { enabled: blockData !== null })
 
   if (!blockData) {
     return null
-  }
-
-  const close = () => {
-    setBlockViewerData(null)
-    setInfoVisible(false)
   }
 
   const renderBlock = () => {
