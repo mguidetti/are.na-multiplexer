@@ -16,15 +16,15 @@ const options: NextAuthOptions = {
       userinfo: 'https://api.are.na/v2/me',
       clientId: process.env.ARENA_APP_ID,
       clientSecret: process.env.ARENA_APP_SECRET,
-
       profile: (profile) => {
-        return {
+        const data = {
           id: profile.id,
-          email: profile.email,
-          name: profile.username,
-          image: profile.avatar,
+          username: profile.username,
+          avatar: profile.avatar,
           initials: profile.initials
         }
+
+        return data
       }
     }
   ],
@@ -37,8 +37,8 @@ const options: NextAuthOptions = {
       if (account && profile) {
         token.accessToken = account.access_token
         token.id = profile.id
-        token.name = profile.name
-        token.image = profile.image
+        token.name = profile.username
+        token.image = profile.avatar
         token.initials = profile.initials
       }
 

@@ -14,6 +14,8 @@ declare module 'next-auth' {
 
   interface Profile {
     id: number,
-    initials: string,
+    username: string,
+    avatar: string,
+    initials: string
   }
 }
