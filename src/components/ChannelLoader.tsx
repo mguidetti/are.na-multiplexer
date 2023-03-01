@@ -1,17 +1,19 @@
 import { ArenaChannelWithDetails } from 'arena-ts'
 import classNames from 'classnames'
 import debounce from 'debounce-promise'
-import { useRef, useState } from 'react'
+import { useRef } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
+import { SelectInstance, SingleValue } from 'react-select'
 import AsyncSelect from 'react-select/async'
 import { useDesktopContext } from '../context/DesktopContext'
 import { useArena } from '../hooks/useArena'
 
+type Option = ArenaChannelWithDetails
+
 function ChannelLoader () {
   const desktop = useDesktopContext()
   const arena = useArena()
-  const select = useRef(null)
-  const [query, setQuery] = useState('')
+  const select = useRef<SelectInstance<Option>>(null)
 
   useHotkeys('/', () => select.current?.focus(), {
     ignoreModifiers: true,
@@ -23,12 +25,11 @@ function ChannelLoader () {
 
     const results = await arena.search.channels(query, { page: 1, per: 20 })
 
-    return results.channels
+    return results.channels as ArenaChannelWithDetails[] // Type correction
   }, 200)
 
-  const handleSelectChange = (channel: ArenaChannelWithDetails) => {
-    desktop.addChannelWindow(channel)
-    setQuery('')
+  const handleSelectChange = (channel: SingleValue<Option>) => {
+    desktop.addChannelWindow(channel as ArenaChannelWithDetails)
   }
 
   return (
@@ -45,12 +46,11 @@ function ChannelLoader () {
           ),
           IndicatorSeparator: () => null
         }}
-        getOptionLabel={event => ` ${event.user.full_name} / ${event.title}`}
-        getOptionValue={event => event.id}
+        getOptionLabel={option => `${option.user?.username} / ${option.title}`}
         loadOptions={loadChannels}
         onChange={handleSelectChange}
         unstyled
-        value={query}
+        value={null}
         classNames={{
           control: ({ isFocused, menuIsOpen }) =>
             classNames(
