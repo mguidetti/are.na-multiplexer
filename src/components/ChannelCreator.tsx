@@ -2,16 +2,15 @@ import { useArena } from '@/hooks/useArena'
 import getErrorMessage from '@/lib/getErrorMessage'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import * as Popover from '@radix-ui/react-popover'
-import { ChannelStatus } from 'arena-ts'
+import { ArenaChannelWithDetails, ChannelStatus } from 'arena-ts'
 import classNames from 'classnames'
 import { ChangeEvent, FormEvent, useState } from 'react'
-import Select, { SingleValue } from 'react-select'
 import { useDesktopContext } from '../context/DesktopContext'
 import Spinner from './Spinner'
 
 interface FormDataType {
-  name: string,
-  privacy: SingleValue<{ value: ChannelStatus; label: ChannelStatus; }>
+  name: '',
+  privacy: ChannelStatus | undefined
 }
 
 function ChannelCreator () {
@@ -22,19 +21,15 @@ function ChannelCreator () {
   const [isCreating, setIsCreating] = useState(false)
   const [formData, setFormData] = useState<FormDataType>({
     name: '',
-    privacy: { value: 'closed', label: 'closed' }
+    privacy: undefined
   })
   const [error, setError] = useState<string | null>(null)
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [event.target.name]: event.target.value })
   }
 
-  const handleSelectChange = (value: FormDataType['privacy']) => {
-    setFormData({ ...formData, privacy: value })
-  }
-
-  const createChannel = async (event: FormEvent<SubmitEvent>) => {
+  const createChannel = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     if (!arena) return
@@ -44,11 +39,11 @@ function ChannelCreator () {
     try {
       const results = await arena
         .channel(formData.name)
-        .create(formData.privacy.value)
+        .create(formData.privacy)
 
       if (results) {
-        desktop.addChannelWindow(results)
-        setFormData({ name: '', privacy: { value: 'closed', label: 'closed' } })
+        desktop.addChannelWindow(results as ArenaChannelWithDetails)
+        setFormData({ name: '', privacy: undefined })
         setOpen(false)
       }
     } catch (error) {
@@ -58,12 +53,6 @@ function ChannelCreator () {
       setIsCreating(false)
     }
   }
-
-  const privacyOptions = [
-    { value: 'public', label: 'Open' },
-    { value: 'closed', label: 'Closed' },
-    { value: 'private', label: 'Private' }
-  ]
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
@@ -88,9 +77,7 @@ function ChannelCreator () {
         {error && <p className='text-red-500'>{error}</p>}
 
         <form
-          className={classNames('flex-col flex space-y-3', {
-            invisible: isCreating
-          })}
+          className={classNames('flex-col flex space-y-4', { invisible: isCreating })}
           onSubmit={createChannel}
         >
           <h2 className='font-bold'>Create New Channel</h2>
@@ -98,45 +85,30 @@ function ChannelCreator () {
           <input
             name='name'
             placeholder='Name'
-            className='rounded-md border-2 border-zinc-600 bg-background px-2 py-1 placeholder:text-zinc-600 focus:border-secondary/70 focus:bg-secondary/20 focus:outline-none'
+            className='h-9 rounded-md border-2 border-zinc-600 bg-background px-2 placeholder:text-zinc-600 focus:border-secondary/70 focus:bg-secondary/20 focus:outline-none'
             value={formData.name}
             onChange={handleChange}
             required={true}
           />
 
-          <Select
-            unstyled
-            options={privacyOptions}
-            onChange={handleSelectChange}
-            isSearchable={false}
-            placeholder='Privacy'
+          <select
+            name="privacy"
+            value={formData.privacy}
+            onChange={handleChange}
             required={true}
-            classNames={{
-              control: ({ menuIsOpen }) =>
-                classNames(
-                  'bg-background border-2 rounded-md border-zinc-600 px-2',
-                  { '!rounded-b-none !border-b-0 !transition-none': menuIsOpen }
-                ),
-              placeholder: () => 'text-zinc-600',
-              dropdownIndicator: () => 'text-zinc-600',
-              menu: () =>
-                'bg-background border-2 border-t-0 border-zinc-600 rounded-b-md drop-shadow-panel',
-              menuList: () => 'rounded-b-md',
-              option: ({ value, isFocused }) =>
-                classNames('py-1 px-2 text-primary truncate', {
-                  'bg-secondary/50': isFocused,
-                  '!text-public-channel': value === 'public',
-                  '!text-private-channel': value === 'private'
-                }),
-              singleValue: (value) =>
-                classNames({
-                  '!text-public-channel': value === 'public',
-                  '!text-private-channel': value === 'private'
-                })
-            }}
-          />
+            className={classNames('rounded-md border-2 border-zinc-600 bg-background h-9 px-1 text-zinc-600', {
+              'text-public-channel': formData.privacy === 'public',
+              'text-primary': formData.privacy === 'closed',
+              'text-private-channel': formData.privacy === 'private'
+            })}
+          >
+            <option value="" disabled={true} selected={true} className="text-zinc-600">Privacy</option>
+            <option value="public" className='text-public-channel'>Open</option>
+            <option value="closed" className='text-primary'>Closed</option>
+            <option value="private"className='text-private-channel'>Private</option>
+          </select>
 
-          <button className='rounded-md border-2 border-zinc-600 bg-zinc-700 px-2 py-1 hover:border-secondary/70 hover:bg-secondary/30 hover:text-secondary'>
+          <button className='h-9 rounded-md border-2 border-zinc-600 bg-zinc-700 px-2 hover:border-secondary/70 hover:bg-secondary/30 hover:text-secondary'>
             Create
           </button>
         </form>
