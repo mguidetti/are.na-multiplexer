@@ -1,15 +1,13 @@
 import { useArena } from '@/hooks/useArena'
 import { addWindow } from '@/lib/mosaic'
 import channelsReducer from '@/reducers/channelsReducer'
-import { ArenaBlock, ArenaChannelWithDetails, ConnectionData } from 'arena-ts'
+import { ArenaChannelWithDetails } from 'arena-ts'
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { Mosaic, MosaicNode } from 'react-mosaic-component'
 import { MosaicKey, MosaicPath } from 'react-mosaic-component/lib/types'
 import { v4 as uuidv4 } from 'uuid'
-import { DesktopContext, DesktopContextType } from '../context/DesktopContext'
+import { DesktopActionsContextType, DesktopContextProvider, DesktopContextType } from '../context/DesktopContext'
 import BlockDndWrapper from './BlockDndWrapper'
-import BlockViewer from './BlockViewer'
-import Dialog from './Dialog'
 import Header from './Header'
 import Window from './Window'
 import ZeroState from './ZeroState'
@@ -35,20 +33,9 @@ export interface SavedLayoutsState {
   }
 }
 
-export type BlockViewerState = ArenaBlock & ConnectionData | null
-
-export interface DialogState {
-  isOpen: boolean,
-  title?: string,
-  message?: string,
-  onConfirm?: () => void
-}
-
 export default function Desktop () {
   const [channels, dispatchChannels] = useReducer(channelsReducer, {})
   const [layout, setLayout] = useState<LayoutState>(null)
-  const [blockViewerData, setBlockViewerData] = useState<BlockViewerState>(null)
-  const [dialog, setDialog] = useState<DialogState>({ isOpen: false })
   const saveStateKey = 'save-state'
   const [savedLayouts, setSavedLayouts] = useState<SavedLayoutsState>(
     JSON.parse(localStorage.getItem(saveStateKey) || '{}')
@@ -148,21 +135,26 @@ export default function Desktop () {
 
   const contextValues: DesktopContextType = useMemo(
     () => ({
-      addChannelWindow,
       channels,
+      savedLayouts
+    }),
+    [
+      channels,
+      savedLayouts
+    ]
+  )
+
+  const actionContextValues: DesktopActionsContextType = useMemo(
+    () => ({
+      addChannelWindow,
       dispatchChannels,
-      setBlockViewerData,
-      setDialog,
-      savedLayouts,
       restoreLayout,
       removeSavedLayout,
       saveLayout
     }),
     [
       addChannelWindow,
-      channels,
       dispatchChannels,
-      savedLayouts,
       restoreLayout,
       saveLayout,
       removeSavedLayout
@@ -170,28 +162,21 @@ export default function Desktop () {
   )
 
   return (
-    <div
-      id='app'
-      className='flex h-full w-full flex-col overflow-hidden antialiased'
-    >
-      <DesktopContext.Provider value={contextValues}>
-        <header>
-          <Header />
-        </header>
-        <main className='h-full'>
-          <BlockDndWrapper>
-            <Mosaic
-              renderTile={tileRenderer}
-              value={layout}
-              onChange={handleChange}
-              className={''}
-              zeroStateView={<ZeroState isLoadingLayout={isLoadingLayout} />}
-            />
-          </BlockDndWrapper>
-        </main>
-        <BlockViewer blockData={blockViewerData} />
-        <Dialog data={dialog} setDialog={setDialog} />
-      </DesktopContext.Provider>
-    </div>
+    <DesktopContextProvider contextValue={contextValues} actionsContextValue={actionContextValues}>
+      <header>
+        <Header />
+      </header>
+      <main className='h-full'>
+        <BlockDndWrapper>
+          <Mosaic
+            renderTile={tileRenderer}
+            value={layout}
+            onChange={handleChange}
+            className={''}
+            zeroStateView={<ZeroState isLoadingLayout={isLoadingLayout} />}
+          />
+        </BlockDndWrapper>
+      </main>
+    </DesktopContextProvider>
   )
 }

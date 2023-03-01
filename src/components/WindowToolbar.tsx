@@ -2,13 +2,13 @@ import ArenaMarkIcon from '@/icons/arena-mark.svg'
 import { ArrowsPointingOutIcon, ListBulletIcon, MagnifyingGlassMinusIcon, MagnifyingGlassPlusIcon, Squares2X2Icon, XMarkIcon } from '@heroicons/react/20/solid'
 import { useContext } from 'react'
 import { MosaicContext, MosaicWindowContext } from 'react-mosaic-component'
-import { useDesktopContext } from '../context/DesktopContext'
+import { useDesktopActionsContext } from '../context/DesktopContext'
 import { ChannelWindowState } from './Desktop'
 
 function WindowToolbar ({ data: { data: channel, scale, view } }: {data: ChannelWindowState}) {
   const { mosaicActions } = useContext(MosaicContext)
   const { mosaicWindowActions } = useContext(MosaicWindowContext)
-  const { dispatchChannels } = useDesktopContext()
+  const { dispatchChannels } = useDesktopActionsContext()
 
   const scaleDefaults = {
     multiplier: 1.25,

@@ -5,7 +5,7 @@ import * as Popover from '@radix-ui/react-popover'
 import { ArenaChannelWithDetails, ChannelStatus } from 'arena-ts'
 import classNames from 'classnames'
 import { ChangeEvent, FormEvent, useState } from 'react'
-import { useDesktopContext } from '../context/DesktopContext'
+import { useDesktopActionsContext } from '../context/DesktopContext'
 import Spinner from './Spinner'
 
 interface FormDataType {
@@ -14,7 +14,7 @@ interface FormDataType {
 }
 
 function ChannelCreator () {
-  const desktop = useDesktopContext()
+  const { addChannelWindow } = useDesktopActionsContext()
   const arena = useArena()
 
   const [open, setOpen] = useState(false)
@@ -42,7 +42,7 @@ function ChannelCreator () {
         .create(formData.privacy)
 
       if (results) {
-        desktop.addChannelWindow(results as ArenaChannelWithDetails)
+        addChannelWindow(results as ArenaChannelWithDetails)
         setFormData({ name: '', privacy: '' })
         setOpen(false)
       }

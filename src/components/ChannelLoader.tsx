@@ -5,13 +5,13 @@ import { useRef } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { SelectInstance, SingleValue } from 'react-select'
 import AsyncSelect from 'react-select/async'
-import { useDesktopContext } from '../context/DesktopContext'
+import { useDesktopActionsContext } from '../context/DesktopContext'
 import { useArena } from '../hooks/useArena'
 
 type Option = ArenaChannelWithDetails
 
 function ChannelLoader () {
-  const desktop = useDesktopContext()
+  const { addChannelWindow } = useDesktopActionsContext()
   const arena = useArena()
   const select = useRef<SelectInstance<Option>>(null)
 
@@ -28,7 +28,7 @@ function ChannelLoader () {
   }, 200)
 
   const handleSelectChange = (channel: SingleValue<Option>) => {
-    desktop.addChannelWindow(channel as ArenaChannelWithDetails)
+    addChannelWindow(channel as ArenaChannelWithDetails)
   }
 
   return (

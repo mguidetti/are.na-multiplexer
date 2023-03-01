@@ -1,5 +1,7 @@
 import { BlockContext, BlockContextType } from '@/context/BlockContext'
-import { useDesktopContext } from '@/context/DesktopContext'
+import { useBlockViewerActionsContext } from '@/context/BlockViewerContext'
+import { useDesktopActionsContext } from '@/context/DesktopContext'
+import { useDialogActionsContext } from '@/context/DialogContext'
 import { useWindowContext } from '@/context/WindowContext'
 import { UniqueIdentifier, useDraggable } from '@dnd-kit/core'
 import { ArenaChannelContents } from 'arena-ts'
@@ -23,8 +25,10 @@ interface BlockContainerProps {
 }
 
 function BlockContainer ({ data, children }: BlockContainerProps) {
-  const { addChannelWindow, setBlockViewerData, setDialog } = useDesktopContext()
+  const { addChannelWindow } = useDesktopActionsContext()
   const { channel, view, scale, disconnectBlock } = useWindowContext()
+  const setBlockViewerData = useBlockViewerActionsContext()
+  const setDialog = useDialogActionsContext()
   const [isHovering, setIsHovering] = useState(false)
   const isPending = useMemo(() => data.connection_id === undefined, [data])
 
