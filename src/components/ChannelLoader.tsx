@@ -1,5 +1,5 @@
 import { ArenaChannelWithDetails } from 'arena-ts'
-import classNames from 'classnames/bind'
+import classNames from 'classnames'
 import debounce from 'debounce-promise'
 import { useRef, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
