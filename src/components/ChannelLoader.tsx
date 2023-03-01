@@ -20,12 +20,11 @@ function ChannelLoader () {
     preventDefault: true
   })
 
-  const loadChannels = debounce(async (query: string) => {
-    if (!arena) return
+  const loadOptions = debounce(async (inputValue: string) => {
+    if (!inputValue || !arena) return []
 
-    const results = await arena.search.channels(query, { page: 1, per: 20 })
-
-    return results.channels as ArenaChannelWithDetails[] // Type correction
+    const results = await arena.search.channels(inputValue, { page: 1, per: 20 })
+    return results.channels as ArenaChannelWithDetails[] // HACK: Type correction
   }, 200)
 
   const handleSelectChange = (channel: SingleValue<Option>) => {
@@ -47,7 +46,7 @@ function ChannelLoader () {
           IndicatorSeparator: () => null
         }}
         getOptionLabel={option => `${option.user?.username} / ${option.title}`}
-        loadOptions={loadChannels}
+        loadOptions={loadOptions}
         onChange={handleSelectChange}
         unstyled
         value={null}
