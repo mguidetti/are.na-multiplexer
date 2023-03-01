@@ -1,6 +1,6 @@
 import { BlockContext, BlockContextType } from '@/context/BlockContext'
 import { useBlockViewerActionsContext } from '@/context/BlockViewerContext'
-import { useDesktopContext } from '@/context/DesktopContext'
+import { useDesktopActionsContext } from '@/context/DesktopContext'
 import { useDialogActionsContext } from '@/context/DialogContext'
 import { useWindowContext } from '@/context/WindowContext'
 import { UniqueIdentifier, useDraggable } from '@dnd-kit/core'
@@ -25,7 +25,7 @@ interface BlockContainerProps {
 }
 
 function BlockContainer ({ data, children }: BlockContainerProps) {
-  const { addChannelWindow } = useDesktopContext()
+  const { addChannelWindow } = useDesktopActionsContext()
   const { channel, view, scale, disconnectBlock } = useWindowContext()
   const setBlockViewerData = useBlockViewerActionsContext()
   const setDialog = useDialogActionsContext()

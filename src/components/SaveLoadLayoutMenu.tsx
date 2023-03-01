@@ -1,4 +1,4 @@
-import { useDesktopContext } from '@/context/DesktopContext'
+import { useDesktopActionsContext, useDesktopContext } from '@/context/DesktopContext'
 import { useDialogActionsContext } from '@/context/DialogContext'
 import SaveIcon from '@/icons/save.svg'
 import { ExclamationTriangleIcon, FolderOpenIcon, InformationCircleIcon, TrashIcon } from '@heroicons/react/20/solid'
@@ -10,7 +10,8 @@ import { FormEvent, useState } from 'react'
 function SaveLoadLayout () {
   const [open, setOpen] = useState(false)
   const [newSaveName, setNewSaveName] = useState('')
-  const { saveLayout, savedLayouts, removeSavedLayout, restoreLayout, channels } = useDesktopContext()
+  const { channels, savedLayouts } = useDesktopContext()
+  const { saveLayout, removeSavedLayout, restoreLayout } = useDesktopActionsContext()
   const setDialog = useDialogActionsContext()
 
   const handleSave = (event: FormEvent<HTMLFormElement>) => {

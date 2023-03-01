@@ -1,4 +1,4 @@
-import { useDesktopContext } from '@/context/DesktopContext'
+import { useDesktopActionsContext, useDesktopContext } from '@/context/DesktopContext'
 import { useArena } from '@/hooks/useArena'
 import getErrorMessage from '@/lib/getErrorMessage'
 import { Bars4Icon } from '@heroicons/react/24/solid'
@@ -27,8 +27,9 @@ function Footer ({ loadingStatus }: {loadingStatus: LoadingStatusState}) {
 
 function ChannelsIndexMenu () {
   const arena = useArena()
-  const desktopCtx = useDesktopContext()
   const { data: sessionData } = useSession()
+  const { addChannelWindow } = useDesktopActionsContext()
+  const { channels: desktopChannels } = useDesktopContext()
 
   const [initialized, setInitialized] = useState(false)
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatusState>('inactive')
@@ -72,7 +73,7 @@ function ChannelsIndexMenu () {
   }, [arena, channels, sessionData, loadingStatus, page])
 
   const handleSelect = (channel: ArenaChannelWithDetails) => {
-    desktopCtx.addChannelWindow(channel)
+    addChannelWindow(channel)
     setOpen(closed)
   }
 
@@ -110,7 +111,7 @@ function ChannelsIndexMenu () {
             itemContent={(index, channel) => (
               <button
                 key={channel.id}
-                disabled={Object.keys(desktopCtx.channels).includes(
+                disabled={Object.keys(desktopChannels).includes(
                   channel.id.toString()
                 )}
                 onClick={() => handleSelect(channel)}

@@ -8,7 +8,7 @@ import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { Mosaic, MosaicNode } from 'react-mosaic-component'
 import { MosaicKey, MosaicPath } from 'react-mosaic-component/lib/types'
 import { v4 as uuidv4 } from 'uuid'
-import { DesktopContext, DesktopContextType } from '../context/DesktopContext'
+import { DesktopActionsContextType, DesktopContextProvider, DesktopContextType } from '../context/DesktopContext'
 import BlockDndWrapper from './BlockDndWrapper'
 import BlockViewer from './BlockViewer'
 import Dialog from './Dialog'
@@ -139,19 +139,26 @@ export default function Desktop () {
 
   const contextValues: DesktopContextType = useMemo(
     () => ({
-      addChannelWindow,
       channels,
+      savedLayouts
+    }),
+    [
+      channels,
+      savedLayouts
+    ]
+  )
+
+  const actionContextValues: DesktopActionsContextType = useMemo(
+    () => ({
+      addChannelWindow,
       dispatchChannels,
-      savedLayouts,
       restoreLayout,
       removeSavedLayout,
       saveLayout
     }),
     [
       addChannelWindow,
-      channels,
       dispatchChannels,
-      savedLayouts,
       restoreLayout,
       saveLayout,
       removeSavedLayout
@@ -165,7 +172,7 @@ export default function Desktop () {
     >
       <DialogContextProvider>
         <BlockViewerContextProvider>
-          <DesktopContext.Provider value={contextValues}>
+          <DesktopContextProvider contextValue={contextValues} actionsContextValue={actionContextValues}>
             <header>
               <Header />
             </header>
@@ -180,7 +187,7 @@ export default function Desktop () {
                 />
               </BlockDndWrapper>
             </main>
-          </DesktopContext.Provider>
+          </DesktopContextProvider>
           <BlockViewer />
           <Dialog />
         </BlockViewerContextProvider>
