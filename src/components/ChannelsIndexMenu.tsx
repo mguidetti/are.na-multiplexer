@@ -7,7 +7,7 @@ import * as Popover from '@radix-ui/react-popover'
 import { ArenaChannelWithDetails } from 'arena-ts'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
-import { useCallback, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { Virtuoso } from 'react-virtuoso'
 import Spinner from './Spinner'
 import WindowScroller from './WindowScroller'
@@ -90,7 +90,7 @@ function ChannelsIndexMenu () {
     setOpen(closed)
   }
 
-  const handleSortChange = event => {
+  const handleSortChange = (event: ChangeEvent<HTMLSelectElement>) => {
     reset()
     setSort(event.target.value)
   }
