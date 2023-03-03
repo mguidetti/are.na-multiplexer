@@ -204,7 +204,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
         if (result) {
         // Replace copied block with updated data from response after connection
-          dispatchBlocks({ type: 'update', block: result })
+          dispatchBlocks({ type: 'update', id: block.id, payload: result })
         }
       } catch (error) {
         setError(getErrorMessage(error))
@@ -220,7 +220,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
       const targetId = block.connection_id
 
-      dispatchBlocks({ type: 'update', block: { ...block, ...{ connection_id: undefined } } })
+      dispatchBlocks({ type: 'update', id: block.id, payload: { ...block, ...{ connection_id: undefined } } })
 
       try {
         if (targetId) {
@@ -232,7 +232,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
         }
       } catch (error) {
         setError(getErrorMessage(error))
-        dispatchBlocks({ type: 'update', block: { ...block, ...{ connection_id: targetId } } })
+        dispatchBlocks({ type: 'update', id: block.id, payload: { ...block, ...{ connection_id: targetId } } })
       }
     },
     [canDelete, channelObj]
