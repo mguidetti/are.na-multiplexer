@@ -6,6 +6,8 @@ import { ArenaChannelContents } from 'arena-ts'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import { CSSProperties, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
+import { useDrop } from 'react-dnd'
+import { NativeTypes } from 'react-dnd-html5-backend'
 import { isHotkeyPressed } from 'react-hotkeys-hook'
 import { MosaicWindow } from 'react-mosaic-component'
 import { MosaicPath } from 'react-mosaic-component/lib/types'
@@ -158,6 +160,30 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
     }
   })
 
+  const [{ isOver: fileIsOver }, drop] = useDrop(() => ({
+    accept: [NativeTypes.FILE],
+    drop (item: { files: File[] }) {
+      handleFileDrop(item.files)
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver()
+    })
+  }))
+
+  const handleFileDrop = async (files: File[]) => {
+    console.log(files)
+  }
+
+  // const createBlock = useCallback(async (content: string) => {
+  //   if (!arena) return
+
+  //   const results = await arena.channel(channel.slug).createBlock({ content })
+
+  //   console.debug(results)
+
+  //   return results
+  // }, [arena, channel])
+
   const connectBlock = useCallback(
     async (block: ArenaChannelContents) => {
       if (!canWrite) return
@@ -237,7 +263,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
   return (
     <MosaicWindow
       title={`${channel.user?.username} / ${channel.title}`}
-      className={classNames({
+      className={classNames('relative', {
         'channel-status-private': channel.status === 'private',
         'channel-status-public': channel.status === 'public',
         'channel-status-closed': channel.status === 'closed'
@@ -246,24 +272,27 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
       toolbarControls={<WindowToolbar data={data} />}
     >
         <div
+        ref={el => { setNodeRef(el); drop(el) }}
         style={{ '--scale': scale } as CSSProperties}
-        ref={setNodeRef}
         className={classNames('h-full text-[calc(1rem*var(--scale))]', {
           'bg-dot-grid-secondary': isActiveDrop
-        })}
-      >
-        {error && <div className='text-red-500'>Error: {error}</div>}
+        })}>
+          {error && <div className='text-red-500'>Error: {error}</div>}
 
-        {!blocks.length && isLoading && (
-          <div className='flex h-full w-full items-center justify-center'>
-            <Spinner />
-          </div>
-        )}
+          {!blocks.length && isLoading && (
+            <div className='flex h-full w-full items-center justify-center'>
+              <Spinner />
+            </div>
+          )}
 
         {!blocks.length && loadingStatus !== 'active' && <BlankSlate />}
 
-        <WindowContext.Provider value={contextValues}>{renderBlocks()}</WindowContext.Provider>
-      </div>
+          <WindowContext.Provider value={contextValues}>{renderBlocks()}</WindowContext.Provider>
+
+          <div className={classNames('hidden absolute inset-0 bg-secondary/30 backdrop-contrast-50 items-center justify-center', { '!flex': fileIsOver })}>
+            <span className='text-2xl font-bold text-secondary'>Drop fields to add</span>
+          </div>
+        </div>
     </MosaicWindow>
   )
 }
