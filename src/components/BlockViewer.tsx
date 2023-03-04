@@ -93,7 +93,6 @@ function BlockViewer () {
 
   const close = () => {
     setBlockViewerData(null)
-    setInfoVisible(false)
   }
 
   useHotkeys('esc', () => close(), { enabled: blockData !== null })
