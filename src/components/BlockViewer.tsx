@@ -1,12 +1,15 @@
 import { useBlockViewerActionsContext, useBlockViewerContext } from '@/context/BlockViewerContext'
+import { useArena } from '@/hooks/useArena'
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/solid'
-import { ArenaBlock, ConnectionData } from 'arena-ts'
+import { ArenaBlock, ArenaChannelWithDetails, ConnectionData } from 'arena-ts'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import Spinner from './Spinner'
+import classNames from 'classnames'
+import { useDesktopActionsContext } from '@/context/DesktopContext'
 
 dayjs.extend(relativeTime)
 
@@ -146,15 +149,66 @@ function BlockViewer () {
   )
 }
 
-function BlockInfo ({ blockData, setInfoVisible }: { blockData: ArenaBlock & ConnectionData, setInfoVisible: Dispatch<SetStateAction<boolean>>}) {
+function BlockConnectionsList ({ blockData }: {blockData: ArenaBlock & ConnectionData}) {
+  const [connections, setConnections] = useState<ArenaChannelWithDetails[]>([])
+  const arena = useArena()
+  const { addChannelWindow } = useDesktopActionsContext()
+  const setBlockViewerData = useBlockViewerActionsContext()
+
+  const fetchChannels = useCallback(async () => {
+    if (!arena) return
+    const results = await arena.block(blockData.id).channels()
+
+    setConnections(results.channels)
+  }, [arena, blockData])
+
+  useEffect(() => {
+    fetchChannels()
+  }, [fetchChannels])
+
+  const handleChannelClick = (channel: ArenaChannelWithDetails) => {
+    addChannelWindow(channel)
+    setBlockViewerData(null)
+  }
+
+  if (connections.length) {
+    return (
+      <ul className='mt-2 max-h-72 space-y-1 overflow-y-auto scrollbar-thin scrollbar-track-secondary/30 scrollbar-thumb-secondary/70'>
+        {connections.map(channel => (
+          <li key={channel.id}>
+            <button
+              onClick={() => handleChannelClick(channel)}
+              className={classNames('w-full rounded-sm border-2 p-2 text-left truncate flex items-end channel-block', {
+                'channel-status-private': channel.status === 'private',
+                'channel-status-public': channel.status === 'public',
+                'channel-status-closed': channel.status === 'closed'
+              })}
+            >
+              <span className='flex-1 font-bold'>{channel.title}</span>
+              <span className='text-sm'>by {channel.user?.username}</span></button>
+          </li>
+        ))}
+      </ul>
+    )
+  } else {
+    return <div className='text-secondary'><Spinner className='mr-2 inline h-6 w-6'/>Loading connections</div>
+  }
+}
+
+interface BlockInfoProps {
+  blockData: ArenaBlock & ConnectionData,
+  setInfoVisible: Dispatch<SetStateAction<boolean>>
+}
+
+function BlockInfo ({ blockData, setInfoVisible }: BlockInfoProps) {
   return (
-    <div className='absolute bottom-0 right-0 max-w-[70vw] rounded-sm border-t-2 border-l-2 border-secondary bg-background/90 py-2 px-4 text-sm text-primary'>
+    <div className='absolute bottom-0 right-0 max-w-[70vw] rounded-sm border-t-2 border-l-2 border-secondary bg-background/90 py-2 px-4 text-zinc-400'>
       <button onClick={() => setInfoVisible(false)} className='absolute top-0 right-0 p-1'>
         <XMarkIcon className='h-7 w-7 text-secondary hover:text-primary' title='Close' strokeWidth='2' />
       </button>
 
       <div className='mr-6'>
-        <h1 className='truncate font-bold'>{blockData.generated_title}</h1>
+        <h1 className='truncate text-base font-bold'>{blockData.generated_title}</h1>
         {blockData.description && <p className='truncate'>{blockData.description}</p>}
         <p className='truncate'>
           Added {dayjs(blockData.connected_at).fromNow()} by {blockData.user.username}
@@ -167,6 +221,13 @@ function BlockInfo ({ blockData, setInfoVisible }: { blockData: ArenaBlock & Con
             </a>
           </span>
         )}
+      </div>
+
+      <div className='my-5 border border-secondary/50'></div>
+
+      <div>
+          <h2 className='text-base font-bold text-secondary'>Connections</h2>
+          <BlockConnectionsList blockData={blockData}/>
       </div>
     </div>
   )
