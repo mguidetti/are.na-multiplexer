@@ -118,7 +118,7 @@ function BlockViewer () {
   }
 
   return (
-    <div className='fixed inset-0 z-50 h-screen w-screen bg-background/30 p-8'>
+    <div className='fixed inset-0 z-50 h-screen w-screen p-6 backdrop-brightness-50 backdrop-grayscale'>
       <div className='relative z-50 flex h-full w-full items-center justify-center overflow-hidden rounded-sm border-2 border-secondary bg-background/70 p-8 drop-shadow-panel'>
         {renderBlock()}
         <button onClick={close} className='absolute top-0 right-0 p-1'>
