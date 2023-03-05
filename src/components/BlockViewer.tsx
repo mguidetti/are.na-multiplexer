@@ -1,14 +1,11 @@
 import { useBlockViewerActionsContext, useBlockViewerContext } from '@/context/BlockViewerContext'
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/solid'
-import { ArenaBlock, ConnectionData } from 'arena-ts'
-import dayjs from 'dayjs'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { ArenaBlock } from 'arena-ts'
+import { useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
+import BlockInfo from './BlockInfo'
 import Spinner from './Spinner'
-
-dayjs.extend(relativeTime)
 
 function AttachmentBlock ({ data }: { data: ArenaBlock }) {
   const renderBody = () => {
@@ -89,11 +86,10 @@ function TextBlock ({ data }: { data: ArenaBlock }) {
 function BlockViewer () {
   const setBlockViewerData = useBlockViewerActionsContext()
   const blockData = useBlockViewerContext()
-  const [infoVisible, setInfoVisible] = useState(false)
+  const [infoVisible, setInfoVisible] = useState(true)
 
   const close = () => {
     setBlockViewerData(null)
-    setInfoVisible(false)
   }
 
   useHotkeys('esc', () => close(), { enabled: blockData !== null })
@@ -119,12 +115,20 @@ function BlockViewer () {
   }
 
   return (
-    <div className='fixed inset-0 z-50 h-screen w-screen bg-background/30 p-8'>
-      <div className='relative z-50 flex h-full w-full items-center justify-center overflow-hidden rounded-sm border-2 border-secondary bg-background/70 p-8 drop-shadow-panel'>
-        {renderBlock()}
-        <button onClick={close} className='absolute top-0 right-0 p-1'>
-          <XMarkIcon className='h-7 w-7 text-secondary hover:text-primary' title='Close' strokeWidth='1.5' />
+    <div className='fixed inset-0 z-50 p-6 backdrop-brightness-50 backdrop-grayscale'>
+      <div className='relative z-50 flex h-full w-full rounded-sm border-2 border-secondary bg-background/70 drop-shadow-panel'>
+        <div className='flex flex-1 items-center justify-center p-4'>
+          {renderBlock()}
+        </div>
+
+        <div className='w-[25vw] border-l-2 border-secondary' hidden={!infoVisible}>
+          <BlockInfo blockData={blockData} setInfoVisible={setInfoVisible} />
+        </div>
+
+        <button onClick={close} title="Close Block Viewer" className='absolute top-0 right-0 p-1'>
+          <XMarkIcon className='h-7 w-7 text-secondary hover:text-primary' strokeWidth='1.5' />
         </button>
+
         <a
           href={`https://are.na/block/${blockData.id}`}
           className='absolute bottom-0 left-0 p-2'
@@ -135,38 +139,10 @@ function BlockViewer () {
           <ArenaMarkIcon className='w-8 text-secondary hover:text-primary' />
         </a>
 
-        {infoVisible && <BlockInfo blockData={blockData} setInfoVisible={setInfoVisible} />}
         {!infoVisible && (
-          <button onClick={() => setInfoVisible(true)} title='Show info' className='absolute bottom-0 right-0 p-2'>
+          <button onClick={() => setInfoVisible(true)} title='Show Info' className='absolute bottom-0 right-0 p-2'>
             <InformationCircleIcon className='h-7 w-7 text-secondary hover:text-primary' />
           </button>
-        )}
-      </div>
-      <div onClick={close} className='absolute inset-0 cursor-pointer' />
-    </div>
-  )
-}
-
-function BlockInfo ({ blockData, setInfoVisible }: { blockData: ArenaBlock & ConnectionData, setInfoVisible: Dispatch<SetStateAction<boolean>>}) {
-  return (
-    <div className='absolute bottom-0 right-0 max-w-[70vw] rounded-sm border-t-2 border-l-2 border-secondary bg-background/90 py-2 px-4 text-sm text-primary'>
-      <button onClick={() => setInfoVisible(false)} className='absolute top-0 right-0 p-1'>
-        <XMarkIcon className='h-7 w-7 text-secondary hover:text-primary' title='Close' strokeWidth='2' />
-      </button>
-
-      <div className='mr-6'>
-        <h1 className='truncate font-bold'>{blockData.generated_title}</h1>
-        {blockData.description && <p className='truncate'>{blockData.description}</p>}
-        <p className='truncate'>
-          Added {dayjs(blockData.connected_at).fromNow()} by {blockData.user.username}
-        </p>
-        {blockData.source && (
-          <span className='block truncate'>
-            Source:{' '}
-            <a href={blockData.source.url} className='underline' target='_blank' rel='noreferrer'>
-              {blockData.source.title}
-            </a>
-          </span>
         )}
       </div>
     </div>

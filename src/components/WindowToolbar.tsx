@@ -48,10 +48,10 @@ function WindowToolbar ({ data: { data: channel, scale, view } }: {data: Channel
   }
 
   return (
-    <div className='flex items-center justify-end'>
+    <div className='mr-[0.1rem] flex items-center justify-end'>
       <a
         href={`https://www.are.na/${channel.owner_slug}/${channel.slug}`}
-        className='px-2 hover:text-secondary'
+        className='px-[0.33rem] hover:text-secondary'
         target='_blank'
         rel='noreferrer'
         title='View at Are.na'
@@ -72,12 +72,12 @@ function WindowToolbar ({ data: { data: channel, scale, view } }: {data: Channel
         <MagnifyingGlassMinusIcon className='h-5 w-5' />
       </button>
 
-      <button onClick={expand} title='Expand' className='px-1 hover:text-secondary'>
-        <ArrowsPointingOutIcon className='h-5 w-5' />
+      <button onClick={expand} title='Expand' className='overflow-hidden px-1 hover:text-secondary'>
+        <ArrowsPointingOutIcon className='h-5 w-5 scale-[0.95]' />
       </button>
 
-      <button onClick={remove} title='Remove' className='px-1 hover:text-secondary'>
-        <XMarkIcon className='h-5 w-5' strokeWidth='2' />
+      <button onClick={remove} title='Remove' className='overflow-hidden px-1 hover:text-secondary'>
+        <XMarkIcon className='h-5 w-5 scale-[1.4]'/>
       </button>
     </div>
   )
