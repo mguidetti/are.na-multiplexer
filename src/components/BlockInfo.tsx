@@ -40,7 +40,7 @@ function BlockInfo ({ blockData, setInfoVisible }: BlockInfoProps) {
         </div>
       </div>
 
-      <div className='mx-4 border border-secondary/50'></div>
+      <div className='mx-4 border border-secondary/30'></div>
 
       <h2 className='px-4 pt-4 pb-2 font-bold text-secondary'>Connections</h2>
 
