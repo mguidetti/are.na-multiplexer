@@ -22,7 +22,7 @@ function BlockInfo ({ blockData, setInfoVisible }: BlockInfoProps) {
       <div className='mt-8 p-4'>
         <h1 className='truncate font-bold'>{blockData.generated_title}</h1>
         <div className='mt-2 text-sm'>
-          {blockData.description && <p className='truncate'>{blockData.description}</p>}
+          {blockData.description && <p className='mb-2'>{blockData.description}</p>}
           <p className='truncate'>
             Created {dayjs(blockData.created_at).fromNow()} by{' '}
             <a href={`https://www.are.na/${blockData.user.slug}`} target="_blank" rel="noreferrer" className='underline'>
