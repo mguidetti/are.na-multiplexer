@@ -121,11 +121,9 @@ function BlockViewer () {
           {renderBlock()}
         </div>
 
-        {infoVisible && (
-          <div className='w-[25vw] border-l-2 border-secondary'>
-            <BlockInfo blockData={blockData} setInfoVisible={setInfoVisible} />
-          </div>
-        )}
+        <div className='w-[25vw] border-l-2 border-secondary' hidden={!infoVisible}>
+          <BlockInfo blockData={blockData} setInfoVisible={setInfoVisible} />
+        </div>
 
         <button onClick={close} title="Close Block Viewer" className='absolute top-0 right-0 p-1'>
           <XMarkIcon className='h-7 w-7 text-secondary hover:text-primary' strokeWidth='1.5' />
