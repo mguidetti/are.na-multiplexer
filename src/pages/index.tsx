@@ -1,6 +1,4 @@
-import BlockViewer from '@/components/BlockViewer'
 import Dialog from '@/components/Dialog'
-import { BlockViewerContextProvider } from '@/context/BlockViewerContext'
 import { DialogContextProvider } from '@/context/DialogContext'
 import { useSession } from 'next-auth/react'
 import Head from 'next/head'
@@ -22,11 +20,8 @@ export default function Home () {
         {data
           ? (
               <DialogContextProvider>
-                <BlockViewerContextProvider>
-                  <Desktop />
-                  <BlockViewer />
-                  <Dialog />
-                </BlockViewerContextProvider>
+                <Desktop />
+                <Dialog />
               </DialogContextProvider>
             )
           : <Welcome />
