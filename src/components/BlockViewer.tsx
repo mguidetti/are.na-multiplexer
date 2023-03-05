@@ -86,7 +86,7 @@ function TextBlock ({ data }: { data: ArenaBlock }) {
 function BlockViewer () {
   const setBlockViewerData = useBlockViewerActionsContext()
   const blockData = useBlockViewerContext()
-  const [infoVisible, setInfoVisible] = useState(false)
+  const [infoVisible, setInfoVisible] = useState(true)
 
   const close = () => {
     setBlockViewerData(null)
