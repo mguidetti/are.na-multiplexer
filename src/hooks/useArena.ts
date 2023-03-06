@@ -1,19 +1,10 @@
+import { S3UploadPolicy } from '@/lib/uploader'
 import { ArenaClient } from 'arena-ts'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
-export interface ArenaS3UploadPolicy {
-  key: string
-  AWSAccessKeyId: string
-  acl: string
-  success_action_status: string
-  policy: string
-  signature: string
-  bucket: string
-}
-
 class ArenaClientWithUpload extends ArenaClient {
-  uploadPolicy (): Promise<ArenaS3UploadPolicy> {
+  uploadPolicy (): Promise<S3UploadPolicy> {
     // @ts-expect-error: getJson is a private property instead of protected
     return this.getJson('uploads/policy')
   }

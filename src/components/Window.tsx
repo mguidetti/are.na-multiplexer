@@ -1,5 +1,6 @@
 import { WindowContext, WindowContextType } from '@/context/WindowContext'
 import getErrorMessage from '@/lib/getErrorMessage'
+import { uploadFile } from '@/lib/uploader'
 import blocksReducer from '@/reducers/blocksReducer'
 import { useDndMonitor, useDroppable } from '@dnd-kit/core'
 import { ArenaChannelContents } from 'arena-ts'
@@ -160,30 +161,6 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
     }
   })
 
-  const [{ isOver: fileIsOver }, drop] = useDrop(() => ({
-    accept: [NativeTypes.FILE],
-    drop (item: { files: File[] }) {
-      handleFileDrop(item.files)
-    },
-    collect: (monitor) => ({
-      isOver: monitor.isOver()
-    })
-  }))
-
-  const handleFileDrop = async (files: File[]) => {
-    console.log(files)
-  }
-
-  // const createBlock = useCallback(async (content: string) => {
-  //   if (!arena) return
-
-  //   const results = await arena.channel(channel.slug).createBlock({ content })
-
-  //   console.debug(results)
-
-  //   return results
-  // }, [arena, channel])
-
   const connectBlock = useCallback(
     async (block: ArenaChannelContents) => {
       if (!canWrite) return
@@ -237,6 +214,40 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
     },
     [canDelete, channelObj]
   )
+
+  const createBlock = async ({ content, source }: {content?: string, source?: string}) => {
+    if (!arena) return
+
+    const result = await arena.channel(channel.slug).createBlock({ content, source })
+
+    dispatchBlocks({ type: 'append', blocks: [{ ...result }] })
+  }
+
+  const [{ isOver: fileIsOver }, drop] = useDrop(() => ({
+    accept: [NativeTypes.FILE],
+    drop (item: { files: File[] }) {
+      handleFileDrop(item.files)
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver()
+    })
+  }), [arena])
+
+  const handleFileDrop = async (files: File[]) => {
+    if (!arena) return
+
+    const policy = await arena.uploadPolicy()
+
+    if (policy) {
+      files.forEach(file => {
+        uploadFile({
+          file,
+          policy,
+          onDone: (url) => createBlock({ source: url })
+        })
+      })
+    }
+  }
 
   const renderBlocks = () => {
     if (view === 'grid') {
