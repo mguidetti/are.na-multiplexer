@@ -1,5 +1,7 @@
 import { WindowContext, WindowContextType } from '@/context/WindowContext'
+import { dummyBlockData } from '@/lib/dummyData'
 import getErrorMessage from '@/lib/getErrorMessage'
+import { sleep } from '@/lib/sleep'
 import { uploadFile } from '@/lib/uploader'
 import blocksReducer from '@/reducers/blocksReducer'
 import { useDndMonitor, useDroppable } from '@dnd-kit/core'
@@ -215,14 +217,6 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
     [canDelete, channelObj]
   )
 
-  const createBlock = async ({ content, source }: {content?: string, source?: string}) => {
-    if (!arena) return
-
-    const result = await arena.channel(channel.slug).createBlock({ content, source })
-
-    dispatchBlocks({ type: 'append', blocks: [{ ...result }] })
-  }
-
   const [{ isOver: fileIsOver }, drop] = useDrop(() => ({
     accept: [NativeTypes.FILE],
     drop (item: { files: File[] }) {
@@ -240,13 +234,36 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
     if (policy) {
       files.forEach(file => {
+        const tempId = Math.floor(Math.random() * 100)
+        const tempBlock = { ...dummyBlockData, ...{ id: tempId } }
+
+        dispatchBlocks({ type: 'append', blocks: [tempBlock] })
+
         uploadFile({
           file,
           policy,
-          onDone: (url) => createBlock({ source: url })
+          onDone: async (url) => createBlockFromUpload(tempId, url)
         })
       })
     }
+  }
+
+  const createBlockFromUpload = async (tempId: number, url: string) => {
+    if (!arena) return
+
+    const newBlock = await arena.channel(channel.slug).createBlock({ source: url })
+
+    dispatchBlocks({ type: 'update', id: tempId, payload: newBlock })
+
+    // Poll block until state is "available"
+    let result = await arena.block(newBlock.id).get()
+
+    while (result.state !== 'available') {
+      await sleep(500)
+      result = await arena.block(newBlock.id).get()
+    }
+
+    dispatchBlocks({ type: 'update', id: newBlock.id, payload: { ...newBlock, ...result } })
   }
 
   const renderBlocks = () => {
