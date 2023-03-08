@@ -1,6 +1,7 @@
 import { useBlockViewerActionsContext, useBlockViewerContext } from '@/context/BlockViewerContext'
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import * as Dialog from '@radix-ui/react-dialog'
 import { ArenaBlock } from 'arena-ts'
 import { useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
@@ -88,11 +89,6 @@ function BlockViewer () {
   const blockData = useBlockViewerContext()
   const [infoVisible, setInfoVisible] = useState(true)
 
-  const close = () => {
-    setBlockViewerData(null)
-  }
-
-  useHotkeys('esc', () => close(), { enabled: blockData !== null })
   useHotkeys('i', () => setInfoVisible(prevState => !prevState), { enabled: blockData !== null })
 
   if (!blockData) {
@@ -115,37 +111,42 @@ function BlockViewer () {
   }
 
   return (
-    <div className='fixed inset-0 z-50 p-6 backdrop-brightness-50 backdrop-grayscale'>
-      <div className='relative z-50 flex h-full w-full rounded-sm border-2 border-secondary bg-background/70 drop-shadow-panel'>
-        <div className='flex flex-1 items-center justify-center p-4'>
-          {renderBlock()}
-        </div>
+    <Dialog.Root open={blockData !== null} onOpenChange={open => !open && setBlockViewerData(null)}>
+      <Dialog.Portal>
+        <Dialog.Overlay className='fixed inset-0 z-50 backdrop-brightness-50 backdrop-grayscale'/>
+        <Dialog.Content className='absolute inset-6 z-50 flex rounded-sm border-2 border-secondary bg-background/70 drop-shadow-panel'>
+          <div className='flex flex-1 items-center justify-center p-4'>
+            {renderBlock()}
+          </div>
 
-        <div className='w-[25vw] border-l-2 border-secondary' hidden={!infoVisible}>
-          <BlockInfo blockData={blockData} setInfoVisible={setInfoVisible} />
-        </div>
+          <div className='w-[25vw] border-l-2 border-secondary' hidden={!infoVisible}>
+            <BlockInfo blockData={blockData} setInfoVisible={setInfoVisible} />
+          </div>
 
-        <button onClick={close} title="Close Block Viewer" className='absolute top-0 right-0 p-1'>
-          <XMarkIcon className='h-7 w-7 text-secondary hover:text-primary' strokeWidth='1.5' />
-        </button>
+          <Dialog.Close asChild>
+            <button title="Close Block Viewer" className='absolute top-0 right-0 p-1'>
+              <XMarkIcon className='h-7 w-7 text-secondary hover:text-primary' strokeWidth='1.5' />
+            </button>
+          </Dialog.Close>
 
-        <a
-          href={`https://are.na/block/${blockData.id}`}
-          className='absolute bottom-0 left-0 p-2'
-          target='_blank'
-          rel='noreferrer'
-          title='View at Are.na'
-        >
-          <ArenaMarkIcon className='w-8 text-secondary hover:text-primary' />
-        </a>
+          <a
+            href={`https://are.na/block/${blockData.id}`}
+            className='absolute bottom-0 left-0 p-2'
+            target='_blank'
+            rel='noreferrer'
+            title='View at Are.na'
+          >
+            <ArenaMarkIcon className='w-8 text-secondary hover:text-primary' />
+          </a>
 
-        {!infoVisible && (
-          <button onClick={() => setInfoVisible(true)} title='Show Info' className='absolute bottom-0 right-0 p-2'>
-            <InformationCircleIcon className='h-7 w-7 text-secondary hover:text-primary' />
-          </button>
-        )}
-      </div>
-    </div>
+          {!infoVisible && (
+            <button onClick={() => setInfoVisible(true)} title='Show Info' className='absolute bottom-0 right-0 p-2'>
+              <InformationCircleIcon className='h-7 w-7 text-secondary hover:text-primary' />
+            </button>
+          )}
+        </Dialog.Content>
+      </Dialog.Portal>
+    </Dialog.Root>
   )
 }
 
