@@ -82,6 +82,7 @@ function ChannelsIndexMenu () {
       <Popover.Trigger
         className='flex min-h-[38px] items-center gap-x-2 whitespace-nowrap rounded-md border-2 border-zinc-600 bg-background px-2 py-1 font-bold data-[state=open]:border-secondary/70 data-[state=open]:bg-secondary/10 data-[state=open]:text-secondary hover:border-secondary/70 hover:bg-secondary/10 hover:text-secondary'
         onClick={handleInitialize}
+        title="Channel index menu"
       >
         <Bars4Icon
           className='h-5 w-5 text-inherit'

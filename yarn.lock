@@ -1326,6 +1326,16 @@
     tiny-glob "^0.2.9"
     tslib "^2.4.0"
 
+"@playwright/test@^1.31.2":
+  version "1.31.2"
+  resolved "https://registry.yarnpkg.com/@playwright/test/-/test-1.31.2.tgz#426d8545143a97a6fed250a2a27aa1c8e5e2548e"
+  integrity sha512-BYVutxDI4JeZKV1+ups6dt5WiqKhjBtIYowyZIJ3kBDmJgsuPKsqqKNIMFbUePLSCmp2cZu+BDL427RcNKTRYw==
+  dependencies:
+    "@types/node" "*"
+    playwright-core "1.31.2"
+  optionalDependencies:
+    fsevents "2.3.2"
+
 "@radix-ui/primitive@1.0.0":
   version "1.0.0"
   resolved "https://registry.npmjs.org/@radix-ui/primitive/-/primitive-1.0.0.tgz"
@@ -1713,6 +1723,11 @@
   version "0.0.29"
   resolved "https://registry.npmjs.org/@types/json5/-/json5-0.0.29.tgz"
   integrity sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==
+
+"@types/node@*":
+  version "18.14.6"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.14.6.tgz#ae1973dd2b1eeb1825695bb11ebfb746d27e3e93"
+  integrity sha512-93+VvleD3mXwlLI/xASjw0FzKcwzl3OdTCzm1LaRfqgS21gfFtK3zDXM5Op9TeeMsJVOaJ2VRDpT9q4Y3d0AvA==
 
 "@types/node@^18.14.1":
   version "18.14.1"
@@ -2552,6 +2567,11 @@ domutils@^2.8.0:
     domelementtype "^2.2.0"
     domhandler "^4.2.0"
 
+dotenv@^16.0.3:
+  version "16.0.3"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.0.3.tgz#115aec42bac5053db3c456db30cc243a5a836a07"
+  integrity sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==
+
 electron-to-chromium@^1.4.284:
   version "1.4.286"
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.286.tgz"
@@ -3062,7 +3082,7 @@ fs.realpath@^1.0.0:
   resolved "https://registry.npmjs.org/fs.realpath/-/fs.realpath-1.0.0.tgz"
   integrity sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==
 
-fsevents@~2.3.2:
+fsevents@2.3.2, fsevents@~2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/fsevents/-/fsevents-2.3.2.tgz#8a526f78b8fdf4623b709e0b975c52c24c02fd1a"
   integrity sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==
@@ -4026,6 +4046,11 @@ pify@^2.3.0:
   version "2.3.0"
   resolved "https://registry.npmjs.org/pify/-/pify-2.3.0.tgz"
   integrity sha512-udgsAY+fTnvv7kI7aaxbqwWNb0AHiB0qBO89PZKPkoTmGOgdbrHDKD+0B2X4uTfJ/FT1R09r9gTsjUjNJotuog==
+
+playwright-core@1.31.2:
+  version "1.31.2"
+  resolved "https://registry.yarnpkg.com/playwright-core/-/playwright-core-1.31.2.tgz#debf4b215d14cb619adb7e511c164d068075b2ed"
+  integrity sha512-a1dFgCNQw4vCsG7bnojZjDnPewZcw7tZUNFN0ZkcLYKj+mPmXvg4MpaaKZ5SgqPsOmqIf2YsVRkgqiRDxD+fDQ==
 
 postcss-import@^14.1.0:
   version "14.1.0"
