@@ -65,7 +65,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
   const loadMore = useCallback(() => {
     const nextPage = page + 1
 
-    if (nextPage >= totalPages) {
+    if (nextPage > totalPages) {
       setLoadingStatus('complete')
     } else {
       setPage(nextPage)
