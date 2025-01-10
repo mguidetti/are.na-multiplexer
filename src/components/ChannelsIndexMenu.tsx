@@ -1,12 +1,13 @@
 import { useDesktopActionsContext, useDesktopContext } from '@/context/DesktopContext'
 import { useArena } from '@/hooks/useArena'
 import getErrorMessage from '@/lib/getErrorMessage'
+import { BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/react/20/solid'
 import { Bars4Icon } from '@heroicons/react/24/solid'
 import * as Popover from '@radix-ui/react-popover'
 import { ArenaChannelWithDetails } from 'arena-ts'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
-import { useCallback, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { Virtuoso } from 'react-virtuoso'
 import Spinner from './Spinner'
 import WindowScroller from './WindowScroller'
@@ -32,11 +33,17 @@ function ChannelsIndexMenu () {
   const { channels: desktopChannels } = useDesktopContext()
 
   const [initialized, setInitialized] = useState(false)
-  const [loadingStatus, setLoadingStatus] = useState<LoadingStatusState>('inactive')
-  const [channels, setChannels] = useState<ArenaChannelWithDetails[]>([])
-  const [page, setPage] = useState(1)
   const [open, setOpen] = useState(false)
+  const [loadingStatus, setLoadingStatus] = useState<LoadingStatusState>('inactive')
+  const [sort, setSort] = useState('updated_at')
+  const [direction, setDirection] = useState('asc')
+  const [page, setPage] = useState(1)
+  const [channels, setChannels] = useState<ArenaChannelWithDetails[]>([])
   const [error, setError] = useState<string>()
+  const [visibleRange, setVisibleRange] = useState({
+    startIndex: 0,
+    endIndex: 0
+  })
 
   const handleInitialize = () => {
     if (initialized) return
@@ -72,10 +79,30 @@ function ChannelsIndexMenu () {
     }
   }, [arena, channels, sessionData, loadingStatus, page])
 
+  const reset = () => {
+    setChannels([])
+    setPage(1)
+    setLoadingStatus('inactive')
+  }
+
   const handleSelect = (channel: ArenaChannelWithDetails) => {
     addChannelWindow(channel)
     setOpen(closed)
   }
+
+  const handleSortChange = (event: ChangeEvent<HTMLSelectElement>) => {
+    reset()
+    setSort(event.target.value)
+  }
+
+  const handleToggleDirection = () => {
+    reset()
+    setDirection(prevDirection => (prevDirection === 'asc' ? 'desc' : 'asc'))
+  }
+
+  useEffect(() => {
+    fetchChannels()
+  }, [sort, direction])
 
   return (
     <Popover.Root open={open} onOpenChange={setOpen}>
@@ -91,11 +118,39 @@ function ChannelsIndexMenu () {
       </Popover.Trigger>
       <Popover.Content
         sideOffset={1}
-        align={'end'}
+        align='end'
         className='z-20 w-[90vw] max-w-[431px] rounded-md border-2 border-zinc-600  bg-zinc-900 drop-shadow-panel'
       >
-        <div className='flex p-2'>
+        <div className='flex items-center rounded-t-md p-2'>
           <h2 className='flex-1 font-bold'>Your Channels</h2>
+          <div className='flex items-stretch gap-x-2'>
+            <select
+              name='channel-index-sort'
+              className='rounded border-2 border-zinc-600 bg-background p-1 focus:bg-secondary/20 focus:outline-none'
+              onChange={handleSortChange}
+              value={sort}
+            >
+              <option value='string' className='bg-background'>
+                Alphabetical
+              </option>
+              <option value='created_at' className='bg-background'>
+                Created at
+              </option>
+              <option value='updated_at' className='bg-background'>
+                Updated at
+              </option>
+            </select>
+
+            <button
+              onClick={handleToggleDirection}
+              className='rounded border-2 border-zinc-600 bg-background p-1 focus:bg-secondary/20 focus:outline-none'
+            >
+              {direction === 'asc' && <BarsArrowUpIcon className='h-5 w-5' />}
+              {direction === 'desc' && (
+                <BarsArrowDownIcon className='h-5 w-5' />
+              )}
+            </button>
+          </div>
         </div>
 
         {error && <div className="text-red-500">{error}</div>}
@@ -104,6 +159,8 @@ function ChannelsIndexMenu () {
           <Virtuoso
             data={channels}
             endReached={fetchChannels}
+            rangeChanged={setVisibleRange}
+            initialTopMostItemIndex={visibleRange.startIndex}
             components={{
               Scroller: WindowScroller,
               Footer: () => <Footer loadingStatus={loadingStatus} />
