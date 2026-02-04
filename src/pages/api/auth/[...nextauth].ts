@@ -1,5 +1,16 @@
 import NextAuth, { NextAuthOptions } from 'next-auth'
 
+/**
+ * Arena API Version Configuration
+ *
+ * Current: v2 (using arena-ts@1.0.2)
+ * Future: When Arena API v3 becomes available, update the ARENA_API_VERSION
+ * environment variable and ensure the arena-ts library supports v3 endpoints.
+ *
+ * @see https://github.com/aredotna/api-docs
+ */
+const ARENA_API_VERSION = process.env.ARENA_API_VERSION || 'v2'
+
 const options: NextAuthOptions = {
   providers: [
     {
@@ -13,7 +24,7 @@ const options: NextAuthOptions = {
         }
       },
       token: 'https://dev.are.na/oauth/token',
-      userinfo: 'https://api.are.na/v2/me',
+      userinfo: `https://api.are.na/${ARENA_API_VERSION}/me`,
       clientId: process.env.ARENA_APP_ID,
       clientSecret: process.env.ARENA_APP_SECRET,
       profile: (profile) => {
