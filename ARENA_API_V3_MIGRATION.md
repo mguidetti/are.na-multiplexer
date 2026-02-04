@@ -54,7 +54,7 @@ The application currently uses Arena API v2 with the following endpoints:
 4. `src/components/ChannelLoader.tsx` - Channel search
 5. `src/components/ChannelCreator.tsx` - Channel creation
 6. `src/components/ChannelsIndexMenu.tsx` - User channels
-7. `src/components/BlockConnnections.tsx` - Block channels
+7. `src/components/BlockConnections.tsx` - Block channels
 8. `src/components/Desktop.tsx` - Channel operations
 
 ## When Arena API v3 Becomes Available
