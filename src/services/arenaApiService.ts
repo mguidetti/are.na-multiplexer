@@ -37,7 +37,12 @@ export interface ArenaApiConfig {
  */
 export class ArenaApiService {
   private readonly client: ArenaClient
-  private readonly apiVersion = 'v2' // Will be updated to 'v3' when available
+  /**
+   * Current API version used by arena-ts library
+   * Note: This is informational only. The actual API version is determined by arena-ts.
+   * To use v3, arena-ts must be updated or replaced with a v3-compatible library.
+   */
+  private readonly apiVersion = 'v2'
 
   constructor (config?: ArenaApiConfig) {
     this.client = new ArenaClient(config)
