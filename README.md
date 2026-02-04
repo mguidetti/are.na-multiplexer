@@ -8,6 +8,17 @@ Hosted at https://arena-mux.michaelguidetti.info
 
 <img src="./public/screenshot.png" alt="Screenshot of Are.na Multiplexer" width="500">
 
+## Arena API Version
+
+This application currently uses **Arena API v2** via the `arena-ts` library (v1.0.2).
+
+The codebase has been prepared for future migration to Arena API v3 with:
+- An abstraction layer in `src/services/arenaApiService.ts` that supports both v2 and v3
+- A stub v3 client implementation in `src/services/arenaV3Client.ts`
+- Comprehensive migration documentation in `ARENA_API_V3_MIGRATION.md`
+
+When Arena API v3 becomes publicly available, the migration will primarily involve updating the v3 client implementation and switching the default API version.
+
 ## Development
 
 ### Setup
