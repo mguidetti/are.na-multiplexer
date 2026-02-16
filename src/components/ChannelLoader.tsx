@@ -1,4 +1,4 @@
-import { ArenaChannelWithDetails } from 'arena-ts'
+import { ArenaChannelWithDetails } from '@/types/arena'
 import classNames from 'classnames'
 import debounce from 'debounce-promise'
 import { useRef } from 'react'
@@ -23,8 +23,8 @@ function ChannelLoader () {
   const loadOptions = debounce(async (inputValue: string) => {
     if (!inputValue || !arena) return []
 
-    const results = await arena.search.channels(inputValue, { page: 1, per: 20 })
-    return results.channels as ArenaChannelWithDetails[] // HACK: Type correction
+    const results = await arena.searchChannels(inputValue, { page: 1, per: 20 })
+    return results.channels
   }, 200)
 
   const handleSelectChange = (channel: SingleValue<Option>) => {

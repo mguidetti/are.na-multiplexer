@@ -2,7 +2,7 @@ import { WindowContext, WindowContextType } from '@/context/WindowContext'
 import getErrorMessage from '@/lib/getErrorMessage'
 import blocksReducer from '@/reducers/blocksReducer'
 import { useDndMonitor, useDroppable } from '@dnd-kit/core'
-import { ArenaChannelContents } from 'arena-ts'
+import { ArenaChannelContents } from '@/types/arena'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import { CSSProperties, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
@@ -26,9 +26,6 @@ export type LoadingStatusState = 'inactive' | 'active' | 'waiting' | 'complete'
 
 function Window ({ path, data, data: { data: channel, scale, view } }: WindowProps) {
   const arena = useArena()
-  const channelObj = useMemo(() => {
-    if (arena) return arena.channel(channel.slug)
-  }, [arena, channel])
 
   const { data: sessionData } = useSession()
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatusState>('inactive')
@@ -47,10 +44,10 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
     setLoadingStatus('active')
 
-    const results = await arena.channel(channel.slug).contents({ page, per: blockPageSize })
+    const results = await arena.getChannelContents(channel.slug, { page, per: blockPageSize })
 
     try {
-      dispatchBlocks({ type: 'prepend', blocks: results.contents as ArenaChannelContents[] })
+      dispatchBlocks({ type: 'prepend', blocks: results.contents })
     } catch (error) {
       setError(getErrorMessage(error))
     } finally {
@@ -167,25 +164,23 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
         blocks: [{ ...block, ...{ connection_id: undefined } }]
       })
 
-      let result
-
       try {
-        if (block.class === 'Channel') {
-          result = await channelObj?.connect.channel(block.id)
-        } else {
-          result = await channelObj?.connect.block(block.id)
-        }
+        const connectableType = block.class === 'Channel' ? 'Channel' : 'Block'
+        const result = await arena?.createConnection(block.id, connectableType, [channel.id])
 
         if (result) {
-        // Replace copied block with updated data from response after connection
-          dispatchBlocks({ type: 'update', block: result })
+          // Replace copied block with connection_id from response
+          dispatchBlocks({
+            type: 'update',
+            block: { ...block, connection_id: result.data[0].id }
+          })
         }
       } catch (error) {
         setError(getErrorMessage(error))
         dispatchBlocks({ type: 'remove', id: block.id })
       }
     },
-    [canWrite, channelObj]
+    [arena, canWrite, channel.id]
   )
 
   const disconnectBlock = useCallback(
@@ -198,7 +193,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
       try {
         if (targetId) {
-          await channelObj?.disconnect.connection(targetId)
+          await arena?.deleteConnection(targetId)
 
           dispatchBlocks({ type: 'remove', id: block.id })
         } else {
@@ -209,7 +204,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
         dispatchBlocks({ type: 'update', block: { ...block, ...{ connection_id: targetId } } })
       }
     },
-    [canDelete, channelObj]
+    [arena, canDelete]
   )
 
   const renderBlocks = () => {

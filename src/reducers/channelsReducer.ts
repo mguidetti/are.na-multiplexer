@@ -1,5 +1,5 @@
 import { ChannelsState, ChannelWindowState } from '@/components/Desktop'
-import { ArenaChannelWithDetails } from 'arena-ts'
+import { ArenaChannelWithDetails } from '@/types/arena'
 
 export type ChannelsReducerAction =
   | { type: 'add', channel: ArenaChannelWithDetails }

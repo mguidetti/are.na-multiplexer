@@ -1,4 +1,4 @@
-import { ArenaBlock, ConnectionData } from 'arena-ts'
+import { ArenaBlock, ConnectionData } from '@/types/arena'
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react'
 
 export type BlockViewerState = ArenaBlock & ConnectionData | null

@@ -1,5 +1,5 @@
 import { ArrowTopRightOnSquareIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
-import { ArenaBlock, ConnectionData } from 'arena-ts'
+import { ArenaBlock, ConnectionData } from '@/types/arena'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { Dispatch, SetStateAction } from 'react'

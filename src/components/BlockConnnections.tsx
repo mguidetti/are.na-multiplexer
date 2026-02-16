@@ -1,7 +1,7 @@
 import { useBlockViewerActionsContext } from '@/context/BlockViewerContext'
 import { useDesktopActionsContext } from '@/context/DesktopContext'
 import { useArena } from '@/hooks/useArena'
-import { ArenaBlock, ArenaChannelWithDetails, ConnectionData } from 'arena-ts'
+import { ArenaBlock, ArenaChannelWithDetails, ConnectionData } from '@/types/arena'
 import classNames from 'classnames'
 import { useCallback, useEffect, useState } from 'react'
 import Spinner from './Spinner'
@@ -15,7 +15,7 @@ function BlockConnections ({ blockData }: {blockData: ArenaBlock & ConnectionDat
   const fetchChannels = useCallback(async () => {
     if (!arena) return
 
-    const results = await arena.block(blockData.id).channels()
+    const results = await arena.getBlockConnections(blockData.id)
 
     setConnections(results.channels)
   }, [arena, blockData])

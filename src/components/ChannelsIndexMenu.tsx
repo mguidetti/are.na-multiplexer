@@ -3,7 +3,7 @@ import { useArena } from '@/hooks/useArena'
 import getErrorMessage from '@/lib/getErrorMessage'
 import { Bars4Icon } from '@heroicons/react/24/solid'
 import * as Popover from '@radix-ui/react-popover'
-import { ArenaChannelWithDetails } from 'arena-ts'
+import { ArenaChannelWithDetails } from '@/types/arena'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import { useCallback, useState } from 'react'
@@ -51,9 +51,10 @@ function ChannelsIndexMenu () {
 
     setLoadingStatus('active')
 
-    const results = await arena
-      .user(sessionData?.user.id as unknown as string) // HACK: Type correction
-      .channels({ page, per: 30, sort: 'title' })
+    const results = await arena.getUserChannels(
+      sessionData?.user.id as unknown as string,
+      { page, per: 30, sort: 'created_at_desc' }
+    )
 
     try {
       setChannels([...channels, ...results.channels])

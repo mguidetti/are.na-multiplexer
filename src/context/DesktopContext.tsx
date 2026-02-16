@@ -1,6 +1,6 @@
 import { ChannelsState, SavedLayoutsState } from '@/components/Desktop'
 import { ChannelsReducerAction } from '@/reducers/channelsReducer'
-import { ArenaChannelWithDetails } from 'arena-ts'
+import { ArenaChannelWithDetails } from '@/types/arena'
 import { createContext, Dispatch, ReactNode, useContext } from 'react'
 
 export interface DesktopContextType {

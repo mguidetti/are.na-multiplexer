@@ -1,5 +1,5 @@
 import { useBlockContext } from '@/context/BlockContext'
-import { ArenaBlock, ArenaChannelContents, ArenaChannelWithDetails } from 'arena-ts'
+import { ArenaBlock, ArenaChannelContents, ArenaChannelWithDetails } from '@/types/arena'
 import classNames from 'classnames'
 import BlockActions from './BlockActions'
 import Spinner from './Spinner'

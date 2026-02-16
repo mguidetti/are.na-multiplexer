@@ -1,5 +1,5 @@
 import { ChannelWindowState } from '@/components/Desktop'
-import { ArenaChannelContents, ArenaChannelWithDetails } from 'arena-ts'
+import { ArenaChannelContents, ArenaChannelWithDetails } from '@/types/arena'
 import { createContext, useContext } from 'react'
 
 export interface WindowContextType {

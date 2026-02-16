@@ -1,4 +1,4 @@
-import { ArenaChannelContents } from 'arena-ts'
+import { ArenaChannelContents } from '@/types/arena'
 import { CSSProperties } from 'react'
 import BlocksGridItem from './BlocksGridItem'
 import BlocksListItem from './BlocksListItem'

@@ -1,6 +1,6 @@
 import { useBlockContext } from '@/context/BlockContext'
 import SquareIcon from '@/icons/square.svg'
-import { ArenaBlock, ArenaChannelContents, ArenaChannelWithDetails } from 'arena-ts'
+import { ArenaBlock, ArenaChannelContents, ArenaChannelWithDetails } from '@/types/arena'
 import classNames from 'classnames'
 import BlockActions from './BlockActions'
 import Spinner from './Spinner'

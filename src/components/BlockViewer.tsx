@@ -2,7 +2,7 @@ import { useBlockViewerActionsContext, useBlockViewerContext } from '@/context/B
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
 import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import * as Dialog from '@radix-ui/react-dialog'
-import { ArenaBlock } from 'arena-ts'
+import { ArenaBlock } from '@/types/arena'
 import { useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import BlockInfo from './BlockInfo'
