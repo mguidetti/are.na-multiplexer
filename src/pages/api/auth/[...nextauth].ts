@@ -9,7 +9,7 @@ const options: NextAuthOptions = {
       authorization: {
         url: 'https://www.are.na/oauth/authorize',
         params: {
-          scope: ''
+          scope: 'write'
         }
       },
       token: 'https://api.are.na/v3/oauth/token',
