@@ -1,5 +1,5 @@
 import { useBlockContext } from '@/context/BlockContext'
-import { ArenaBlock, ArenaChannelContents, ArenaChannelWithDetails } from '@/types/arena'
+import { ArenaBlock, ArenaChannel, ArenaChannelContents } from '@/types/arena'
 import classNames from 'classnames'
 import BlockActions from './BlockActions'
 import Spinner from './Spinner'
@@ -8,14 +8,16 @@ function BlocksGridItem ({ data }: {data: ArenaChannelContents}) {
   const { isPending, isDragging, isHovering } = useBlockContext()
 
   const renderBlock = () => {
-    switch (data.class) {
+    if (data.type === 'Channel') {
+      return <ChannelBlock data={data as ArenaChannel} />
+    }
+
+    switch (data.type) {
       case 'Attachment':
         return <AttachmentBlock data={data} />
-      case 'Channel':
-        return <ChannelBlock data={data} />
       case 'Image':
         return <ImageBlock data={data} />
-      case 'Media':
+      case 'Embed':
         return <ImageBlock data={data} />
       case 'Link':
         return <ImageBlock data={data} />
@@ -48,46 +50,48 @@ function BlocksGridItem ({ data }: {data: ArenaChannelContents}) {
 }
 
 function AttachmentBlock ({ data }: {data: ArenaBlock}) {
-  if (data.image) {
+  if ('image' in data && data.image) {
     return <ImageBlock data={data} />
   } else {
     return (
       <div className='flex h-full w-full items-center justify-center overflow-hidden bg-zinc-800 p-2'>
-        <p className='truncate whitespace-normal font-bold'>{data.generated_title}</p>
+        <p className='truncate whitespace-normal font-bold'>{data.title ?? 'Untitled'}</p>
       </div>
     )
   }
 }
 
-function ChannelBlock ({ data }: {data: ArenaChannelWithDetails}) {
+function ChannelBlock ({ data }: {data: ArenaChannel}) {
   return (
     <div
       className={classNames('flex h-full w-full flex-col items-center justify-center space-y-2 border-2 bg-background channel-block p-2', {
-        'channel-status-private': data.status === 'private',
-        'channel-status-public': data.status === 'public',
-        'channel-status-closed': data.status === 'closed'
+        'channel-status-private': data.visibility === 'private',
+        'channel-status-public': data.visibility === 'public',
+        'channel-status-closed': data.visibility === 'closed'
       })}
     >
       <span className='truncate whitespace-normal text-center text-base-relative font-bold text-inherit'>
         {data.title}
       </span>
       <span className='text-center text-xs-relative'>
-        by {data.user?.username}
+        by {data.owner.name}
         <br />
-        {data.length} blocks
+        {data.counts.contents} blocks
       </span>
     </div>
   )
 }
 
 function ImageBlock ({ data }: {data: ArenaBlock}) {
+  const image = 'image' in data ? data.image : null
+
   return (
-    <img src={data.image?.thumb?.url} alt='' className='aspect-square h-full w-full object-contain p-0' />
+    <img src={image?.small?.src} alt='' className='aspect-square h-full w-full object-contain p-0' />
   )
 }
 
 function TextBlock ({ data }: {data: ArenaBlock}) {
-  const body = { __html: data.content_html || '' }
+  const body = { __html: ('content' in data && typeof data.content === 'object' ? data.content?.html : '') || '' }
 
   return (
     <div className='h-full w-full overflow-hidden border border-primary/25 p-2'>

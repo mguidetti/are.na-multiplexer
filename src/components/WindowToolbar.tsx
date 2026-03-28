@@ -50,7 +50,7 @@ function WindowToolbar ({ data: { data: channel, scale, view } }: {data: Channel
   return (
     <div className='mr-[0.1rem] flex items-center justify-end'>
       <a
-        href={`https://www.are.na/${channel.owner_slug}/${channel.slug}`}
+        href={`https://www.are.na/${channel.owner.slug}/${channel.slug}`}
         className='px-[0.33rem] hover:text-secondary'
         target='_blank'
         rel='noreferrer'

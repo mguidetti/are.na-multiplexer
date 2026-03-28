@@ -8,7 +8,8 @@ declare module 'next-auth' {
     user: {
       id: number
       accessToken: string,
-      initials: string
+      initials: string,
+      tier: string
     } & DefaultSession['user']
   }
 
@@ -16,6 +17,7 @@ declare module 'next-auth' {
     id: number,
     username: string,
     avatar: string,
-    initials: string
+    initials: string,
+    tier: string
   }
 }

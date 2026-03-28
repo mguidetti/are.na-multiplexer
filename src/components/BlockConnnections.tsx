@@ -1,13 +1,13 @@
 import { useBlockViewerActionsContext } from '@/context/BlockViewerContext'
 import { useDesktopActionsContext } from '@/context/DesktopContext'
 import { useArena } from '@/hooks/useArena'
-import { ArenaBlock, ArenaChannelWithDetails, ConnectionData } from '@/types/arena'
+import { ArenaBlock, ArenaChannel } from '@/types/arena'
 import classNames from 'classnames'
 import { useCallback, useEffect, useState } from 'react'
 import Spinner from './Spinner'
 
-function BlockConnections ({ blockData }: {blockData: ArenaBlock & ConnectionData}) {
-  const [connections, setConnections] = useState<ArenaChannelWithDetails[]>([])
+function BlockConnections ({ blockData }: {blockData: ArenaBlock}) {
+  const [connections, setConnections] = useState<ArenaChannel[]>([])
   const arena = useArena()
   const { addChannelWindow } = useDesktopActionsContext()
   const setBlockViewerData = useBlockViewerActionsContext()
@@ -24,7 +24,7 @@ function BlockConnections ({ blockData }: {blockData: ArenaBlock & ConnectionDat
     fetchChannels()
   }, [fetchChannels])
 
-  const handleChannelClick = (channel: ArenaChannelWithDetails) => {
+  const handleChannelClick = (channel: ArenaChannel) => {
     addChannelWindow(channel)
     setBlockViewerData(null)
   }
@@ -38,13 +38,13 @@ function BlockConnections ({ blockData }: {blockData: ArenaBlock & ConnectionDat
               onClick={() => handleChannelClick(channel)}
               title={`Open ${channel.title}`}
               className={classNames('w-full rounded-sm border-2 p-2 text-left flex items-center channel-block hover:bg-dot-grid-secondary', {
-                'channel-status-private': channel.status === 'private',
-                'channel-status-public': channel.status === 'public',
-                'channel-status-closed': channel.status === 'closed'
+                'channel-status-private': channel.visibility === 'private',
+                'channel-status-public': channel.visibility === 'public',
+                'channel-status-closed': channel.visibility === 'closed'
               })}
             >
               <span className='flex-1 truncate font-bold'>{channel.title}</span>
-              <span className='truncate text-sm'>by {channel.user?.username}</span></button>
+              <span className='truncate text-sm'>by {channel.owner.name}</span></button>
           </li>
         ))}
       </ul>

@@ -1,4 +1,4 @@
-import { ArenaChannelWithDetails } from '@/types/arena'
+import { ArenaChannel } from '@/types/arena'
 import classNames from 'classnames'
 import debounce from 'debounce-promise'
 import { useRef } from 'react'
@@ -8,7 +8,7 @@ import AsyncSelect from 'react-select/async'
 import { useDesktopActionsContext } from '../context/DesktopContext'
 import { useArena } from '../hooks/useArena'
 
-type Option = ArenaChannelWithDetails
+type Option = ArenaChannel
 
 function ChannelLoader () {
   const { addChannelWindow } = useDesktopActionsContext()
@@ -28,7 +28,7 @@ function ChannelLoader () {
   }, 200)
 
   const handleSelectChange = (channel: SingleValue<Option>) => {
-    addChannelWindow(channel as ArenaChannelWithDetails)
+    addChannelWindow(channel as ArenaChannel)
   }
 
   return (
@@ -45,7 +45,7 @@ function ChannelLoader () {
           ),
           IndicatorSeparator: () => null
         }}
-        getOptionLabel={option => `${option.user?.username} / ${option.title}`}
+        getOptionLabel={option => `${option.owner.name} / ${option.title}`}
         loadOptions={loadOptions}
         onChange={handleSelectChange}
         unstyled
@@ -70,8 +70,8 @@ function ChannelLoader () {
           option: ({ data, isFocused }) =>
             classNames('py-1 px-2 text-primary font-bold truncate', {
               'bg-secondary/50': isFocused,
-              '!text-public-channel': data.status === 'public',
-              '!text-private-channel': data.status === 'private'
+              '!text-public-channel': data.visibility === 'public',
+              '!text-private-channel': data.visibility === 'private'
             }),
           noOptionsMessage: () => 'p-2 whitespace-nowrap',
           valueContainer: () => 'whitespace-nowrap'

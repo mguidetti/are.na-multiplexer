@@ -10,15 +10,15 @@ import Spinner from './Spinner'
 
 function AttachmentBlock ({ data }: { data: ArenaBlock }) {
   const renderBody = () => {
-    if (data.image) {
+    if ('image' in data && data.image) {
       return <ImageBlock data={data} />
     } else {
-      return <span className='text-2xl font-bold uppercase'>{data.generated_title}</span>
+      return <span className='text-2xl font-bold uppercase'>{data.title ?? 'Untitled'}</span>
     }
   }
 
   return (
-    <a href={data.attachment?.url} target='_blank' rel='noreferrer' className='flex h-full w-full flex-col '>
+    <a href={'attachment' in data ? data.attachment?.url : undefined} target='_blank' rel='noreferrer' className='flex h-full w-full flex-col '>
       {renderBody()}
     </a>
   )
@@ -31,6 +31,8 @@ function ImageBlock ({ data }: { data: ArenaBlock }) {
     setImageLoaded(true)
   }
 
+  const image = 'image' in data ? data.image : null
+
   return (
     <>
       {!imageLoaded && (
@@ -40,13 +42,13 @@ function ImageBlock ({ data }: { data: ArenaBlock }) {
       )}
 
       <img
-        src={data.image?.thumb?.url}
+        src={image?.small?.src}
         alt=''
         className='h-full w-full flex-1 object-scale-down blur-sm brightness-50'
         hidden={imageLoaded}
       />
       <img
-        src={data.image?.large?.url}
+        src={image?.large?.src}
         alt=''
         className='h-full w-full flex-1 object-scale-down'
         onLoad={handleImageLoaded}
@@ -66,7 +68,7 @@ function LinkBlock ({ data }: { data: ArenaBlock }) {
 }
 
 function MediaBlock ({ data }: { data: ArenaBlock }) {
-  const embed = { __html: data.embed?.html || '' }
+  const embed = { __html: ('embed' in data ? data.embed?.html : '') || '' }
 
   return (
     <div dangerouslySetInnerHTML={embed} className='flex h-full w-full items-center justify-center p-16' />
@@ -74,7 +76,7 @@ function MediaBlock ({ data }: { data: ArenaBlock }) {
 }
 
 function TextBlock ({ data }: { data: ArenaBlock }) {
-  const body = { __html: data.content_html || '' }
+  const body = { __html: ('content' in data && typeof data.content === 'object' ? data.content?.html : '') || '' }
 
   return (
     <div
@@ -96,12 +98,12 @@ function BlockViewer () {
   }
 
   const renderBlock = () => {
-    switch (blockData.class) {
+    switch (blockData.type) {
       case 'Attachment':
         return <AttachmentBlock data={blockData} />
       case 'Image':
         return <ImageBlock data={blockData} />
-      case 'Media':
+      case 'Embed':
         return <MediaBlock data={blockData} />
       case 'Link':
         return <LinkBlock data={blockData} />

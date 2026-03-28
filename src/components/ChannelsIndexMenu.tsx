@@ -3,7 +3,7 @@ import { useArena } from '@/hooks/useArena'
 import getErrorMessage from '@/lib/getErrorMessage'
 import { Bars4Icon } from '@heroicons/react/24/solid'
 import * as Popover from '@radix-ui/react-popover'
-import { ArenaChannelWithDetails } from '@/types/arena'
+import { ArenaChannel } from '@/types/arena'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import { useCallback, useState } from 'react'
@@ -33,7 +33,7 @@ function ChannelsIndexMenu () {
 
   const [initialized, setInitialized] = useState(false)
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatusState>('inactive')
-  const [channels, setChannels] = useState<ArenaChannelWithDetails[]>([])
+  const [channels, setChannels] = useState<ArenaChannel[]>([])
   const [page, setPage] = useState(1)
   const [open, setOpen] = useState(false)
   const [error, setError] = useState<string>()
@@ -73,7 +73,7 @@ function ChannelsIndexMenu () {
     }
   }, [arena, channels, sessionData, loadingStatus, page])
 
-  const handleSelect = (channel: ArenaChannelWithDetails) => {
+  const handleSelect = (channel: ArenaChannel) => {
     addChannelWindow(channel)
     setOpen(closed)
   }
@@ -119,14 +119,14 @@ function ChannelsIndexMenu () {
                 className={classNames(
                   'py-1 px-2 text-primary font-bold truncate hover:bg-secondary/50 w-full text-left grid grid-cols-[1fr_min-content] items-center disabled:opacity-25 disabled:pointer-events-none',
                   {
-                    '!text-public-channel': channel.status === 'public',
-                    '!text-private-channel': channel.status === 'private'
+                    '!text-public-channel': channel.visibility === 'public',
+                    '!text-private-channel': channel.visibility === 'private'
                   }
                 )}
               >
                 <div>{channel.title}</div>
                 <div className='text-xs font-normal'>
-                  {channel.length} blocks
+                  {channel.counts.contents} blocks
                 </div>
               </button>
             )}

@@ -2,7 +2,7 @@ import { useArena } from '@/hooks/useArena'
 import getErrorMessage from '@/lib/getErrorMessage'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import * as Popover from '@radix-ui/react-popover'
-import { ChannelStatus } from '@/types/arena'
+import { ChannelVisibility } from '@/types/arena'
 import classNames from 'classnames'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { useDesktopActionsContext } from '../context/DesktopContext'
@@ -10,7 +10,7 @@ import Spinner from './Spinner'
 
 interface FormDataType {
   name: '',
-  privacy: ChannelStatus | ''
+  privacy: ChannelVisibility | ''
 }
 
 function ChannelCreator () {

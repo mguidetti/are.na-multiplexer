@@ -1,6 +1,6 @@
 import { ChannelsState, SavedLayoutsState } from '@/components/Desktop'
 import { ChannelsReducerAction } from '@/reducers/channelsReducer'
-import { ArenaChannelWithDetails } from '@/types/arena'
+import { ArenaChannel } from '@/types/arena'
 import { createContext, Dispatch, ReactNode, useContext } from 'react'
 
 export interface DesktopContextType {
@@ -9,7 +9,7 @@ export interface DesktopContextType {
 }
 
 export interface DesktopActionsContextType {
-  addChannelWindow: (channel: ArenaChannelWithDetails) => void,
+  addChannelWindow: (channel: ArenaChannel) => void,
   dispatchChannels: Dispatch<ChannelsReducerAction>,
   restoreLayout: (layoutId: string) => Promise<void>,
   removeSavedLayout: (id: string) => void,

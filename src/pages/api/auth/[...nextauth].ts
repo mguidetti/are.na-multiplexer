@@ -21,7 +21,8 @@ const options: NextAuthOptions = {
           id: profile.id,
           username: profile.name,
           avatar: profile.avatar,
-          initials: profile.initials
+          initials: profile.initials,
+          tier: profile.tier
         }
 
         return data
@@ -40,6 +41,7 @@ const options: NextAuthOptions = {
         token.name = profile.name
         token.image = profile.avatar
         token.initials = profile.initials
+        token.tier = profile.tier
       }
 
       return token
@@ -50,6 +52,7 @@ const options: NextAuthOptions = {
       session.user.name = token.name
       session.user.image = token.image as string
       session.user.initials = token.initials as string
+      session.user.tier = token.tier as string
 
       return session
     }

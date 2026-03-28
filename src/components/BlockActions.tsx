@@ -8,7 +8,7 @@ function BlockActions () {
 
   return (
     <>
-      {data.class === 'Link' && (
+      {data.type === 'Link' && (
         <a
           className='h-5 w-5 hover:text-secondary'
           title='Visit source'
