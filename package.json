@@ -10,6 +10,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
     "generate-types": "openapi-typescript https://api.are.na/v3/openapi.json -o src/types/arena.generated.ts && sed -i '1s/^/\\/* eslint-disable *\\/\\n/' src/types/arena.generated.ts"
   },
   "dependencies": {
@@ -33,6 +35,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.2",
     "@svgr/webpack": "^6.5.1",
     "@tailwindcss/typography": "^0.5.9",
     "@types/debounce-promise": "^3.1.6",
