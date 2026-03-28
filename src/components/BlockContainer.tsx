@@ -86,8 +86,8 @@ function BlockContainer ({ data, children }: BlockContainerProps) {
         'opacity-50': isDragging,
         'pointer-events-none': isPending
       })}
-      onMouseOver={handleHover}
-      onMouseOut={handleHover}
+      onMouseEnter={handleHover}
+      onMouseLeave={handleHover}
       {...listeners}
       {...attributes}
     >

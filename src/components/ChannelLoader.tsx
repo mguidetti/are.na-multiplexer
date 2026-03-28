@@ -3,7 +3,7 @@ import classNames from 'classnames'
 import debounce from 'debounce-promise'
 import { useRef } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
-import { SelectInstance, SingleValue } from 'react-select'
+import { ControlProps, DropdownIndicatorProps, OptionProps, PlaceholderProps, SelectInstance, SingleValue } from 'react-select'
 import AsyncSelect from 'react-select/async'
 import { useSession } from 'next-auth/react'
 import { useDesktopActionsContext } from '../context/DesktopContext'
@@ -44,18 +44,18 @@ function ChannelLoader () {
         placeholder={canSearch ? 'Search channels' : 'Search requires Premium subscription'}
         loadingMessage={() => 'Searching...'}
         components={{
-          DropdownIndicator: ({ isFocused }) => (
+          DropdownIndicator: ({ isFocused }: DropdownIndicatorProps<Option>) => (
             <div className={classNames('px-1 text-sm font-bold border rounded border-zinc-700 text-zinc-700 font-mono', { hidden: isFocused })}>/</div>
           ),
           IndicatorSeparator: () => null
         }}
-        getOptionLabel={option => `${option.owner.name} / ${option.title}`}
+        getOptionLabel={(option: Option) => `${option.owner.name} / ${option.title}`}
         loadOptions={loadOptions}
         onChange={handleSelectChange}
         unstyled
         value={null}
         classNames={{
-          control: ({ isFocused, menuIsOpen, isDisabled }) =>
+          control: ({ isFocused, menuIsOpen, isDisabled }: ControlProps<Option>) =>
             classNames(
               'bg-background border-2 rounded-md border-zinc-600 px-2 font-bold',
               {
@@ -65,14 +65,14 @@ function ChannelLoader () {
                 '!rounded-b-none !border-b-0 !transition-none': menuIsOpen
               }
             ),
-          placeholder: ({ isFocused }) =>
+          placeholder: ({ isFocused }: PlaceholderProps<Option>) =>
             classNames('font-normal', { hidden: isFocused }),
           menu: () =>
             'bg-zinc-900 border-2 border-t-0 border-zinc-600 rounded-b-md drop-shadow-panel',
           menuList: () =>
             'scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-800 rounded-b-md',
           loadingMessage: () => 'p-2',
-          option: ({ data, isFocused }) =>
+          option: ({ data, isFocused }: OptionProps<Option>) =>
             classNames('py-1 px-2 text-primary font-bold truncate', {
               'bg-secondary/50': isFocused,
               '!text-public-channel': data.visibility === 'public',

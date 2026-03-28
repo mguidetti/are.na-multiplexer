@@ -2,7 +2,7 @@ import { Analytics } from '@vercel/analytics/react'
 import { SessionProvider } from 'next-auth/react'
 import { AppProps } from 'next/app'
 import { DndProvider } from 'react-dnd-multi-backend'
-import HTML5toTouch from 'react-dnd-multi-backend/dist/cjs/HTML5toTouch'
+import { HTML5toTouch } from 'rdndmb-html5-to-touch'
 import 'react-mosaic-component/react-mosaic-component.css'
 import '../styles/globals.css'
 

@@ -67,7 +67,9 @@ test.describe('Desktop (authenticated)', () => {
     await expect(page.getByText('Hello world')).toBeVisible()
 
     // Double-click the text block to open viewer
-    await page.getByText('Hello world').dblclick()
+    // Note: Playwright's dblclick() is intercepted by @dnd-kit's PointerSensor
+    // before the dblclick event fires, so we dispatch the event directly.
+    await page.getByText('Hello world').dispatchEvent('dblclick')
 
     // Block viewer dialog should open with the block content
     await expect(page.getByRole('dialog')).toBeVisible()
