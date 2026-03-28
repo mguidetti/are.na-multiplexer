@@ -1,5 +1,5 @@
 import { test, expect, mockChannel } from './fixtures'
-import { Page } from '@playwright/test'
+import type { Page } from '@playwright/test'
 
 const optionText = `${mockChannel.owner.name} / ${mockChannel.title}`
 
@@ -72,5 +72,12 @@ test.describe('Desktop (authenticated)', () => {
     // Block viewer dialog should open with the block content
     await expect(page.getByRole('dialog')).toBeVisible()
     await expect(page.getByTitle('Close Block Viewer')).toBeVisible()
+  })
+})
+
+test.describe('Desktop (free tier)', () => {
+  test('search is disabled for free tier users', async ({ freeTierPage: page }) => {
+    await page.goto('/')
+    await expect(page.getByText('Search requires Premium subscription')).toBeVisible()
   })
 })

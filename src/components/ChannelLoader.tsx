@@ -5,6 +5,7 @@ import { useRef } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { SelectInstance, SingleValue } from 'react-select'
 import AsyncSelect from 'react-select/async'
+import { useSession } from 'next-auth/react'
 import { useDesktopActionsContext } from '../context/DesktopContext'
 import { useArena } from '../hooks/useArena'
 
@@ -13,9 +14,11 @@ type Option = ArenaChannel
 function ChannelLoader () {
   const { addChannelWindow } = useDesktopActionsContext()
   const arena = useArena()
+  const { data: sessionData } = useSession()
+  const canSearch = sessionData?.user.tier === 'premium' || sessionData?.user.tier === 'supporter'
   const select = useRef<SelectInstance<Option>>(null)
 
-  useHotkeys('/', () => select.current?.focus(), {
+  useHotkeys('/', () => canSearch && select.current?.focus(), {
     ignoreModifiers: true,
     preventDefault: true
   })
@@ -37,7 +40,8 @@ function ChannelLoader () {
         ref={select}
         cacheOptions
         blurInputOnSelect
-        placeholder='Search channels'
+        isDisabled={!canSearch}
+        placeholder={canSearch ? 'Search channels' : 'Search requires Premium subscription'}
         loadingMessage={() => 'Searching...'}
         components={{
           DropdownIndicator: ({ isFocused }) => (
@@ -51,10 +55,11 @@ function ChannelLoader () {
         unstyled
         value={null}
         classNames={{
-          control: ({ isFocused, menuIsOpen }) =>
+          control: ({ isFocused, menuIsOpen, isDisabled }) =>
             classNames(
               'bg-background border-2 rounded-md border-zinc-600 px-2 font-bold',
               {
+                'opacity-50': isDisabled,
                 'bg-secondary/10 !text-secondary':
                   isFocused,
                 '!rounded-b-none !border-b-0 !transition-none': menuIsOpen

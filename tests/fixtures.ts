@@ -125,12 +125,16 @@ const mockPaginationMeta = {
   has_more_pages: false
 }
 
-async function setupAuthMock (page: Page) {
+async function setupAuthMock (page: Page, overrides?: Partial<typeof mockSession['user']>) {
+  const session = overrides
+    ? { ...mockSession, user: { ...mockSession.user, ...overrides } }
+    : mockSession
+
   await page.route('**/api/auth/session', route =>
     route.fulfill({
       status: 200,
       contentType: 'application/json',
-      body: JSON.stringify(mockSession)
+      body: JSON.stringify(session)
     })
   )
 
@@ -242,10 +246,15 @@ async function setupApiMocks (page: Page) {
   )
 }
 
-// Extend Playwright test with an authenticated page fixture
-export const test = base.extend<{ authedPage: Page }>({
+// Extend Playwright test with authenticated page fixtures
+export const test = base.extend<{ authedPage: Page; freeTierPage: Page }>({
   authedPage: async ({ page }, use) => {
     await setupAuthMock(page)
+    await setupApiMocks(page)
+    await use(page)
+  },
+  freeTierPage: async ({ page }, use) => {
+    await setupAuthMock(page, { tier: 'free' })
     await setupApiMocks(page)
     await use(page)
   }
