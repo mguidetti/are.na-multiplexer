@@ -7,6 +7,8 @@
 
 # testing
 /coverage
+/test-results/
+/playwright-report/
 
 # next.js
 /.next/
@@ -19,6 +21,7 @@ next-env.d.ts
 # misc
 .DS_Store
 *.pem
+tsconfig.tsbuildinfo
 
 # debug
 npm-debug.log*

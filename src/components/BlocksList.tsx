@@ -1,5 +1,5 @@
 import { useWindowContext } from '@/context/WindowContext'
-import { ArenaChannelContents } from 'arena-ts'
+import { ArenaChannelContents } from '@/types/arena'
 import React from 'react'
 import { Components, Virtuoso } from 'react-virtuoso'
 import BlockContainer from './BlockContainer'

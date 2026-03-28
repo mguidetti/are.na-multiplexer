@@ -1,34 +1,36 @@
 import { useBlockContext } from '@/context/BlockContext'
 import SquareIcon from '@/icons/square.svg'
-import { ArenaBlock, ArenaChannelContents, ArenaChannelWithDetails } from 'arena-ts'
+import { ArenaBlock, ArenaChannel, ArenaChannelContents } from '@/types/arena'
 import classNames from 'classnames'
 import BlockActions from './BlockActions'
 import Spinner from './Spinner'
 
-function ChannelBody ({ data }: {data: ArenaChannelWithDetails}) {
+function ChannelBody ({ data }: {data: ArenaChannel}) {
   return (
     <div
       className={classNames('contents', {
-        'channel-status-private': data.status === 'private',
-        'channel-status-public': data.status === 'public',
-        'channel-status-closed': data.status === 'closed'
+        'channel-status-private': data.visibility === 'private',
+        'channel-status-public': data.visibility === 'public',
+        'channel-status-closed': data.visibility === 'closed'
       })}
     >
       <div className='channel-block flex items-center justify-center'>
         <SquareIcon className='aspect-square h-full w-full object-contain' strokeWidth='2' />
       </div>
-      <div className='channel-block truncate font-bold'>{`${data.user?.username} / ${data.title}`}</div>
+      <div className='channel-block truncate font-bold'>{`${data.owner.name} / ${data.title}`}</div>
     </div>
   )
 }
 
-function BlockBody ({ data }: {data:ArenaBlock}) {
+function BlockBody ({ data }: {data: ArenaBlock}) {
+  const image = 'image' in data ? data.image : null
+
   return (
     <>
       <div className='flex items-center justify-center'>
-        {data.image && <img src={data.image.thumb.url} alt='' className='aspect-square object-contain' />}
+        {image && <img src={image.small.src} alt='' className='aspect-square object-contain' />}
       </div>
-      <div className='truncate text-primary'>{data.title || data.generated_title}</div>
+      <div className='truncate text-primary'>{data.title ?? 'Untitled'}</div>
     </>
   )
 }
@@ -40,7 +42,7 @@ function BlocksListItem ({ data }: {data: ArenaChannelContents}) {
     <div
       className={'hover:bg-dot-grid-secondary relative grid cursor-pointer grid-cols-[1.5em_1fr] items-center gap-x-4 py-1 px-2'}
     >
-      {data.class === 'Channel' ? <ChannelBody data={data} /> : <BlockBody data={data} />}
+      {data.type === 'Channel' ? <ChannelBody data={data as ArenaChannel} /> : <BlockBody data={data as ArenaBlock} />}
 
       {isPending && (
         <div className='absolute flex h-full w-full items-center justify-start bg-background/70 px-2 py-1'>

@@ -4,7 +4,7 @@ import { useDesktopActionsContext } from '@/context/DesktopContext'
 import { useDialogActionsContext } from '@/context/DialogContext'
 import { useWindowContext } from '@/context/WindowContext'
 import { UniqueIdentifier, useDraggable } from '@dnd-kit/core'
-import { ArenaChannelContents } from 'arena-ts'
+import { ArenaBlock, ArenaChannel, ArenaChannelContents } from '@/types/arena'
 import classNames from 'classnames'
 import { ReactNode, useCallback, useMemo, useState } from 'react'
 import { ChannelWindowState } from './Desktop'
@@ -30,10 +30,10 @@ function BlockContainer ({ data, children }: BlockContainerProps) {
   const setBlockViewerData = useBlockViewerActionsContext()
   const setDialog = useDialogActionsContext()
   const [isHovering, setIsHovering] = useState(false)
-  const isPending = useMemo(() => data.connection_id === undefined, [data])
+  const isPending = useMemo(() => data.connection == null, [data])
 
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
-    id: data.connection_id as UniqueIdentifier,
+    id: data.connection?.id as UniqueIdentifier,
     data: {
       type: 'block',
       block: { ...data },
@@ -46,10 +46,10 @@ function BlockContainer ({ data, children }: BlockContainerProps) {
   })
 
   const handleView = useCallback(() => {
-    if (data.class === 'Channel') {
-      addChannelWindow(data)
+    if (data.type === 'Channel') {
+      addChannelWindow(data as ArenaChannel)
     } else {
-      setBlockViewerData(data)
+      setBlockViewerData(data as ArenaBlock)
     }
   }, [data, addChannelWindow, setBlockViewerData])
 
@@ -86,8 +86,8 @@ function BlockContainer ({ data, children }: BlockContainerProps) {
         'opacity-50': isDragging,
         'pointer-events-none': isPending
       })}
-      onMouseOver={handleHover}
-      onMouseOut={handleHover}
+      onMouseEnter={handleHover}
+      onMouseLeave={handleHover}
       {...listeners}
       {...attributes}
     >

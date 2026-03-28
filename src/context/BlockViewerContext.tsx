@@ -1,7 +1,7 @@
-import { ArenaBlock, ConnectionData } from 'arena-ts'
+import { ArenaBlock } from '@/types/arena'
 import { createContext, Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react'
 
-export type BlockViewerState = ArenaBlock & ConnectionData | null
+export type BlockViewerState = ArenaBlock | null
 
 export const BlockViewerContext = createContext<BlockViewerState>({} as BlockViewerState)
 export const BlockViewerActionsContext = createContext({} as Dispatch<SetStateAction<BlockViewerState>>)

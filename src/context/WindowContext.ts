@@ -1,10 +1,10 @@
 import { ChannelWindowState } from '@/components/Desktop'
-import { ArenaChannelContents, ArenaChannelWithDetails } from 'arena-ts'
+import { ArenaChannelContents, ArenaChannel } from '@/types/arena'
 import { createContext, useContext } from 'react'
 
 export interface WindowContextType {
     canDelete: boolean,
-    channel: ArenaChannelWithDetails,
+    channel: ArenaChannel,
     connectBlock: (block: ArenaChannelContents) => void,
     disconnectBlock: (block: ArenaChannelContents) => void,
     isLoading: boolean,

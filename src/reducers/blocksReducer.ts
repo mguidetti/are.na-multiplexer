@@ -1,4 +1,4 @@
-import { ArenaChannelContents } from 'arena-ts'
+import { ArenaChannelContents } from '@/types/arena'
 
 export type BlocksReducerAction =
   | { type: 'append', blocks: ArenaChannelContents[] }

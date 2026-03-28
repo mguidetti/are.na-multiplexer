@@ -4,9 +4,11 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ],
+      ]
     },
-    "typeRoots": ["./src/types"],
+    "typeRoots": [
+      "./src/types"
+    ],
     "lib": [
       "dom",
       "dom.iterable",
@@ -23,7 +25,8 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": "preserve"
+    "jsx": "preserve",
+    "target": "ES2017"
   },
   "include": [
     "next-env.d.ts",

@@ -2,7 +2,7 @@ import { WindowContext, WindowContextType } from '@/context/WindowContext'
 import getErrorMessage from '@/lib/getErrorMessage'
 import blocksReducer from '@/reducers/blocksReducer'
 import { useDndMonitor, useDroppable } from '@dnd-kit/core'
-import { ArenaChannelContents } from 'arena-ts'
+import { ArenaChannelContents } from '@/types/arena'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import { CSSProperties, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
@@ -26,9 +26,6 @@ export type LoadingStatusState = 'inactive' | 'active' | 'waiting' | 'complete'
 
 function Window ({ path, data, data: { data: channel, scale, view } }: WindowProps) {
   const arena = useArena()
-  const channelObj = useMemo(() => {
-    if (arena) return arena.channel(channel.slug)
-  }, [arena, channel])
 
   const { data: sessionData } = useSession()
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatusState>('inactive')
@@ -39,7 +36,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
   const [draggingBlock, setDraggingBlock] = useState<ArenaChannelContents | null>()
 
   const blockPageSize = 50
-  const totalPages = useMemo(() => Math.ceil(channel.length / blockPageSize), [channel])
+  const totalPages = useMemo(() => Math.ceil(channel.counts.contents / blockPageSize), [channel])
   const isLoading = useMemo(() => loadingStatus === 'active', [loadingStatus])
 
   const fetchBlocks = useCallback(async () => {
@@ -47,10 +44,10 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
     setLoadingStatus('active')
 
-    const results = await arena.channel(channel.slug).contents({ page, per: blockPageSize })
+    const results = await arena.getChannelContents(channel.slug, { page, per: blockPageSize })
 
     try {
-      dispatchBlocks({ type: 'prepend', blocks: results.contents as ArenaChannelContents[] })
+      dispatchBlocks({ type: 'prepend', blocks: results.contents })
     } catch (error) {
       setError(getErrorMessage(error))
     } finally {
@@ -73,14 +70,14 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
   }, [page, totalPages])
 
   const canWrite = useMemo(() => {
-    if (channel.open) {
+    if (channel.can?.add_to) {
       return true
     } else {
-      return channel.user_id === sessionData?.user.id
+      return channel.owner.id === sessionData?.user.id
     }
   }, [channel, sessionData?.user])
 
-  const canDelete = useMemo(() => channel.user_id === sessionData?.user.id, [channel, sessionData?.user])
+  const canDelete = useMemo(() => channel.owner.id === sessionData?.user.id, [channel, sessionData?.user])
 
   const canDrop = useCallback(
     (block: ArenaChannelContents) => {
@@ -162,54 +159,60 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
     async (block: ArenaChannelContents) => {
       if (!canWrite) return
 
+      // Optimistic append with null connection (pending state)
       dispatchBlocks({
         type: 'append',
-        blocks: [{ ...block, ...{ connection_id: undefined } }]
+        blocks: [{ ...block, connection: null }]
       })
 
-      let result
-
       try {
-        if (block.class === 'Channel') {
-          result = await channelObj?.connect.channel(block.id)
-        } else {
-          result = await channelObj?.connect.block(block.id)
-        }
+        const connectableType = block.type === 'Channel' ? 'Channel' : 'Block'
+        const result = await arena?.createConnection(block.id, connectableType, [channel.id])
 
         if (result) {
-        // Replace copied block with updated data from response after connection
-          dispatchBlocks({ type: 'update', block: result })
+          dispatchBlocks({
+            type: 'update',
+            block: {
+              ...block,
+              connection: {
+                id: result.data[0].id,
+                position: 0,
+                pinned: false,
+                connected_at: new Date().toISOString(),
+                connected_by: null
+              }
+            }
+          })
         }
       } catch (error) {
         setError(getErrorMessage(error))
         dispatchBlocks({ type: 'remove', id: block.id })
       }
     },
-    [canWrite, channelObj]
+    [arena, canWrite, channel.id]
   )
 
   const disconnectBlock = useCallback(
     async (block: ArenaChannelContents) => {
       if (!canDelete) return
 
-      const targetId = block.connection_id
+      const targetId = block.connection?.id
 
-      dispatchBlocks({ type: 'update', block: { ...block, ...{ connection_id: undefined } } })
+      dispatchBlocks({ type: 'update', block: { ...block, connection: null } })
 
       try {
         if (targetId) {
-          await channelObj?.disconnect.connection(targetId)
-
+          await arena?.deleteConnection(targetId)
           dispatchBlocks({ type: 'remove', id: block.id })
         } else {
-          throw new Error('Block is missing connection_id ')
+          throw new Error('Block is missing connection id')
         }
       } catch (error) {
         setError(getErrorMessage(error))
-        dispatchBlocks({ type: 'update', block: { ...block, ...{ connection_id: targetId } } })
+        dispatchBlocks({ type: 'update', block: { ...block, connection: block.connection } })
       }
     },
-    [canDelete, channelObj]
+    [arena, canDelete]
   )
 
   const renderBlocks = () => {
@@ -236,11 +239,11 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
   return (
     <MosaicWindow
-      title={`${channel.user?.username} / ${channel.title}`}
+      title={`${channel.owner.name} / ${channel.title}`}
       className={classNames({
-        'channel-status-private': channel.status === 'private',
-        'channel-status-public': channel.status === 'public',
-        'channel-status-closed': channel.status === 'closed'
+        'channel-status-private': channel.visibility === 'private',
+        'channel-status-public': channel.visibility === 'public',
+        'channel-status-closed': channel.visibility === 'closed'
       })}
       path={path}
       toolbarControls={<WindowToolbar data={data} />}

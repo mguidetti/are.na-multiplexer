@@ -1,5 +1,5 @@
 import { ArrowTopRightOnSquareIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
-import { ArenaBlock, ConnectionData } from 'arena-ts'
+import { ArenaBlock } from '@/types/arena'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { Dispatch, SetStateAction } from 'react'
@@ -8,11 +8,15 @@ import BlockConnections from './BlockConnnections'
 dayjs.extend(relativeTime)
 
 interface BlockInfoProps {
-  blockData: ArenaBlock & ConnectionData,
+  blockData: ArenaBlock,
   setInfoVisible: Dispatch<SetStateAction<boolean>>
 }
 
 function BlockInfo ({ blockData, setInfoVisible }: BlockInfoProps) {
+  const description = blockData.description
+    ? (typeof blockData.description === 'object' ? blockData.description.plain : blockData.description)
+    : null
+
   return (
     <div className='relative flex h-full flex-col text-zinc-400'>
       <button onClick={() => setInfoVisible(false)} title="Close Info" className='absolute top-0 left-0 flex items-center pt-2 pl-2 text-secondary hover:text-primary'>
@@ -20,13 +24,13 @@ function BlockInfo ({ blockData, setInfoVisible }: BlockInfoProps) {
       </button>
 
       <div className='mt-8 p-4'>
-        <h1 className='truncate font-bold'>{blockData.generated_title}</h1>
+        <h1 className='truncate font-bold'>{blockData.title ?? 'Untitled'}</h1>
         <div className='mt-2 text-sm'>
-          {blockData.description && <p className='mb-2'>{blockData.description}</p>}
+          {description && <p className='mb-2'>{description}</p>}
           <p className='truncate'>
             Created {dayjs(blockData.created_at).fromNow()} by{' '}
             <a href={`https://www.are.na/${blockData.user.slug}`} target="_blank" rel="noreferrer" className='underline'>
-              {blockData.user.username}<ArrowTopRightOnSquareIcon className='ml-1 inline h-3 w-3 align-text-top' />
+              {blockData.user.name}<ArrowTopRightOnSquareIcon className='ml-1 inline h-3 w-3 align-text-top' />
             </a>
           </p>
           {blockData.source && (

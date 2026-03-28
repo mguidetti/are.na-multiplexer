@@ -1,8 +1,8 @@
 import { ChannelsState, ChannelWindowState } from '@/components/Desktop'
-import { ArenaChannelWithDetails } from 'arena-ts'
+import { ArenaChannel } from '@/types/arena'
 
 export type ChannelsReducerAction =
-  | { type: 'add', channel: ArenaChannelWithDetails }
+  | { type: 'add', channel: ArenaChannel }
   | { type: 'update', id: number, payload: Partial<ChannelWindowState>}
   | { type: 'replace', channels: ChannelsState }
   | { type: 'remove', id: number }

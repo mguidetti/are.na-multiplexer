@@ -1,4 +1,4 @@
-import { ArenaClient } from 'arena-ts'
+import { ArenaClient } from '@/lib/arena-client'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 

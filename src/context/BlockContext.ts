@@ -1,4 +1,4 @@
-import { ArenaChannelContents } from 'arena-ts'
+import { ArenaChannelContents } from '@/types/arena'
 import { createContext, useContext } from 'react'
 
 export interface BlockContextType {
