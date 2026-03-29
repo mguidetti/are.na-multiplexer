@@ -75,6 +75,20 @@ test.describe('Desktop (authenticated)', () => {
     await expect(page.getByRole('dialog')).toBeVisible()
     await expect(page.getByTitle('Close Block Viewer')).toBeVisible()
   })
+
+  test('search results disable already-open channels', async ({ authedPage: page }) => {
+    await page.goto('/')
+    await openChannelViaSearch(page)
+
+    // Search for the same channel again
+    await page.getByRole('combobox').click()
+    await page.keyboard.type('test')
+    const option = page.locator('[id^="react-select"][id*="option"]', { hasText: optionText })
+    await expect(option).toBeVisible()
+
+    // The option should be disabled (aria-disabled)
+    await expect(option).toHaveAttribute('aria-disabled', 'true')
+  })
 })
 
 test.describe('Desktop (free tier)', () => {

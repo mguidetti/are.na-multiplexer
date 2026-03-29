@@ -6,13 +6,14 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import { ControlProps, DropdownIndicatorProps, OptionProps, PlaceholderProps, SelectInstance, SingleValue } from 'react-select'
 import AsyncSelect from 'react-select/async'
 import { useSession } from 'next-auth/react'
-import { useDesktopActionsContext } from '../context/DesktopContext'
+import { useDesktopActionsContext, useDesktopContext } from '../context/DesktopContext'
 import { useArena } from '../hooks/useArena'
 
 type Option = ArenaChannel
 
 function ChannelLoader () {
   const { addChannelWindow } = useDesktopActionsContext()
+  const { channels: desktopChannels } = useDesktopContext()
   const arena = useArena()
   const { data: sessionData } = useSession()
   const canSearch = sessionData?.user.tier === 'premium' || sessionData?.user.tier === 'supporter'
@@ -51,6 +52,7 @@ function ChannelLoader () {
         }}
         getOptionLabel={(option: Option) => `${option.owner.name} / ${option.title}`}
         loadOptions={loadOptions}
+        isOptionDisabled={(option: Option) => option.id in desktopChannels}
         onChange={handleSelectChange}
         unstyled
         value={null}
@@ -72,9 +74,10 @@ function ChannelLoader () {
           menuList: () =>
             'scrollbar-thin scrollbar-thumb-zinc-500 scrollbar-track-zinc-800 rounded-b-md',
           loadingMessage: () => 'p-2',
-          option: ({ data, isFocused }: OptionProps<Option>) =>
+          option: ({ data, isFocused, isDisabled }: OptionProps<Option>) =>
             classNames('py-1 px-2 text-primary font-bold truncate', {
-              'bg-secondary/50': isFocused,
+              'bg-secondary/50': isFocused && !isDisabled,
+              'opacity-50 pointer-events-none': isDisabled,
               '!text-public-channel': data.visibility === 'public',
               '!text-private-channel': data.visibility === 'private'
             }),
