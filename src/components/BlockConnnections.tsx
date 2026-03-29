@@ -10,7 +10,7 @@ function BlockConnections ({ blockData }: {blockData: ArenaBlock}) {
   const [connections, setConnections] = useState<ArenaChannel[]>([])
   const arena = useArena()
   const { addChannelWindow } = useDesktopActionsContext()
-  const setBlockViewerData = useBlockViewerActionsContext()
+  const { close: closeBlockViewer } = useBlockViewerActionsContext()
 
   const fetchChannels = useCallback(async () => {
     if (!arena) return
@@ -26,7 +26,7 @@ function BlockConnections ({ blockData }: {blockData: ArenaBlock}) {
 
   const handleChannelClick = (channel: ArenaChannel) => {
     addChannelWindow(channel)
-    setBlockViewerData(null)
+    closeBlockViewer()
   }
 
   if (connections.length) {

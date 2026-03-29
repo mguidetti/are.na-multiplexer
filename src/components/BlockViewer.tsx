@@ -1,9 +1,9 @@
 import { useBlockViewerActionsContext, useBlockViewerContext } from '@/context/BlockViewerContext'
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
-import { InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import { ChevronLeftIcon, ChevronRightIcon, InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import * as Dialog from '@radix-ui/react-dialog'
-import { ArenaBlock } from '@/types/arena'
-import { useState } from 'react'
+import { ArenaBlock, ArenaChannelContents } from '@/types/arena'
+import { useMemo, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import BlockInfo from './BlockInfo'
 import Spinner from './Spinner'
@@ -87,11 +87,24 @@ function TextBlock ({ data }: { data: ArenaBlock }) {
 }
 
 function BlockViewer () {
-  const setBlockViewerData = useBlockViewerActionsContext()
-  const blockData = useBlockViewerContext()
+  const { close, next, prev } = useBlockViewerActionsContext()
+  const viewerState = useBlockViewerContext()
   const [infoVisible, setInfoVisible] = useState(true)
 
+  const blockData = viewerState?.block ?? null
+  const blocks = viewerState?.blocks ?? []
+
+  const blockItems = useMemo(
+    () => blocks.filter((b: ArenaChannelContents) => b.type !== 'Channel') as ArenaBlock[],
+    [blocks]
+  )
+  const currentIndex = blockData ? blockItems.findIndex(b => b.id === blockData.id) : -1
+  const hasPrev = currentIndex > 0
+  const hasNext = currentIndex >= 0 && currentIndex < blockItems.length - 1
+
   useHotkeys('i', () => setInfoVisible(prevState => !prevState), { enabled: blockData !== null })
+  useHotkeys('left', () => hasPrev && prev(), { enabled: blockData !== null }, [hasPrev, prev])
+  useHotkeys('right', () => hasNext && next(), { enabled: blockData !== null }, [hasNext, next])
 
   if (!blockData) {
     return null
@@ -100,20 +113,20 @@ function BlockViewer () {
   const renderBlock = () => {
     switch (blockData.type) {
       case 'Attachment':
-        return <AttachmentBlock data={blockData} />
+        return <AttachmentBlock key={blockData.id} data={blockData} />
       case 'Image':
-        return <ImageBlock data={blockData} />
+        return <ImageBlock key={blockData.id} data={blockData} />
       case 'Embed':
-        return <MediaBlock data={blockData} />
+        return <MediaBlock key={blockData.id} data={blockData} />
       case 'Link':
-        return <LinkBlock data={blockData} />
+        return <LinkBlock key={blockData.id} data={blockData} />
       case 'Text':
-        return <TextBlock data={blockData} />
+        return <TextBlock key={blockData.id} data={blockData} />
     }
   }
 
   return (
-    <Dialog.Root open={blockData !== null} onOpenChange={open => !open && setBlockViewerData(null)}>
+    <Dialog.Root open={blockData !== null} onOpenChange={open => !open && close()}>
       <Dialog.Portal>
         <Dialog.Overlay className='fixed inset-0 z-50 backdrop-brightness-50 backdrop-grayscale'/>
         <Dialog.Content className='absolute inset-6 z-50 flex rounded-sm border-2 border-secondary bg-background/70 drop-shadow-panel'>
@@ -130,6 +143,27 @@ function BlockViewer () {
               <XMarkIcon className='h-7 w-7 text-secondary hover:text-primary' strokeWidth='1.5' />
             </button>
           </Dialog.Close>
+
+          {hasPrev && (
+            <button
+              onClick={prev}
+              title='Previous block'
+              className='absolute left-0 top-1/2 -translate-y-1/2 p-1'
+            >
+              <ChevronLeftIcon className='h-8 w-8 text-secondary hover:text-primary' />
+            </button>
+          )}
+
+          {hasNext && (
+            <button
+              onClick={next}
+              title='Next block'
+              className='absolute top-1/2 -translate-y-1/2 p-1'
+              style={{ right: infoVisible ? '25vw' : 0 }}
+            >
+              <ChevronRightIcon className='h-8 w-8 text-secondary hover:text-primary' />
+            </button>
+          )}
 
           <a
             href={`https://are.na/block/${blockData.id}`}

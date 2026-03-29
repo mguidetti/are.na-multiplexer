@@ -76,6 +76,32 @@ test.describe('Desktop (authenticated)', () => {
     await expect(page.getByTitle('Close Block Viewer')).toBeVisible()
   })
 
+  test('block viewer has next/previous navigation', async ({ authedPage: page }) => {
+    await page.goto('/')
+    await openChannelViaSearch(page)
+
+    // Wait for blocks and open the text block (second of three blocks)
+    await expect(page.getByText('Hello world')).toBeVisible()
+    await page.getByText('Hello world').dispatchEvent('dblclick')
+    await expect(page.getByRole('dialog')).toBeVisible()
+
+    // Text block is in the middle — should have both Previous and Next
+    await expect(page.getByTitle('Previous block')).toBeVisible()
+    await expect(page.getByTitle('Next block')).toBeVisible()
+
+    // Navigate to previous block (first block)
+    await page.getByTitle('Previous block').click()
+
+    // Should still be in the dialog but Previous should be gone (first block)
+    await expect(page.getByRole('dialog')).toBeVisible()
+    await expect(page.getByTitle('Previous block')).not.toBeVisible()
+    await expect(page.getByTitle('Next block')).toBeVisible()
+
+    // Navigate forward again
+    await page.getByTitle('Next block').click()
+    await expect(page.getByTitle('Previous block')).toBeVisible()
+  })
+
   test('search results disable already-open channels', async ({ authedPage: page }) => {
     await page.goto('/')
     await openChannelViaSearch(page)

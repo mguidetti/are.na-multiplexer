@@ -3,6 +3,7 @@ import { ArenaChannelContents, ArenaChannel } from '@/types/arena'
 import { createContext, useContext } from 'react'
 
 export interface WindowContextType {
+    blocks: ArenaChannelContents[],
     canDelete: boolean,
     channel: ArenaChannel,
     connectBlock: (block: ArenaChannelContents) => void,

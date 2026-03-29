@@ -225,6 +225,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
   const contextValues = useMemo<WindowContextType>(
     () => ({
+      blocks,
       canDelete,
       channel,
       connectBlock,
@@ -234,7 +235,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
       scale,
       view
     }),
-    [isLoading, loadMore, connectBlock, disconnectBlock, canDelete, channel, scale, view]
+    [blocks, isLoading, loadMore, connectBlock, disconnectBlock, canDelete, channel, scale, view]
   )
 
   return (

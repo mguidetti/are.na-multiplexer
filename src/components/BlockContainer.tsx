@@ -26,8 +26,8 @@ interface BlockContainerProps {
 
 function BlockContainer ({ data, children }: BlockContainerProps) {
   const { addChannelWindow } = useDesktopActionsContext()
-  const { channel, view, scale, disconnectBlock } = useWindowContext()
-  const setBlockViewerData = useBlockViewerActionsContext()
+  const { blocks: windowBlocks, channel, view, scale, disconnectBlock } = useWindowContext()
+  const { open: openBlockViewer } = useBlockViewerActionsContext()
   const setDialog = useDialogActionsContext()
   const [isHovering, setIsHovering] = useState(false)
   const isPending = useMemo(() => data.connection == null, [data])
@@ -49,9 +49,9 @@ function BlockContainer ({ data, children }: BlockContainerProps) {
     if (data.type === 'Channel') {
       addChannelWindow(data as ArenaChannel)
     } else {
-      setBlockViewerData(data as ArenaBlock)
+      openBlockViewer(data as ArenaBlock, windowBlocks)
     }
-  }, [data, addChannelWindow, setBlockViewerData])
+  }, [data, addChannelWindow, openBlockViewer, windowBlocks])
 
   const handleDelete = useCallback(() => {
     setDialog({
