@@ -44,7 +44,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
     setLoadingStatus('active')
 
-    const results = await arena.getChannelContents(channel.slug, { page, per: blockPageSize })
+    const results = await arena.getChannelContents(channel.id, { page, per: blockPageSize })
 
     try {
       dispatchBlocks({ type: 'prepend', blocks: results.contents })
