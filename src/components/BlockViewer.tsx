@@ -130,7 +130,7 @@ function BlockViewer () {
       <Dialog.Portal>
         <Dialog.Overlay className='fixed inset-0 z-50 backdrop-brightness-50 backdrop-grayscale'/>
         <Dialog.Content className='absolute inset-6 z-50 flex rounded-sm border-2 border-secondary bg-background/70 drop-shadow-panel'>
-          <div className='flex flex-1 items-center justify-center p-4'>
+          <div className='relative flex flex-1 items-center justify-center p-4'>
             {renderBlock()}
           </div>
 
