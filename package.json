@@ -32,7 +32,7 @@
     "react-mosaic-component": "6.1.1",
     "react-select": "^5.10.2",
     "react-virtuoso": "^4.18.3",
-    "uuid": "^13.0.0"
+    "uuid": "^14.0.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.3.5",
