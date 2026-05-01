@@ -177,16 +177,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
         if (newConnection) {
           dispatchBlocks({
             type: 'update',
-            block: {
-              ...block,
-              connection: {
-                id: newConnection.id,
-                position: 0,
-                pinned: false,
-                connected_at: new Date().toISOString(),
-                connected_by: null
-              }
-            }
+            block: { ...block, connection: newConnection }
           })
         }
       } catch (error) {

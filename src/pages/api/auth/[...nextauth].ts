@@ -1,3 +1,4 @@
+import { UserTier } from '@aredotna/sdk/api'
 import NextAuth, { NextAuthOptions } from 'next-auth'
 
 const options: NextAuthOptions = {
@@ -52,7 +53,7 @@ const options: NextAuthOptions = {
       session.user.name = token.name
       session.user.image = token.image as string
       session.user.initials = token.initials as string
-      session.user.tier = token.tier as string
+      session.user.tier = token.tier as UserTier
 
       return session
     }

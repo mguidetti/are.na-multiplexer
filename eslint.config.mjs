@@ -12,7 +12,7 @@ const compat = new FlatCompat({
 
 export default tseslint.config(
   {
-    ignores: ['.next/', 'node_modules/', 'src/types/arena.generated.ts', 'next-env.d.ts']
+    ignores: ['.next/', 'node_modules/', 'playwright-report/', 'test-results/', 'next-env.d.ts']
   },
   js.configs.recommended,
   ...tseslint.configs.recommended,

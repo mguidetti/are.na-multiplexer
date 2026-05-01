@@ -30,9 +30,8 @@ A tiling window manager for [Are.na](https://www.are.na) built with Next.js 14, 
 
 ### API / Types
 
-- Are.na API v3 via the official [`@aredotna/sdk`](https://www.npmjs.com/package/@aredotna/sdk) TypeScript SDK.
-- `src/lib/arena-client.ts` is a thin factory that wraps `createArena` from the SDK and re-exports the `Arena` type as `ArenaClient`.
-- `src/types/arena.ts` re-exports types from `@aredotna/sdk/api` with app-friendly aliases (e.g., `ArenaBlock`, `ArenaChannel`). `ArenaChannelContents` is the union of connectable types returned by `channels.contents`.
+- Are.na API v3 via the official [`@aredotna/sdk`](https://www.npmjs.com/package/@aredotna/sdk) TypeScript SDK. `useArena` (in `src/hooks/useArena.ts`) calls `createArena` directly with the session's access token.
+- Types come from `@aredotna/sdk/api` (e.g., `Block`, `Channel`, `User`, `ChannelVisibility`, `UserTier`). The only app-defined type is `ChannelContents` in `src/types/arena.ts`, a one-line alias for `ConnectableList['data'][number]` (the union returned by `channels.contents`).
 - Resource-style call sites: `arena.channels.get(id)`, `arena.channels.contents(id, opts)`, `arena.search.query({ query, type: ['Channel'] })`, `arena.users.contents(id, { ...opts, type: 'Channel' })`, `arena.connections.create({ ... })`, `arena.connections.delete(id)`, `arena.blocks.connections(id)`.
 
 ### Auth & session
