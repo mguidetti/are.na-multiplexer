@@ -3,7 +3,7 @@ import { useArena } from '@/hooks/useArena'
 import getErrorMessage from '@/lib/getErrorMessage'
 import { Bars4Icon } from '@heroicons/react/24/solid'
 import * as Popover from '@radix-ui/react-popover'
-import { ArenaChannel } from '@/types/arena'
+import { Channel } from '@aredotna/sdk/api'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import { useCallback, useState } from 'react'
@@ -33,7 +33,7 @@ function ChannelsIndexMenu () {
 
   const [initialized, setInitialized] = useState(false)
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatusState>('inactive')
-  const [channels, setChannels] = useState<ArenaChannel[]>([])
+  const [channels, setChannels] = useState<Channel[]>([])
   const [page, setPage] = useState(1)
   const [open, setOpen] = useState(false)
   const [error, setError] = useState<string>()
@@ -51,20 +51,24 @@ function ChannelsIndexMenu () {
 
     setLoadingStatus('active')
 
-    const results = await arena.getUserChannels(
+    const results = await arena.users.contents(
       sessionData?.user.id as unknown as string,
-      { page, per: 30, sort: 'created_at_desc' }
+      { page, per: 30, sort: 'created_at_desc', type: 'Channel' }
+    )
+
+    const channelResults = results.data.filter(
+      (item: typeof results.data[number]): item is Channel => item.type === 'Channel'
     )
 
     try {
-      setChannels([...channels, ...results.channels])
+      setChannels([...channels, ...channelResults])
     } catch (error) {
       setError(getErrorMessage(error))
       console.error(error)
     } finally {
       const nextPage = page + 1
 
-      if (nextPage > results.total_pages) {
+      if (nextPage > results.meta.total_pages) {
         setLoadingStatus('complete')
       } else {
         setPage(nextPage)
@@ -73,7 +77,7 @@ function ChannelsIndexMenu () {
     }
   }, [arena, channels, sessionData, loadingStatus, page])
 
-  const handleSelect = (channel: ArenaChannel) => {
+  const handleSelect = (channel: Channel) => {
     addChannelWindow(channel)
     setOpen(closed)
   }

@@ -2,7 +2,7 @@ import { useArena } from '@/hooks/useArena'
 import getErrorMessage from '@/lib/getErrorMessage'
 import { PlusIcon } from '@heroicons/react/24/solid'
 import * as Popover from '@radix-ui/react-popover'
-import { ChannelVisibility } from '@/types/arena'
+import { ChannelVisibility } from '@aredotna/sdk/api'
 import classNames from 'classnames'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { useDesktopActionsContext } from '../context/DesktopContext'
@@ -37,7 +37,10 @@ function ChannelCreator () {
     setIsCreating(true)
 
     try {
-      const results = await arena.createChannel(formData.name, formData.privacy)
+      const results = await arena.channels.create({
+        title: formData.name,
+        visibility: formData.privacy
+      })
 
       if (results) {
         addChannelWindow(results)

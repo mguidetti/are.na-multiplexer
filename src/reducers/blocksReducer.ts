@@ -1,12 +1,12 @@
-import { ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
 
 export type BlocksReducerAction =
-  | { type: 'append', blocks: ArenaChannelContents[] }
-  | { type: 'prepend', blocks: ArenaChannelContents[] }
-  | { type: 'update', block: ArenaChannelContents }
+  | { type: 'append', blocks: ChannelContents[] }
+  | { type: 'prepend', blocks: ChannelContents[] }
+  | { type: 'update', block: ChannelContents }
   | { type: 'remove', id: number }
 
-function blocksReducer (blocks: ArenaChannelContents[], action: BlocksReducerAction): ArenaChannelContents[] {
+function blocksReducer (blocks: ChannelContents[], action: BlocksReducerAction): ChannelContents[] {
   switch (action.type) {
     case 'append': {
       return [...action.blocks, ...blocks]

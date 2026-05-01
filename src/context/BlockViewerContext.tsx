@@ -1,13 +1,14 @@
-import { ArenaBlock, ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
+import { Block } from '@aredotna/sdk/api'
 import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react'
 
 export interface BlockViewerState {
-  block: ArenaBlock
-  blocks: ArenaChannelContents[]
+  block: Block
+  blocks: ChannelContents[]
 }
 
 interface BlockViewerActions {
-  open: (block: ArenaBlock, blocks: ArenaChannelContents[]) => void
+  open: (block: Block, blocks: ChannelContents[]) => void
   close: () => void
   next: () => void
   prev: () => void
@@ -22,7 +23,7 @@ export const useBlockViewerActionsContext = () => useContext(BlockViewerActionsC
 export const BlockViewerContextProvider = ({ children }: {children: ReactNode}) => {
   const [state, setState] = useState<BlockViewerState | null>(null)
 
-  const open = useCallback((block: ArenaBlock, blocks: ArenaChannelContents[]) => {
+  const open = useCallback((block: Block, blocks: ChannelContents[]) => {
     setState({ block, blocks })
   }, [])
 
@@ -31,7 +32,7 @@ export const BlockViewerContextProvider = ({ children }: {children: ReactNode}) 
   const next = useCallback(() => {
     setState(prev => {
       if (!prev) return null
-      const blockItems = prev.blocks.filter(b => b.type !== 'Channel') as ArenaBlock[]
+      const blockItems = prev.blocks.filter(b => b.type !== 'Channel') as Block[]
       const idx = blockItems.findIndex(b => b.id === prev.block.id)
       if (idx < 0 || idx >= blockItems.length - 1) return prev
       return { ...prev, block: blockItems[idx + 1] }
@@ -41,7 +42,7 @@ export const BlockViewerContextProvider = ({ children }: {children: ReactNode}) 
   const prev = useCallback(() => {
     setState(prevState => {
       if (!prevState) return null
-      const blockItems = prevState.blocks.filter(b => b.type !== 'Channel') as ArenaBlock[]
+      const blockItems = prevState.blocks.filter(b => b.type !== 'Channel') as Block[]
       const idx = blockItems.findIndex(b => b.id === prevState.block.id)
       if (idx <= 0) return prevState
       return { ...prevState, block: blockItems[idx - 1] }

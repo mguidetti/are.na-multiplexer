@@ -1,4 +1,4 @@
-import { ArenaClient } from '@/lib/arena-client'
+import { ArenaClient, createArenaClient } from '@/lib/arena-client'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
@@ -10,7 +10,7 @@ export const useArena = () => {
   useEffect(() => {
     const accessToken = data?.user.accessToken
     const options = data ? { token: accessToken } : undefined
-    const arena = new ArenaClient(options)
+    const arena = createArenaClient(options)
 
     setClient(arena)
   // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -1,13 +1,13 @@
 import { useBlockViewerActionsContext } from '@/context/BlockViewerContext'
 import { useDesktopActionsContext } from '@/context/DesktopContext'
 import { useArena } from '@/hooks/useArena'
-import { ArenaBlock, ArenaChannel } from '@/types/arena'
+import { Block, Channel } from '@aredotna/sdk/api'
 import classNames from 'classnames'
 import { useCallback, useEffect, useState } from 'react'
 import Spinner from './Spinner'
 
-function BlockConnections ({ blockData }: {blockData: ArenaBlock}) {
-  const [connections, setConnections] = useState<ArenaChannel[]>([])
+function BlockConnections ({ blockData }: {blockData: Block}) {
+  const [connections, setConnections] = useState<Channel[]>([])
   const arena = useArena()
   const { addChannelWindow } = useDesktopActionsContext()
   const { close: closeBlockViewer } = useBlockViewerActionsContext()
@@ -15,16 +15,16 @@ function BlockConnections ({ blockData }: {blockData: ArenaBlock}) {
   const fetchChannels = useCallback(async () => {
     if (!arena) return
 
-    const results = await arena.getBlockConnections(blockData.id)
+    const results = await arena.blocks.connections(blockData.id)
 
-    setConnections(results.channels)
+    setConnections(results.data)
   }, [arena, blockData])
 
   useEffect(() => {
     fetchChannels()
   }, [fetchChannels])
 
-  const handleChannelClick = (channel: ArenaChannel) => {
+  const handleChannelClick = (channel: Channel) => {
     addChannelWindow(channel)
     closeBlockViewer()
   }

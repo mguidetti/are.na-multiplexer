@@ -11,7 +11,6 @@ yarn build               # production build
 yarn lint                # ESLint
 yarn test                # Playwright E2E tests (needs dev server running)
 yarn test:ui             # Playwright interactive UI mode
-yarn generate-types      # regenerate OpenAPI types from Are.na v3 API
 ```
 
 To run a single Playwright test: `npx playwright test tests/foo.spec.ts`
@@ -31,9 +30,10 @@ A tiling window manager for [Are.na](https://www.are.na) built with Next.js 14, 
 
 ### API / Types
 
-- Are.na API v3. Client in `src/lib/arena-client.ts`.
-- Types auto-generated from OpenAPI spec into `src/types/arena.generated.ts` (never edit by hand).
-- `src/types/arena.ts` re-exports generated types with app-friendly aliases (e.g., `ArenaBlock`, `ArenaChannel`).
+- Are.na API v3 via the official [`@aredotna/sdk`](https://www.npmjs.com/package/@aredotna/sdk) TypeScript SDK.
+- `src/lib/arena-client.ts` is a thin factory that wraps `createArena` from the SDK and re-exports the `Arena` type as `ArenaClient`.
+- `src/types/arena.ts` re-exports types from `@aredotna/sdk/api` with app-friendly aliases (e.g., `ArenaBlock`, `ArenaChannel`). `ArenaChannelContents` is the union of connectable types returned by `channels.contents`.
+- Resource-style call sites: `arena.channels.get(id)`, `arena.channels.contents(id, opts)`, `arena.search.query({ query, type: ['Channel'] })`, `arena.users.contents(id, { ...opts, type: 'Channel' })`, `arena.connections.create({ ... })`, `arena.connections.delete(id)`, `arena.blocks.connections(id)`.
 
 ### Auth & session
 

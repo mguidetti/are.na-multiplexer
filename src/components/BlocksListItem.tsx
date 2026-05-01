@@ -1,11 +1,12 @@
 import { useBlockContext } from '@/context/BlockContext'
 import SquareIcon from '@/icons/square.svg'
-import { ArenaBlock, ArenaChannel, ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
+import { Block, Channel } from '@aredotna/sdk/api'
 import classNames from 'classnames'
 import BlockActions from './BlockActions'
 import Spinner from './Spinner'
 
-function ChannelBody ({ data }: {data: ArenaChannel}) {
+function ChannelBody ({ data }: {data: Channel}) {
   return (
     <div
       className={classNames('contents', {
@@ -22,7 +23,7 @@ function ChannelBody ({ data }: {data: ArenaChannel}) {
   )
 }
 
-function BlockBody ({ data }: {data: ArenaBlock}) {
+function BlockBody ({ data }: {data: Block}) {
   const image = 'image' in data ? data.image : null
 
   return (
@@ -35,14 +36,14 @@ function BlockBody ({ data }: {data: ArenaBlock}) {
   )
 }
 
-function BlocksListItem ({ data }: {data: ArenaChannelContents}) {
+function BlocksListItem ({ data }: {data: ChannelContents}) {
   const { isPending, isHovering } = useBlockContext()
 
   return (
     <div
       className={'hover:bg-dot-grid-secondary relative grid cursor-pointer grid-cols-[1.5em_1fr] items-center gap-x-4 py-1 px-2'}
     >
-      {data.type === 'Channel' ? <ChannelBody data={data as ArenaChannel} /> : <BlockBody data={data as ArenaBlock} />}
+      {data.type === 'Channel' ? <ChannelBody data={data as Channel} /> : <BlockBody data={data as Block} />}
 
       {isPending && (
         <div className='absolute flex h-full w-full items-center justify-start bg-background/70 px-2 py-1'>
