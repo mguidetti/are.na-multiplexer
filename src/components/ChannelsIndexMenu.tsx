@@ -46,13 +46,14 @@ function ChannelsIndexMenu () {
   }
 
   const fetchChannels = useCallback(async () => {
-    if (!arena) return
+    const userId = sessionData?.user.id
+    if (!arena || !userId) return
     if (loadingStatus === 'complete') return
 
     setLoadingStatus('active')
 
     const results = await arena.users.contents(
-      sessionData?.user.id as unknown as string,
+      userId,
       { page, per: 30, sort: 'created_at_desc', type: 'Channel' }
     )
 

@@ -1,20 +1,14 @@
-import { Arena, createArena } from '@aredotna/sdk'
+import { createArena } from '@aredotna/sdk'
 import { useSession } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { useMemo } from 'react'
 
 export const useArena = () => {
-  const [client, setClient] = useState<Arena>()
   const { data, status } = useSession()
   const loading = status === 'loading'
 
-  useEffect(() => {
-    const accessToken = data?.user.accessToken
-    const options = data ? { token: accessToken } : undefined
-    const arena = createArena(options)
-
-    setClient(arena)
+  return useMemo(() => {
+    if (loading) return undefined
+    return createArena(data ? { token: data.user.accessToken } : undefined)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loading])
-
-  return client
 }

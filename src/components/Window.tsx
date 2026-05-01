@@ -31,12 +31,12 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatusState>('inactive')
   const [blocks, dispatchBlocks] = useReducer(blocksReducer, [])
   const [page, setPage] = useState(1)
+  const [hasMorePages, setHasMorePages] = useState(true)
   const [error, setError] = useState('')
   const [isActiveDrop, setIsActiveDrop] = useState(false)
   const [draggingBlock, setDraggingBlock] = useState<ChannelContents | null>()
 
   const blockPageSize = 50
-  const totalPages = useMemo(() => Math.ceil(channel.counts.contents / blockPageSize), [channel])
   const isLoading = useMemo(() => loadingStatus === 'active', [loadingStatus])
 
   const fetchBlocks = useCallback(async () => {
@@ -48,6 +48,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
     try {
       dispatchBlocks({ type: 'prepend', blocks: results.data })
+      setHasMorePages(results.meta.has_more_pages)
     } catch (error) {
       setError(getErrorMessage(error))
     } finally {
@@ -60,14 +61,12 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
   }, [fetchBlocks])
 
   const loadMore = useCallback(() => {
-    const nextPage = page + 1
-
-    if (nextPage > totalPages) {
+    if (!hasMorePages) {
       setLoadingStatus('complete')
     } else {
-      setPage(nextPage)
+      setPage(p => p + 1)
     }
-  }, [page, totalPages])
+  }, [hasMorePages])
 
   const canWrite = useMemo(() => {
     if (channel.can?.add_to) {
