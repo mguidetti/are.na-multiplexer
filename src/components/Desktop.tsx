@@ -2,7 +2,7 @@ import { BlockViewerContextProvider } from '@/context/BlockViewerContext'
 import { useArena } from '@/hooks/useArena'
 import { addWindow } from '@/lib/mosaic'
 import channelsReducer from '@/reducers/channelsReducer'
-import { ArenaChannel } from '@/types/arena'
+import { Channel } from '@aredotna/sdk/api'
 import { useCallback, useEffect, useMemo, useReducer, useState } from 'react'
 import { Mosaic, MosaicNode } from 'react-mosaic-component'
 import { MosaicKey, MosaicPath } from 'react-mosaic-component/lib/types'
@@ -15,7 +15,7 @@ import Window from './Window'
 import ZeroState from './ZeroState'
 
 export interface ChannelWindowState {
-    data: ArenaChannel,
+    data: Channel,
     scale: number
     view: 'grid' | 'list'
 }
@@ -51,7 +51,7 @@ export default function Desktop () {
   }, [savedLayouts])
 
   const addChannelWindow = useCallback(
-    (channel: ArenaChannel): void => {
+    (channel: Channel): void => {
       if (channel.id in channels) {
         console.warn('Attempted to add duplicate channel', channel.id)
         return
@@ -95,7 +95,7 @@ export default function Desktop () {
       const updatedChannels = Object.fromEntries(
         await Promise.all(
           Object.values(save.channels).map(async channel => {
-            const result = await arena.getChannel(channel.data.id)
+            const result = await arena.channels.get(channel.data.id)
 
             return [result.id, { ...channel, data: result }]
           })

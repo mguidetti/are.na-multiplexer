@@ -1,5 +1,5 @@
 import { ArrowTopRightOnSquareIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
-import { ArenaBlock } from '@/types/arena'
+import { Block } from '@aredotna/sdk/api'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import { Dispatch, SetStateAction } from 'react'
@@ -8,7 +8,7 @@ import BlockConnections from './BlockConnnections'
 dayjs.extend(relativeTime)
 
 interface BlockInfoProps {
-  blockData: ArenaBlock,
+  blockData: Block,
   setInfoVisible: Dispatch<SetStateAction<boolean>>
 }
 

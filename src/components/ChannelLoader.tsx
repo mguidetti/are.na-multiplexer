@@ -1,4 +1,4 @@
-import { ArenaChannel } from '@/types/arena'
+import { Channel } from '@aredotna/sdk/api'
 import classNames from 'classnames'
 import debounce from 'debounce-promise'
 import { useRef } from 'react'
@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react'
 import { useDesktopActionsContext, useDesktopContext } from '../context/DesktopContext'
 import { useArena } from '../hooks/useArena'
 
-type Option = ArenaChannel
+type Option = Channel
 
 function ChannelLoader () {
   const { addChannelWindow } = useDesktopActionsContext()
@@ -27,12 +27,19 @@ function ChannelLoader () {
   const loadOptions = debounce(async (inputValue: string) => {
     if (!inputValue || !arena) return []
 
-    const results = await arena.searchChannels(inputValue, { page: 1, per: 20 })
-    return results.channels
+    const results = await arena.search.query({
+      query: inputValue,
+      type: ['Channel'],
+      page: 1,
+      per: 20
+    })
+    return results.data.filter(
+      (item: typeof results.data[number]): item is Channel => item.type === 'Channel'
+    )
   }, 200)
 
   const handleSelectChange = (channel: SingleValue<Option>) => {
-    addChannelWindow(channel as ArenaChannel)
+    addChannelWindow(channel as Channel)
   }
 
   return (

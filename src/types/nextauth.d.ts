@@ -1,3 +1,4 @@
+import { UserTier } from '@aredotna/sdk/api'
 import { DefaultSession } from 'next-auth'
 
 declare module 'next-auth' {
@@ -9,7 +10,7 @@ declare module 'next-auth' {
       id: number
       accessToken: string,
       initials: string,
-      tier: string
+      tier: UserTier
     } & DefaultSession['user']
   }
 
@@ -18,6 +19,6 @@ declare module 'next-auth' {
     username: string,
     avatar: string,
     initials: string,
-    tier: string
+    tier: UserTier
   }
 }

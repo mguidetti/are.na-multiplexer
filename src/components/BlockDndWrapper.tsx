@@ -9,13 +9,13 @@ import {
   useSensor,
   useSensors
 } from '@dnd-kit/core'
-import { ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
 import { ReactNode, useState } from 'react'
 import BlockDragOverlay from './BlockDragOverlay'
 import { ChannelWindowState } from './Desktop'
 
 interface DraggingBlockState {
-  block: ArenaChannelContents,
+  block: ChannelContents,
   window: ChannelWindowState
 }
 

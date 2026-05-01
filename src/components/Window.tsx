@@ -2,7 +2,7 @@ import { WindowContext, WindowContextType } from '@/context/WindowContext'
 import getErrorMessage from '@/lib/getErrorMessage'
 import blocksReducer from '@/reducers/blocksReducer'
 import { useDndMonitor, useDroppable } from '@dnd-kit/core'
-import { ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
 import classNames from 'classnames'
 import { useSession } from 'next-auth/react'
 import { CSSProperties, useCallback, useEffect, useMemo, useReducer, useState } from 'react'
@@ -31,12 +31,12 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
   const [loadingStatus, setLoadingStatus] = useState<LoadingStatusState>('inactive')
   const [blocks, dispatchBlocks] = useReducer(blocksReducer, [])
   const [page, setPage] = useState(1)
+  const [hasMorePages, setHasMorePages] = useState(true)
   const [error, setError] = useState('')
   const [isActiveDrop, setIsActiveDrop] = useState(false)
-  const [draggingBlock, setDraggingBlock] = useState<ArenaChannelContents | null>()
+  const [draggingBlock, setDraggingBlock] = useState<ChannelContents | null>()
 
   const blockPageSize = 50
-  const totalPages = useMemo(() => Math.ceil(channel.counts.contents / blockPageSize), [channel])
   const isLoading = useMemo(() => loadingStatus === 'active', [loadingStatus])
 
   const fetchBlocks = useCallback(async () => {
@@ -44,10 +44,11 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
     setLoadingStatus('active')
 
-    const results = await arena.getChannelContents(channel.id, { page, per: blockPageSize })
+    const results = await arena.channels.contents(channel.id, { page, per: blockPageSize })
 
     try {
-      dispatchBlocks({ type: 'prepend', blocks: results.contents })
+      dispatchBlocks({ type: 'prepend', blocks: results.data })
+      setHasMorePages(results.meta.has_more_pages)
     } catch (error) {
       setError(getErrorMessage(error))
     } finally {
@@ -60,14 +61,12 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
   }, [fetchBlocks])
 
   const loadMore = useCallback(() => {
-    const nextPage = page + 1
-
-    if (nextPage > totalPages) {
+    if (!hasMorePages) {
       setLoadingStatus('complete')
     } else {
-      setPage(nextPage)
+      setPage(p => p + 1)
     }
-  }, [page, totalPages])
+  }, [hasMorePages])
 
   const canWrite = useMemo(() => {
     if (channel.can?.add_to) {
@@ -80,7 +79,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
   const canDelete = useMemo(() => channel.owner.id === sessionData?.user.id, [channel, sessionData?.user])
 
   const canDrop = useCallback(
-    (block: ArenaChannelContents) => {
+    (block: ChannelContents) => {
       if (!canWrite) {
         console.debug('Cannot drop', 'Unauthorized')
         return false
@@ -156,7 +155,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
   })
 
   const connectBlock = useCallback(
-    async (block: ArenaChannelContents) => {
+    async (block: ChannelContents) => {
       if (!canWrite) return
 
       // Optimistic append with null connection (pending state)
@@ -167,21 +166,17 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
       try {
         const connectableType = block.type === 'Channel' ? 'Channel' : 'Block'
-        const result = await arena?.createConnection(block.id, connectableType, [channel.id])
+        const result = await arena?.connections.create({
+          connectable_id: block.id,
+          connectable_type: connectableType,
+          channel_ids: [channel.id]
+        })
+        const newConnection = result?.data?.[0]
 
-        if (result) {
+        if (newConnection) {
           dispatchBlocks({
             type: 'update',
-            block: {
-              ...block,
-              connection: {
-                id: result.data[0].id,
-                position: 0,
-                pinned: false,
-                connected_at: new Date().toISOString(),
-                connected_by: null
-              }
-            }
+            block: { ...block, connection: newConnection }
           })
         }
       } catch (error) {
@@ -193,7 +188,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
   )
 
   const disconnectBlock = useCallback(
-    async (block: ArenaChannelContents) => {
+    async (block: ChannelContents) => {
       if (!canDelete) return
 
       const targetId = block.connection?.id
@@ -202,7 +197,7 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
 
       try {
         if (targetId) {
-          await arena?.deleteConnection(targetId)
+          await arena?.connections.delete(targetId)
           dispatchBlocks({ type: 'remove', id: block.id })
         } else {
           throw new Error('Block is missing connection id')

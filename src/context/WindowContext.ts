@@ -1,13 +1,14 @@
 import { ChannelWindowState } from '@/components/Desktop'
-import { ArenaChannelContents, ArenaChannel } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
+import { Channel } from '@aredotna/sdk/api'
 import { createContext, useContext } from 'react'
 
 export interface WindowContextType {
-    blocks: ArenaChannelContents[],
+    blocks: ChannelContents[],
     canDelete: boolean,
-    channel: ArenaChannel,
-    connectBlock: (block: ArenaChannelContents) => void,
-    disconnectBlock: (block: ArenaChannelContents) => void,
+    channel: Channel,
+    connectBlock: (block: ChannelContents) => void,
+    disconnectBlock: (block: ChannelContents) => void,
     isLoading: boolean,
     loadMore: () => void,
     scale: ChannelWindowState['scale'],

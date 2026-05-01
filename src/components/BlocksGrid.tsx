@@ -1,5 +1,5 @@
 import { useWindowContext } from '@/context/WindowContext'
-import { ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
 import React from 'react'
 import { Components, VirtuosoGrid } from 'react-virtuoso'
 import BlockContainer from './BlockContainer'
@@ -15,7 +15,7 @@ const ListContainer: Components['List'] = React.forwardRef(function ListContaine
   )
 })
 
-function BlocksGrid ({ blocks }: { blocks: ArenaChannelContents[] }) {
+function BlocksGrid ({ blocks }: { blocks: ChannelContents[] }) {
   const { loadMore } = useWindowContext()
 
   return (

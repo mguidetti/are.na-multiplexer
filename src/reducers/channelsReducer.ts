@@ -1,8 +1,8 @@
 import { ChannelsState, ChannelWindowState } from '@/components/Desktop'
-import { ArenaChannel } from '@/types/arena'
+import { Channel } from '@aredotna/sdk/api'
 
 export type ChannelsReducerAction =
-  | { type: 'add', channel: ArenaChannel }
+  | { type: 'add', channel: Channel }
   | { type: 'update', id: number, payload: Partial<ChannelWindowState>}
   | { type: 'replace', channels: ChannelsState }
   | { type: 'remove', id: number }

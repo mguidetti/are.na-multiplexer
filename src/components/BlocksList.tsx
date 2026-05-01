@@ -1,5 +1,5 @@
 import { useWindowContext } from '@/context/WindowContext'
-import { ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
 import React from 'react'
 import { Components, Virtuoso } from 'react-virtuoso'
 import BlockContainer from './BlockContainer'
@@ -11,7 +11,7 @@ const ListContainer: Components['List'] = React.forwardRef(function ListContaine
   return <div {...props} ref={ref} className='divide-y divide-[var(--color)] border-b border-[var(--color)]' />
 })
 
-function BlocksList ({ blocks }: {blocks: ArenaChannelContents[]}) {
+function BlocksList ({ blocks }: {blocks: ChannelContents[]}) {
   const windowCtx = useWindowContext()
 
   return (

@@ -2,13 +2,14 @@ import { useBlockViewerActionsContext, useBlockViewerContext } from '@/context/B
 import ArenaMarkIcon from '@/icons/arena-mark.svg'
 import { ChevronLeftIcon, ChevronRightIcon, InformationCircleIcon, XMarkIcon } from '@heroicons/react/24/solid'
 import * as Dialog from '@radix-ui/react-dialog'
-import { ArenaBlock, ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
+import { Block } from '@aredotna/sdk/api'
 import { useMemo, useState } from 'react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import BlockInfo from './BlockInfo'
 import Spinner from './Spinner'
 
-function AttachmentBlock ({ data }: { data: ArenaBlock }) {
+function AttachmentBlock ({ data }: { data: Block }) {
   const renderBody = () => {
     if ('image' in data && data.image) {
       return <ImageBlock data={data} />
@@ -24,7 +25,7 @@ function AttachmentBlock ({ data }: { data: ArenaBlock }) {
   )
 }
 
-function ImageBlock ({ data }: { data: ArenaBlock }) {
+function ImageBlock ({ data }: { data: Block }) {
   const [imageLoaded, setImageLoaded] = useState(false)
 
   const handleImageLoaded = () => {
@@ -58,7 +59,7 @@ function ImageBlock ({ data }: { data: ArenaBlock }) {
   )
 }
 
-function LinkBlock ({ data }: { data: ArenaBlock }) {
+function LinkBlock ({ data }: { data: Block }) {
   return (
     <a href={data.source?.url} target='_blank' rel='noreferrer' className='flex h-full w-full flex-col gap-y-2'>
       <div className='underline'>{data.source?.url}</div>
@@ -67,7 +68,7 @@ function LinkBlock ({ data }: { data: ArenaBlock }) {
   )
 }
 
-function MediaBlock ({ data }: { data: ArenaBlock }) {
+function MediaBlock ({ data }: { data: Block }) {
   const embed = { __html: ('embed' in data ? data.embed?.html : '') || '' }
 
   return (
@@ -75,7 +76,7 @@ function MediaBlock ({ data }: { data: ArenaBlock }) {
   )
 }
 
-function TextBlock ({ data }: { data: ArenaBlock }) {
+function TextBlock ({ data }: { data: Block }) {
   const body = { __html: ('content' in data && typeof data.content === 'object' ? data.content?.html : '') || '' }
 
   return (
@@ -95,7 +96,7 @@ function BlockViewer () {
   const blocks = viewerState?.blocks ?? []
 
   const blockItems = useMemo(
-    () => blocks.filter((b: ArenaChannelContents) => b.type !== 'Channel') as ArenaBlock[],
+    () => blocks.filter((b: ChannelContents) => b.type !== 'Channel') as Block[],
     [blocks]
   )
   const currentIndex = blockData ? blockItems.findIndex(b => b.id === blockData.id) : -1

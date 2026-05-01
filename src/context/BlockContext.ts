@@ -1,8 +1,8 @@
-import { ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
 import { createContext, useContext } from 'react'
 
 export interface BlockContextType {
-  data: ArenaChannelContents,
+  data: ChannelContents,
   handleDelete: () => void,
   handleView: () => void,
   isDragging: boolean,

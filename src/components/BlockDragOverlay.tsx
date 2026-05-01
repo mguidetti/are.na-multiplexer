@@ -1,10 +1,10 @@
-import { ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
 import { CSSProperties } from 'react'
 import BlocksGridItem from './BlocksGridItem'
 import BlocksListItem from './BlocksListItem'
 import { ChannelWindowState } from './Desktop'
 
-function BlockDragOverlay ({ data, window }: {data: ArenaChannelContents, window: ChannelWindowState }) {
+function BlockDragOverlay ({ data, window }: {data: ChannelContents, window: ChannelWindowState }) {
   const renderItem = () => {
     switch (window.view) {
       case 'grid':

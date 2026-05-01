@@ -4,14 +4,15 @@ import { useDesktopActionsContext } from '@/context/DesktopContext'
 import { useDialogActionsContext } from '@/context/DialogContext'
 import { useWindowContext } from '@/context/WindowContext'
 import { UniqueIdentifier, useDraggable } from '@dnd-kit/core'
-import { ArenaBlock, ArenaChannel, ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
+import { Block, Channel } from '@aredotna/sdk/api'
 import classNames from 'classnames'
 import { ReactNode, useCallback, useMemo, useState } from 'react'
 import { ChannelWindowState } from './Desktop'
 
 export interface DraggingBlockData {
   type: 'block',
-  block: ArenaChannelContents,
+  block: ChannelContents,
   window: {
     id: number,
     view: ChannelWindowState['view'],
@@ -20,7 +21,7 @@ export interface DraggingBlockData {
 }
 
 interface BlockContainerProps {
-  data: ArenaChannelContents,
+  data: ChannelContents,
   children: ReactNode
 }
 
@@ -47,9 +48,9 @@ function BlockContainer ({ data, children }: BlockContainerProps) {
 
   const handleView = useCallback(() => {
     if (data.type === 'Channel') {
-      addChannelWindow(data as ArenaChannel)
+      addChannelWindow(data as Channel)
     } else {
-      openBlockViewer(data as ArenaBlock, windowBlocks)
+      openBlockViewer(data as Block, windowBlocks)
     }
   }, [data, addChannelWindow, openBlockViewer, windowBlocks])
 

@@ -1,15 +1,16 @@
 import { useBlockContext } from '@/context/BlockContext'
-import { ArenaBlock, ArenaChannel, ArenaChannelContents } from '@/types/arena'
+import { ChannelContents } from '@/types/arena'
+import { Block, Channel } from '@aredotna/sdk/api'
 import classNames from 'classnames'
 import BlockActions from './BlockActions'
 import Spinner from './Spinner'
 
-function BlocksGridItem ({ data }: {data: ArenaChannelContents}) {
+function BlocksGridItem ({ data }: {data: ChannelContents}) {
   const { isPending, isDragging, isHovering } = useBlockContext()
 
   const renderBlock = () => {
     if (data.type === 'Channel') {
-      return <ChannelBlock data={data as ArenaChannel} />
+      return <ChannelBlock data={data as Channel} />
     }
 
     switch (data.type) {
@@ -49,7 +50,7 @@ function BlocksGridItem ({ data }: {data: ArenaChannelContents}) {
   )
 }
 
-function AttachmentBlock ({ data }: {data: ArenaBlock}) {
+function AttachmentBlock ({ data }: {data: Block}) {
   if ('image' in data && data.image) {
     return <ImageBlock data={data} />
   } else {
@@ -61,7 +62,7 @@ function AttachmentBlock ({ data }: {data: ArenaBlock}) {
   }
 }
 
-function ChannelBlock ({ data }: {data: ArenaChannel}) {
+function ChannelBlock ({ data }: {data: Channel}) {
   return (
     <div
       className={classNames('flex h-full w-full flex-col items-center justify-center space-y-2 border-2 bg-background channel-block p-2', {
@@ -82,7 +83,7 @@ function ChannelBlock ({ data }: {data: ArenaChannel}) {
   )
 }
 
-function ImageBlock ({ data }: {data: ArenaBlock}) {
+function ImageBlock ({ data }: {data: Block}) {
   const image = 'image' in data ? data.image : null
 
   return (
@@ -90,7 +91,7 @@ function ImageBlock ({ data }: {data: ArenaBlock}) {
   )
 }
 
-function TextBlock ({ data }: {data: ArenaBlock}) {
+function TextBlock ({ data }: {data: Block}) {
   const body = { __html: ('content' in data && typeof data.content === 'object' ? data.content?.html : '') || '' }
 
   return (
