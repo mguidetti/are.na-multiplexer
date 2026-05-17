@@ -24,6 +24,13 @@ export interface WindowProps {
 
 export type LoadingStatusState = 'inactive' | 'active' | 'waiting' | 'complete'
 
+const BLOCK_MOVE_COMMIT_EVENT = 'arena-multiplexer:block-move-commit'
+
+interface BlockMoveCommitEventDetail {
+  sourceChannelId: number,
+  blockId: number
+}
+
 function Window ({ path, data, data: { data: channel, scale, view } }: WindowProps) {
   const arena = useArena()
 
@@ -100,6 +107,22 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
     [blocks, canWrite, isLoading]
   )
 
+  useEffect(() => {
+    const handleBlockMoveCommit = (event: Event) => {
+      const { sourceChannelId, blockId } = (event as CustomEvent<BlockMoveCommitEventDetail>).detail
+
+      if (sourceChannelId === channel.id) {
+        dispatchBlocks({ type: 'remove', id: blockId })
+      }
+    }
+
+    globalThis.window.addEventListener(BLOCK_MOVE_COMMIT_EVENT, handleBlockMoveCommit)
+
+    return () => {
+      globalThis.window.removeEventListener(BLOCK_MOVE_COMMIT_EVENT, handleBlockMoveCommit)
+    }
+  }, [channel.id])
+
   // The draggingBlock state is needed in order to disable the droppable window
   // based off conditions in canDrop, which requires the block data as an
   // argument. This is needed to prevent blocks being disconnected when holding
@@ -139,12 +162,11 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
       // If this window is where the block was dropped...
       if (channel.id === over?.id) {
         if (canDrop(block)) {
-          connectBlock(block)
-        }
-        // If this window is the window the dropped block was dragged from...
-      } else if (over && channel.id === window.id) {
-        if (isHotkeyPressed('alt') && canDelete) {
-          disconnectBlock(block)
+          if (isHotkeyPressed('alt') && window.id !== channel.id) {
+            moveBlock(block, window)
+          } else {
+            connectBlock(block)
+          }
         }
       }
     },
@@ -153,6 +175,25 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
       setIsActiveDrop(false)
     }
   })
+
+  const createBlockConnection = useCallback(
+    async (block: ChannelContents) => {
+      const connectableType = block.type === 'Channel' ? 'Channel' : 'Block'
+      const result = await arena?.connections.create({
+        connectable_id: block.id,
+        connectable_type: connectableType,
+        channel_ids: [channel.id]
+      })
+      const newConnection = result?.data?.[0]
+
+      if (!newConnection) {
+        throw new Error('Block is missing new connection id')
+      }
+
+      return newConnection
+    },
+    [arena, channel.id]
+  )
 
   const connectBlock = useCallback(
     async (block: ChannelContents) => {
@@ -165,26 +206,76 @@ function Window ({ path, data, data: { data: channel, scale, view } }: WindowPro
       })
 
       try {
-        const connectableType = block.type === 'Channel' ? 'Channel' : 'Block'
-        const result = await arena?.connections.create({
-          connectable_id: block.id,
-          connectable_type: connectableType,
-          channel_ids: [channel.id]
-        })
-        const newConnection = result?.data?.[0]
+        const newConnection = await createBlockConnection(block)
 
-        if (newConnection) {
-          dispatchBlocks({
-            type: 'update',
-            block: { ...block, connection: newConnection }
-          })
-        }
+        dispatchBlocks({
+          type: 'update',
+          block: { ...block, connection: newConnection }
+        })
       } catch (error) {
         setError(getErrorMessage(error))
         dispatchBlocks({ type: 'remove', id: block.id })
       }
     },
-    [arena, canWrite, channel.id]
+    [canWrite, createBlockConnection]
+  )
+
+  const moveBlock = useCallback(
+    async (block: ChannelContents, sourceWindow: DraggingBlockData['window']) => {
+      if (!canWrite) return
+
+      const sourceConnectionId = block.connection?.id
+
+      if (!sourceWindow.canDelete) {
+        setError('You do not have permission to disconnect this block from the source channel')
+        return
+      }
+
+      if (!sourceConnectionId) {
+        setError('Block is missing source connection id')
+        return
+      }
+
+      dispatchBlocks({
+        type: 'append',
+        blocks: [{ ...block, connection: null }]
+      })
+
+      let targetConnectionId: number | null = null
+
+      try {
+        const newConnection = await createBlockConnection(block)
+        targetConnectionId = newConnection.id
+
+        await arena?.connections.delete(sourceConnectionId)
+
+        dispatchBlocks({
+          type: 'update',
+          block: { ...block, connection: newConnection }
+        })
+
+        globalThis.window.dispatchEvent(
+          new CustomEvent<BlockMoveCommitEventDetail>(BLOCK_MOVE_COMMIT_EVENT, {
+            detail: {
+              sourceChannelId: sourceWindow.id,
+              blockId: block.id
+            }
+          })
+        )
+      } catch (error) {
+        if (targetConnectionId) {
+          try {
+            await arena?.connections.delete(targetConnectionId)
+          } catch (rollbackError) {
+            console.error('Failed to roll back moved block connection', rollbackError)
+          }
+        }
+
+        setError(getErrorMessage(error))
+        dispatchBlocks({ type: 'remove', id: block.id })
+      }
+    },
+    [arena, canWrite, createBlockConnection]
   )
 
   const disconnectBlock = useCallback(

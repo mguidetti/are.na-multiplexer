@@ -10,6 +10,9 @@ Hosted at https://arena-mux.michaelguidetti.info
 
 ## Development
 
+### Documentation
+- [Transactional Alt-drag moves](./docs/transactional-alt-move.md)
+
 ### Setup
 - Fork and clone this repo
 - Register an application with Are.na at https://dev.are.na/oauth/applications 

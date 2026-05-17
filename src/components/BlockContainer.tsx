@@ -15,6 +15,7 @@ export interface DraggingBlockData {
   block: ChannelContents,
   window: {
     id: number,
+    canDelete: boolean,
     view: ChannelWindowState['view'],
     scale: ChannelWindowState['scale']
   }
@@ -27,7 +28,7 @@ interface BlockContainerProps {
 
 function BlockContainer ({ data, children }: BlockContainerProps) {
   const { addChannelWindow } = useDesktopActionsContext()
-  const { blocks: windowBlocks, channel, view, scale, disconnectBlock } = useWindowContext()
+  const { blocks: windowBlocks, canDelete, channel, view, scale, disconnectBlock } = useWindowContext()
   const { open: openBlockViewer } = useBlockViewerActionsContext()
   const setDialog = useDialogActionsContext()
   const [isHovering, setIsHovering] = useState(false)
@@ -40,6 +41,7 @@ function BlockContainer ({ data, children }: BlockContainerProps) {
       block: { ...data },
       window: {
         id: channel.id,
+        canDelete,
         view,
         scale
       }
