@@ -24,7 +24,7 @@
     "dayjs": "^1.11.20",
     "debounce-promise": "^3.1.2",
     "next": "15",
-    "next-auth": "4.24.13",
+    "next-auth": "4.24.15",
     "react": "19",
     "react-device-detect": "^2.2.3",
     "react-dom": "19",
